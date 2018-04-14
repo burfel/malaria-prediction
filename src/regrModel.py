@@ -6,6 +6,7 @@ import readin_SupplData
 from sklearn.linear_model import LinearRegression
 from sklearn.datasets import make_regression
 import matplotlib.pyplot as plt
+#import matplotlib.image as mpimg
 #import plotly.plotly as py
 import numpy as np
 
@@ -82,7 +83,7 @@ print(col_to_del) # --- only column 0 and 19 are complete...
 
 #X, y = make_regression(n_samples=46, n_features=21, noise=0.1)
 #X_new, y_new = make_regression(n_samples=23, n_features=21, noise=0.1)
-X_new, y_new_h = make_regression(n_samples=23, n_features=21, noise=0.1)
+X_new, y_new_h = make_regression(n_samples=23, n_features=21, noise=0.)
 
 # fits final model
 model = LinearRegression()
@@ -107,28 +108,42 @@ print('coefficients of the predictors = ', model.coef_)
 
 
 # PLOT OF THE COEFFICIENTS OF THE LINEAR MODEL
-X_labels.pop(0)
+X_labels.pop(0) # remove sample_ID
 print(X_labels)
 print(len(X_labels))
 
 fig = plt.figure()
 coeff = model.coef_
 coeff_abs = [abs(number) for number in coeff]
+print('absolute values of coefficients: ', coeff_abs)
 x = range(1,22)
+
+'''
+to_plot = zip(X_labels, coeff_abs)
+print('to plot: ', to_plot)
+
+plt.plot(*zip(*to_plot))
+plt.show()
+'''
+
 #N = len(y)
 #x = range(N)
 #width = 1/1.
 #plt.bar(x, y, width, align='center', color="blue")
 #plt.bar(x, coeff_abs, align='center', color="blue")
+y_pos = np.arange(len(X_labels))
 plt.xticks(rotation=90)
-plt.bar(X_labels, coeff_abs, align='center', color="blue")
+plt.xticks(y_pos, X_labels)
+plt.bar(y_pos, coeff_abs, align='center', alpha=0.5)
+plt.ylabel('weight of independent variable in model')
+#plt.bar(X_labels, coeff_abs, align='center', color="blue")
 plt.title('Coefficients of linear regression model')
 
 #fig = plt.gcf()
 #plot_url = py.plot_mpl(fig, filename='mpl-basic-bar')
 plt.show()
 plt.savefig('img/coefficients.png')
-
+plt.close(fig)
 
 
 '''

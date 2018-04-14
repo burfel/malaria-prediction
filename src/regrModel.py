@@ -141,6 +141,7 @@ plt.title('Coefficients of linear regression model')
 
 #fig = plt.gcf()
 #plot_url = py.plot_mpl(fig, filename='mpl-basic-bar')
+plt.gcf().subplots_adjust(bottom=0.5)
 plt.show()
 plt.savefig('img/coefficients.png')
 plt.close(fig)

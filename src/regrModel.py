@@ -5,6 +5,7 @@ import readin_SupplData
 # example of training a final regression model
 from sklearn.linear_model import LinearRegression
 from sklearn.datasets import make_regression
+from scipy.special import logit 
 import matplotlib.pyplot as plt
 #import matplotlib.image as mpimg
 #import plotly.plotly as py
@@ -23,24 +24,30 @@ from https://machinelearningmastery.com/make-predictions-scikit-learn/
 
 # generate regression dataset
 y = readin.prop()
-print(y)
-X_old = readin_SupplData.readinDVar()
+#print(y)
+#print(len(y))
+np.asarray(y)
+print('y_array = ', y)
 
+# make logit transformation
+y = logit(y)
+print('logit_y = ', y)
+
+X_old = readin_SupplData.readinDVar()
 
 X_labels = X_old[0][:] # column names
 X_sampleID = [r.pop(0) for r in X_old] # remove sample IDs
-
 #print(X_old)
 del X_old[0][:] # remove column names
 X = [x for x in X_old if x != []] # to remove first empty list
 
-print(X)
+#print(X)
 #print(X_labels)
 #print(X_sampleID)
-print(len(X))
+#print(len(X))
 
 
-
+#######-----clean data-----#######
 # OPTION 1:
 # only use the samples that are complete, ie have no gaps
 y_new = []
@@ -51,13 +58,13 @@ for j in range(len(X)):
 		y_new.append(y[j])
 		X_new.append(X[j])
 
-print('y_new = ', y_new)
-print('X_new = ', X_new)
-print(len(y_new))
-print(len(X_new))
+#print('y_new = ', y_new)
+#print('X_new = ', X_new)
+#print(len(y_new))
+#print(len(X_new))
 
 y_new_h = [item[0] for item in y_new] # list of only host proportions
-print(y_new_h)
+print('y_new_h = ', y_new_h)
 
 
 '''
@@ -94,28 +101,27 @@ fitted = model.fit(X_new, y_new_h)
 
 # predicts the y (dependent variable) usind the linear model we fitted
 predictions = model.predict(X_new)
-print('predictions:')
+print('\n Predictions:')
 print('y = ', predictions)
 
 #model.summary()
 
 # returns the R^2 score of the model, ie percentage of explained variance of the predictions
-print('R^2 score of the model = ', model.score(X_new, y_new_h))
+print('\n R^2 score of the model = ', model.score(X_new, y_new_h))
 
 # coeffcients for the predictors
-print('coefficients of the predictors = ', model.coef_)
-
+print('\n Coefficients of the predictors = ', model.coef_)
 
 
 # PLOT OF THE COEFFICIENTS OF THE LINEAR MODEL
 X_labels.pop(0) # remove sample_ID
-print(X_labels)
-print(len(X_labels))
+#print(X_labels)
+#print(len(X_labels))
 
 fig = plt.figure()
 coeff = model.coef_
 coeff_abs = [abs(number) for number in coeff]
-print('absolute values of coefficients: ', coeff_abs)
+#print('absolute values of coefficients: ', coeff_abs)
 x = range(1,22)
 
 '''

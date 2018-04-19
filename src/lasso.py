@@ -8,3 +8,8 @@ Lasso(alpha=0.1, copy_X=True, fit_intercept=True, max_iter=1000,
 print(clf.coef_)
 
 print(clf.intercept_)
+
+
+
+# COMPUTE COVARIANCE MATRIX, 
+# convert categorical variables like ethnicity into dummy variables.

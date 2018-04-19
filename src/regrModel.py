@@ -26,8 +26,10 @@ from https://machinelearningmastery.com/make-predictions-scikit-learn/
 
 # generate regression dataset
 y = readin.prop()
-print(y[1][:])
-#print(len(y))
+y_pathogen = [r[1] for r in y] # only pathogen read proportions
+print(len(y_pathogen))
+print(y_pathogen)
+
 np.asarray(y)
 print('y_array = ', y)
 
@@ -62,67 +64,75 @@ for j in range(len(X)):
 		y_new.append(y[j])
 		X_new.append(X[j])
 
-parasetemia = [9.5,
-15,
-9.2,
-4.8,
-13,
-8.1,
-9.5,
-15,
-9.2,
-4.8,
-13,
-8.1,
-9.5,
-15,
-9.2,
-4.8,
-13,
-8.1,
-9.5,
-15,
-9.2,
-4.8,
-13,
-8.1,
-9.5,
-15,
-9.2,
-4.8,
-13,
-8.1,
-9.5,
-15,
-9.2,
-4.8,
-13,
-8.1,
-9.5,
-15,
-9.2,
-4.8,
-13,
-8.1,
-9.5,
-15,
-9.2,
-4.8]
-print('parasetemia = ', parasetemia)
-
+# TO PRINT PLOT PARASETEMIA PERCENTAGE VS PERCENTAGE OF READS THAT MAP TO HOST
+# parasetemia = [9.5,
+# 15,
+# 9.2,
+# 4.8,
+# 13,
+# 8.1,
+# 9.5,
+# 15,
+# 9.2,
+# 4.8,
+# 13,
+# 8.1,
+# 9.5,
+# 15,
+# 9.2,
+# 4.8,
+# 13,
+# 8.1,
+# 9.5,
+# 15,
+# 9.2,
+# 4.8,
+# 13,
+# 8.1,
+# 9.5,
+# 15,
+# 9.2,
+# 4.8,
+# 13,
+# 8.1,
+# 9.5,
+# 15,
+# 9.2,
+# 4.8,
+# 13,
+# 8.1,
+# 9.5,
+# 15,
+# 9.2,
+# 4.8,
+# 13,
+# 8.1,
+# 9.5,
+# 15,
+# 9.2,
+# 4.8]
+# print('parasetemia = ', parasetemia)
+#
 #print('y_new = ', y_new)
 #print('X_new = ', X_new)
 #print(len(y_new))
 #print(len(X_new))
+#
+#print(len(parasetemia), len(y_pathogen), len(sampleIDs))
+#
+#np.random.seed(1234)
+#plt.title("How well does parasitemia correlate with percentage of pathogen maps?")
+#plt.scatter(parasetemia, y_pathogen, alpha=0.5)
+#plt.xlabel("percentage of parasitemia")
+#plt.ylabel("percentage of pathogen maps")
+#plt.legend(loc=2)
+#plt.show()
+
 
 y_new_h = [item[0] for item in y_new] # list of only host proportions
 print('y_new_h = ', y_new_h)
 
-
-print(len(parasetemia), len(y_new_h))
-plt.bar(parasetemia, y_new_h)
-plt.xticks(x, sampleIDs)
-plt.show()
+#del sampleIDs[0]
 
 # '''
 # # OPTION 2:
@@ -145,77 +155,77 @@ plt.show()
 # #print(len(X_new2))
 # '''
 
-# #X, y = make_regression(n_samples=46, n_features=21, noise=0.1)
-# #X_new, y_new = make_regression(n_samples=23, n_features=21, noise=0.1)
-# X_new, y_new_h = make_regression(n_samples=23, n_features=21, noise=0.)
+#X, y = make_regression(n_samples=46, n_features=21, noise=0.1)
+#X_new, y_new = make_regression(n_samples=23, n_features=21, noise=0.1)
+X_new, y_new_h = make_regression(n_samples=23, n_features=21, noise=0.)
 
-# # fits final model
-# model = LinearRegression()
-# #fitted = model.fit(X, y)
-# #fitted = model.fit(X_new, y_new)
-# fitted = model.fit(X_new, y_new_h)
-# #print(fitted)
+# fits final model
+model = LinearRegression()
+#fitted = model.fit(X, y)
+#fitted = model.fit(X_new, y_new)
+fitted = model.fit(X_new, y_new_h)
+#print(fitted)
 
-# # predicts the y (dependent variable) usind the linear model we fitted
-# predictions = model.predict(X_new)
-# print('\n Predictions:')
-# print('y = ', predictions)
+# predicts the y (dependent variable) usind the linear model we fitted
+predictions = model.predict(X_new)
+print('\n Predictions:')
+print('y = ', predictions)
 
-# #model.summary()
+#model.summary()
 
-# # returns the R^2 score of the model, ie percentage of explained variance of the predictions
-# print('\n R^2 score of the model = ', model.score(X_new, y_new_h))
+# returns the R^2 score of the model, ie percentage of explained variance of the predictions
+print('\n R^2 score of the model = ', model.score(X_new, y_new_h))
 
-# # coeffcients for the predictors
-# print('\n Coefficients of the predictors = ', model.coef_)
-
-
-# # PLOT OF THE COEFFICIENTS OF THE LINEAR MODEL
-# X_labels.pop(0) # remove sample_ID
-# #print(X_labels)
-# #print(len(X_labels))
-
-# fig = plt.figure()
-# coeff = model.coef_
-# coeff_abs = [abs(number) for number in coeff]
-# #print('absolute values of coefficients: ', coeff_abs)
-# x = range(1,22)
-
-# '''
-# to_plot = zip(X_labels, coeff_abs)
-# print('to plot: ', to_plot)
-
-# plt.plot(*zip(*to_plot))
-# plt.show()
-# '''
-
-# #N = len(y)
-# #x = range(N)
-# #width = 1/1.
-# #plt.bar(x, y, width, align='center', color="blue")
-# #plt.bar(x, coeff_abs, align='center', color="blue")
-# y_pos = np.arange(len(X_labels))
-# plt.xticks(rotation=90)
-# plt.xticks(y_pos, X_labels)
-# plt.bar(y_pos, coeff_abs, align='center', alpha=0.5)
-# plt.ylabel('weight of independent variable in model')
-# #plt.bar(X_labels, coeff_abs, align='center', color="blue")
-# plt.title('Coefficients of linear regression model')
-
-# #fig = plt.gcf()
-# #plot_url = py.plot_mpl(fig, filename='mpl-basic-bar')
-# plt.gcf().subplots_adjust(bottom=0.5)
-# plt.show()
-# #plt.savefig('img/coefficients.png')
-# plt.close(fig)
+# coeffcients for the predictors
+print('\n Coefficients of the predictors = ', model.coef_)
 
 
-# '''
-# # new instances where we do not know the answer
-# Xnew, _ = make_regression(n_samples=46, n_features=21, noise=0.1, random_state=1)
-# # make a prediction
-# ynew = model.predict(Xnew)
-# # show the inputs and predicted outputs
-# for i in range(len(Xnew)):
-# 	print("X=%s, Predicted=%s" % (Xnew[i], ynew[i]))
-# '''
+# PLOT OF THE COEFFICIENTS OF THE LINEAR MODEL
+X_labels.pop(0) # remove sample_ID
+#print(X_labels)
+#print(len(X_labels))
+
+fig = plt.figure()
+coeff = model.coef_
+coeff_abs = [abs(number) for number in coeff]
+#print('absolute values of coefficients: ', coeff_abs)
+x = range(1,22)
+
+'''
+to_plot = zip(X_labels, coeff_abs)
+print('to plot: ', to_plot)
+
+plt.plot(*zip(*to_plot))
+plt.show()
+'''
+
+#N = len(y)
+#x = range(N)
+#width = 1/1.
+#plt.bar(x, y, width, align='center', color="blue")
+#plt.bar(x, coeff_abs, align='center', color="blue")
+y_pos = np.arange(len(X_labels))
+plt.xticks(rotation=90)
+plt.xticks(y_pos, X_labels)
+plt.bar(y_pos, coeff_abs, align='center', alpha=0.5)
+plt.ylabel('weight of independent variable in model')
+#plt.bar(X_labels, coeff_abs, align='center', color="blue")
+plt.title('Coefficients of linear regression model')
+
+#fig = plt.gcf()
+#plot_url = py.plot_mpl(fig, filename='mpl-basic-bar')
+plt.gcf().subplots_adjust(bottom=0.5)
+plt.show()
+#plt.savefig('img/coefficients.png')
+plt.close(fig)
+
+
+'''
+# new instances where we do not know the answer
+Xnew, _ = make_regression(n_samples=46, n_features=21, noise=0.1, random_state=1)
+# make a prediction
+ynew = model.predict(Xnew)
+# show the inputs and predicted outputs
+for i in range(len(Xnew)):
+	print("X=%s, Predicted=%s" % (Xnew[i], ynew[i]))
+'''

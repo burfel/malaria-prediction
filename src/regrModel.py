@@ -42,6 +42,7 @@ X_old = readin_SupplData.readinDVar()
 X_labels = X_old[0][:] # column names
 print(X_labels)
 sampleIDs = [r[0] for r in X_old]
+del sampleIDs[0]
 X_sampleID = [r.pop(0) for r in X_old] # remove sample IDs
 #print(X_old)
 del X_old[0][:] # remove column names
@@ -64,75 +65,88 @@ for j in range(len(X)):
 		y_new.append(y[j])
 		X_new.append(X[j])
 
-# TO PRINT PLOT PARASETEMIA PERCENTAGE VS PERCENTAGE OF READS THAT MAP TO HOST
-# parasetemia = [9.5,
-# 15,
-# 9.2,
-# 4.8,
-# 13,
-# 8.1,
-# 9.5,
-# 15,
-# 9.2,
-# 4.8,
-# 13,
-# 8.1,
-# 9.5,
-# 15,
-# 9.2,
-# 4.8,
-# 13,
-# 8.1,
-# 9.5,
-# 15,
-# 9.2,
-# 4.8,
-# 13,
-# 8.1,
-# 9.5,
-# 15,
-# 9.2,
-# 4.8,
-# 13,
-# 8.1,
-# 9.5,
-# 15,
-# 9.2,
-# 4.8,
-# 13,
-# 8.1,
-# 9.5,
-# 15,
-# 9.2,
-# 4.8,
-# 13,
-# 8.1,
-# 9.5,
-# 15,
-# 9.2,
-# 4.8]
-# print('parasetemia = ', parasetemia)
-#
-#print('y_new = ', y_new)
-#print('X_new = ', X_new)
-#print(len(y_new))
-#print(len(X_new))
-#
-#print(len(parasetemia), len(y_pathogen), len(sampleIDs))
-#
-#np.random.seed(1234)
-#plt.title("How well does parasitemia correlate with percentage of pathogen maps?")
-#plt.scatter(parasetemia, y_pathogen, alpha=0.5)
-#plt.xlabel("percentage of parasitemia")
-#plt.ylabel("percentage of pathogen maps")
-#plt.legend(loc=2)
-#plt.show()
+#TO PRINT PLOT PARASETEMIA PERCENTAGE VS PERCENTAGE OF READS THAT MAP TO HOST
+parasetemia = [
+9.5,
+15,
+9.2,
+4.8,
+13,
+8.1,
+23,
+12.2,
+15,
+33.4,
+37,
+11,
+3,
+9,
+9,
+9,
+7.5,
+12,
+46,
+11,
+1.64,
+8.15,
+0.14,
+2,
+12.4,
+5.2,
+2,
+6.1,
+15,
+3.83,
+2,
+3,
+7,
+4,
+5,
+9.2,
+5,
+3.3,
+13,
+10,
+5.1,
+7,
+10,
+2,
+7,
+5
+]
+
+print('parasetemia = ', parasetemia)
+
+print('y_new = ', y_new)
+print('X_new = ', X_new)
+print(len(y_new))
+print(len(X_new))
+
+print(len(parasetemia), len(y_pathogen), len(sampleIDs))
+
+np.random.seed(1234)
+plt.title("How well does parasitemia correlate with percentage of pathogen reads?")
+plt.scatter(parasetemia, y_pathogen, alpha=0.5)
+plt.xlabel("percentage of parasitemia")
+plt.ylabel("percentage of pathogen reads")
+plt.legend(loc=2)
+plt.show()
+
+# print(min(y_pathogen))
+# np.random.seed(1234)
+# plt.title("Variability in depth of reads that map to pathogen")
+# plt.bar(sampleIDs, y_pathogen)
+# plt.xticks(rotation=90)
+# plt.ylabel("percentage of pathogen reads")
+# plt.legend(loc=2)
+# plt.gcf().subplots_adjust(bottom=0.2)
+# plt.show()
 
 
 y_new_h = [item[0] for item in y_new] # list of only host proportions
 print('y_new_h = ', y_new_h)
 
-#del sampleIDs[0]
+
 
 # '''
 # # OPTION 2:

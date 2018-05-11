@@ -14,9 +14,10 @@ dat <- merge(supp, hg_pf, by.y = "samples", by.x = "Subject.ID")
 # add column "outcome" which gives the proportion of pathogen reads
 dat$outcome <- dat$pf_count / (dat$hg_count + dat$pf_count)
 
-#reg.ctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, allowParallel = TRUE)
+# most important non-categorical variables 
+dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Red.blood.cell.count..x1012.L))
 
-# LOOK AT DISTRIBUTION OF VALUES
+#reg.ctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, allowParallel = TRUE)
 
 #library(mice)
 #tempData <- mice(dat,m=5)
@@ -38,20 +39,23 @@ dat.nona <- na.omit(dat)
 #   method = "qr", model = TRUE, x = FALSE, y = FALSE, qr = TRUE,
 #   singular.ok = TRUE, contrasts = NULL, offset)
 
-
 #--------------------------------------------------------------
-#---------------------------------------------------
-#---https://www.statmethods.net/stats/regression.html
+#--------------------------------------------------------------
+#---see also: https://www.statmethods.net/stats/regression.html
 #---FITTING THE MODEL-------------------------------
 # Multiple Linear Regression Example
 # on complete data set (samples with missing values removed), 42 samples
-fit <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Hemoglobin.concentration..g.dL. + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
-summary(fit) # show results
+fit.nona <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Hemoglobin.concentration..g.dL. + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
+summary(fit) # show results: R^2: 0.45
+
+fit <- lm(dat$outcome ~ dat$Percentage.parasitemia + dat$Total.White.Cell.Count..x109.L., data=dat)
+summary(fit)
 
 # on original data set, 46 samples
 # ---------WHAT HAPPENS TO MISSING VALUES HERE? HOW ARE THEY IMPLICITLY IMPUTED??
 fit <- lm(dat$outcome ~ dat$Percentage.parasitemia + dat$Hemoglobin.concentration..g.dL. + dat$Total.White.Cell.Count..x109.L., data=dat)
-summary(fit) # show results
+summary(fit) # show results: R^2: 0.37
+
 
 # Other useful functions
 coefficients(fit) # model coefficients
@@ -276,8 +280,10 @@ md.pattern(dat) # returns a tabular form of missing value present in each variab
 
 installed.packages("VIM")
 library(VIM)
+png("GITHUB/shinyapp/img/missingData.png")
 mice_plot <- aggr(dat, col=c('navyblue', 'yellow'), numbers=TRUE, sortVars=TRUE,
                   labels=names(dat), cex.axis=.7, gap=3, ylab=c("Missing data", "Pattern"))
+dev.off()
 # There are 45.7% values in the data set with no missing values 
 # 17.4% missing values in parasite clone...
 

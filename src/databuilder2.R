@@ -4,9 +4,11 @@ registerDoParallel(detectCores() - 1)
 
 setwd("~/Documents/IMPERIAL/PROJECTS/project2")
 
+#--- run databuilder.R ---------------------------------------------------------------------------------
+
 # read in files
-hg_pf <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/hg_pf_readcounts.csv")
-supp <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/Supplementary_Dataset.csv", header=TRUE)
+hg_pf <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/data/hg_pf_readcounts.csv")
+supp <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/data/Supplementary_Dataset.csv", header=TRUE)
 
 # merge data sets (by samples/ subjectID)
 dat <- merge(supp, hg_pf, by.y = "samples", by.x = "Subject.ID")
@@ -14,39 +16,103 @@ dat <- merge(supp, hg_pf, by.y = "samples", by.x = "Subject.ID")
 # add column "outcome" which gives the proportion of pathogen reads
 dat$outcome <- dat$pf_count / (dat$hg_count + dat$pf_count)
 
+# most important non-categorical variables 
 dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Red.blood.cell.count..x1012.L))
 
+# drop the samples that have blanks
+dat.nona <- na.omit(dat)
+
+#-----------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------
 # 0. Impute missing values
 library(Amelia)
 library(mlbench)
-missmap(dat, col=c("blue", "red"), legend=FALSE)
-missmap(dat.nc, col=c("blue", "red"), legend=FALSE)
+
+## visualise missing values
+png("GITHUB/shinyapp/img/missingMap.png")
+missmap(dat, col=c("blue", "red"), width = 800, height = 6500, legend=TRUE)
+dev.off()
+png("GITHUB/shinyapp/img/missingMap_nc.png")
+missmap(dat.nc, col=c("blue", "red"), width = 800, height = 6500, legend=TRUE)
+dev.off()
 
 imputed_dat <- mice(dat.nc, m=5, maxit=50, method='pmm', seed=500)
 # should we use parasite.clone at all?
 
 imputed_dat$imp
 
+#-----------------------------------------------------------------------------------------------------------
+# 0. Kernel density plot to view the DISTRIBUTION
 
-#########
-# 0. Kernel Density Plot to view the distribution of variables
-para <- density(completeDat$Percentage.parasitemia) # returns the density data
-plot(para) # plots the results 
-wcc <- density(completeDat$Total.White.Cell.Count..x109.L.) 
+png("GITHUB/shinyapp/img/ParasitDensityNona.png")
+para <- density(dat.nona$Percentage.parasitemia) # returns the density data
+plot(para)
+dev.off()
+
+png("GITHUB/shinyapp/img/WhiteCellDensityNona.png")
+wcc <- density(dat.nona$Total.White.Cell.Count..x109.L.) 
 plot(wcc) 
-rcc <- density(completeDat$Red.blood.cell.count..x1012.L) 
-plot(rcc) 
+dev.off()
 
+png("GITHUB/shinyapp/img/RedCellDensityNona.png")
+rcc <- density(dat.nona$Red.blood.cell.count..x1012.L) 
+plot(rcc) 
+dev.off()
+
+png("GITHUB/shinyapp/img/outcomeNona.png")
+oc <- density(dat.nona$outcome) 
+plot(oc) 
+dev.off()
+
+png("GITHUB/shinyapp/img/boxplot.png")
+par(mfrow=c(1,5))
+for(i in c(5,13,14,17,25)) {
+  boxplot(dat.nona[,i], main=names(dat.nona)[i])
+}
+dev.off()
+
+png("GITHUB/shinyapp/img/hist.png")
+par(mfrow=c(1,5))
+for(i in c(5,13,14,17,25)) {
+  hist(dat.nona[,i], main=names(dat.nona)[i])
+}
+dev.off()
+
+# 0. Kernel density plot to view the DISTRIBUTION of variables (after imputation)
+
+png("GITHUB/shinyapp/img/ParasitDensity_imp.png")
+para2 <- density(completeDat$Percentage.parasitemia) # returns the density data
+plot(para2) # plots the results 
+dev.off()
+
+png("GITHUB/shinyapp/img/WhiteCellDensity_imp.png")
+wcc2 <- density(completeDat$Total.White.Cell.Count..x109.L.) 
+plot(wcc2) 
+dev.off()
+
+png("GITHUB/shinyapp/img/RedCellDensity_imp.png")
+rcc2 <- density(completeDat$Red.blood.cell.count..x1012.L) 
+plot(rcc2) 
+dev.off()
+
+# boxplot
+png("GITHUB/shinyapp/img/boxplot_imp.png")
 par(mfrow=c(2,5))
 for(i in 2:5) {
   boxplot(completeDat[,i], main=names(completeDat)[i])
 }
+dev.off()
+
+# histogram
+png("GITHUB/shinyapp/img/hist_imp.png")
 par(mfrow=c(2,5))
 for(i in 2:5) {
   hist(completeDat[,i], main=names(completeDat)[i])
 }
+dev.off()
 
-##########
+
+#-----------------------------------------------------------------------------------------------------------
 # 1. CORRELATION -- nice first step to data exploration
 #                before going into more serious analysis and to select variable that might be of interest
 

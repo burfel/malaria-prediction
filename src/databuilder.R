@@ -5,8 +5,8 @@ registerDoParallel(detectCores() - 1)
 setwd("~/Documents/IMPERIAL/PROJECTS/project2")
 
 # read in files
-hg_pf <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/hg_pf_readcounts.csv")
-supp <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/Supplementary_Dataset.csv", header=TRUE)
+hg_pf <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/data/hg_pf_readcounts.csv")
+supp <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/data/Supplementary_Dataset.csv", header=TRUE)
 
 # merge data sets (by samples/ subjectID)
 dat <- merge(supp, hg_pf, by.y = "samples", by.x = "Subject.ID")
@@ -16,7 +16,7 @@ dat$outcome <- dat$pf_count / (dat$hg_count + dat$pf_count)
 
 #reg.ctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, allowParallel = TRUE)
 
-# HOW TO LOOK AT DITRIBUTION OF VALUES?
+# LOOK AT DISTRIBUTION OF VALUES
 
 #library(mice)
 #tempData <- mice(dat,m=5)
@@ -191,7 +191,7 @@ influencePlot(fit, id.method="identify", main="Influence Plot", sub="Circle size
 
 #---NON-NORMALITY------------------------------------------
 # Normality of Residuals
-# qq plot for studentized resid
+# qq plot for studentised residual
 qqPlot(fit, main="QQ Plot")
 # distribution of studentized residuals
 library(MASS)
@@ -283,7 +283,7 @@ mice_plot <- aggr(dat, col=c('navyblue', 'yellow'), numbers=TRUE, sortVars=TRUE,
 
 ##--- 1. Impute missing values
 
-imputed_dat <- mice(dat, m=5, maxit=50, method='pmm', seed=500)
+#imputed_dat <- mice(dat, m=5, maxit=50, method='pmm', seed=500)
 ## TODO: TRY VARIOUS NUMBER OF ITERATIONS (MAXIT) AND METHODS
 ## Note: multiple imputation helps to reduce bias and increase efficiency
 
@@ -292,7 +292,8 @@ imputed_dat <- mice(dat, m=5, maxit=50, method='pmm', seed=500)
 
 ##--- remove categorical variables
 #dat.nc <- subset(dat, select = -c(Sex, Ethnicity, Sickle.cell.screen))
-dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Red.blood.cell.count..x1012.L))
+dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Red.blood.cell.count..x1012.L, Parasite.clones, outcome))
+
 
 imputed_dat <- mice(dat.nc, m=5, maxit=50, method='pmm', seed=500)
 
@@ -314,7 +315,7 @@ completeDat
 ##          ie no need to separate or treat categorical variables
 ## - mi
 
-#---2. Build predictive model
+#---2. PREDICTIVE / LINEAR REGRESSION MODEL
 # build models on all 5 datasets
 fit <- with(data = dat, exp = lm(outcome ~ Percentage.parasitemia + Total.White.Cell.Count..x109.L. + Red.blood.cell.count..x1012.L))
 summary(fit)
@@ -322,28 +323,152 @@ summary(fit)
 # combine results of all 5 models:
 #combine <- pool(fit)
 
-
-#-- 4 linear candidate models for the data (see Ada's slides):
+#---see also: https://www.r-bloggers.com/correlation-and-linear-regression/
+#-- linear candidate models for the data (see Ada's slides):
 fit.0 = lm(outcome ~ 1, data=dat) # just intercept
+summary(fit.0)
 
 fit.c = lm(outcome ~ Percentage.parasitemia, data=dat)
+summary(fit.c) # R^2 = 0.26
 fit.d = lm(outcome ~ Hemoglobin.concentration..g.dL., data=dat)
+summary(fit.d) # R^2 = 0.26
 fit.w = lm(outcome ~ Total.White.Cell.Count..x109.L., data=dat)
+summary(fit.w) # R^2 = 0.06
 
 fit.cd = lm(outcome ~ Percentage.parasitemia + Hemoglobin.concentration..g.dL., data=dat)
+summary(fit.cd) # R^2 = 0.35
 fit.cw = lm(outcome ~ Percentage.parasitemia + Total.White.Cell.Count..x109.L., data=dat)
+summary(fit.cw) # R^2 = 0.30
 fit.dw = lm(outcome ~ Hemoglobin.concentration..g.dL. + Total.White.Cell.Count..x109.L., data=dat)
+summary(fit.dw) # R^2 = 0.078
 
 fit.cdw = lm(outcome ~ Percentage.parasitemia + Hemoglobin.concentration..g.dL. + Total.White.Cell.Count..x109.L., data=dat)
-fit.cdw
+summary(fit.cdw) # R^2 = 0.37
+
+# with parasite clones instead of hemoglobin concentration
+fit.p = lm(outcome ~ Parasite.clones, data=dat)
+summary(fit.p) # R^2 = 0.086
+fit.pc = lm(outcome ~ Percentage.parasitemia + Parasite.clones, data=dat)
+summary(fit.pc) # R^2 = 0.43
+fit.pw = lm(outcome ~ Parasite.clones + Total.White.Cell.Count..x109.L., data=dat)
+summary(fit.pw) # R^2 = 0.158
+
+fit.pcw = lm(outcome ~ Percentage.parasitemia + Parasite.clones + Total.White.Cell.Count..x109.L., data=dat)
+summary(fit.pcw) # R^2 = 0.48
+
+
+# check that the models assumptions are met, 
+# indeed linear models make a few assumptions on the data, 
+# the first one is that your data are normally distributed, 
+# the second one is that the variance in y is homogeneous over 
+# all x values (sometimes called homoscedasticity) and 
+# independence which means that a y value at a certain x value 
+# should not influence other y values.
+
+# ---plotting three best models
+# * graphs first column: look at variance homogeneity amongst others
+#   (we see no pattern in dots but random clouds of points 
+#   --> homogeneity assumption not violated)
+# * graph top right: checks normality assumption
+#   (if data normally distributed, points should fall in straight line)
+# * graph bottom right: shows how each y influences the model,
+#   each point is removed at a time and the new model is compared to the one with the point,
+#   if the point is very influential then it will have a high leverage value.
+#   POINTS WITH TO HIGH LEVERAGE VALUE SHOULD BE REMOVED FROM THE DATASET 
+#   (to remove their outlying effect on the model).
+# here: remove 39, maybe 3, 2.
+par(mfrow=c(2,2))
+plot(fit.cdw)
+
+par(mfrow=c(2,2))
+plot(fit.pc)
+
+par(mfrow=c(2,2))
+plot(fit.pcw)
+
+# 3. TRANSFORMING AND REMOVING OUTLIERS FROM THE DATA
+#----Transforming the data (for non-normal or heterogeneous data)
+#-----usually a trial and error process
+
+library(gtools)
+library(car)
+completeData$outcome <- completeDat$outcome
+completeData$outcome
+#completeData$outcome<-log(completeData$outcome)
+completeData$outcomeLogit <- logit(completeData$outcome, min=0, max=0)
+completeData$outcomeLogit
+cbind(completeData$outcome, completeData$outcomeLogit)
+plot(outcome~Percentage.parasitemia,completeData)
 
 #-- Comparing models using anova
+# used to compare multiple models
+# does an f-test to compare 2 or more nested models
 #anova(fit.c, fit.d)
 #anova(fit.c, fit.w)
 #anova(fit.d, fit.w)
-anova(fit.c, fit.cd)
-anova(fit.c, fit.cw)
-anova(fit.d, fit.cd)
-anova(fit.d, fit.dw)
-anova(fit.w, fit.cw)
+#anova(fit.c, fit.cd)
+#anova(fit.c, fit.cw)
+#anova(fit.d, fit.cd)
+#anova(fit.d, fit.dw)
+#anova(fit.w, fit.cw)
 anova(fit.w, fit.dw) # only one that has same size of dataset
+
+library(car)
+Anova(fit.w)
+Anova(fit.w, fit.dw)
+
+drop1(fit.c, test="F")
+drop1(fit.d, test="F")
+drop1(fit.w, test="F")
+drop1(fit.cd, test="F")
+drop1(fit.cw, test="F")
+drop1(fit.dw, test="F")
+drop1(fit.cdw, test="F")
+
+## logistic regression 
+## GENERALISED LINEAR MODEL, ie robust regression method on the raw, untransformed values
+library(ISLR)
+glm.fit <- glm(outcome ~ Percentage.parasitemia + Parasite.clones + Total.White.Cell.Count..x109.L., completeDat, family=binomial)
+summary(glm.fit)
+glm.fit2 <- glm(outcome ~ Percentage.parasitemia + Parasite.clones + Total.White.Cell.Count..x109.L., completeDat, family=quasibinomial())
+summary(glm.fit2)
+# null deviance (the deviance just for the mean) and 
+# the residual deviance (the deviance for the model with all the predictors)
+
+# make predictions on the training data that we use to fit the model
+# returns vector of fitted probabilities
+glm.probs <- predict(glm.fit, type = "response")
+glm.probs[1:5] # look at the first 5 probabilities
+
+# now define what coverage is enough, eg elem [0.2, 0.8], st we have enough host and pathogen maps
+#glm.pred <- ifelse((glm.probs > 0.2 && glm.probs < 0.8) , "Enough", "Not enough")
+
+#attach(completeDat)
+#table(glm.pred, outcome)
+
+#mean(glm.pred == outcome)
+
+# GENERALISED LINEAR MODEL (extension of the general linear model) ON BEST MODEL FROM ABOVE
+# unlike general linear model does not require that response variable is normally distributed
+# --> try different link functions (~transformation of response variable) for different 
+#     relationships between linear model and response variable (eg inverse, logit, log etc)
+
+library(nnet)
+#completeData$Percentage.parasitemia <- relevel(completeData$Percentage.parasitemia, ref = "parasetemia")
+test <- multinom(outcome ~ Percentage.parasitemia + Parasite.clones + Total.White.Cell.Count..x109.L., data=completeDat)
+summary(test)
+
+z <- summary(test)$coefficients/summary(test)$standard.errors
+z
+
+# 2-tailed z test
+p <- (1 - pnorm(abs(z), 0, 1)) * 2
+p
+
+## extract the coefficients from the model and exponentiate
+exp(coef(test))
+
+head(pp <- fitted(test))
+
+#dses <- data.frame(ses = c("low", "middle", "high"), write = mean(completeDat$outcome))
+#predict(test, newdata = dses, "probs")

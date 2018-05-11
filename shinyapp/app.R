@@ -49,22 +49,22 @@ ui <- pageWithSidebar(
         
       ),
       
-      # Main panel for displaying outputs ----
-      mainPanel(
+      # # Main panel for displaying outputs ----
+      # mainPanel(
+      #   
+      #   # Ad 3:
+      #   # The server function assigned two output values: output$caption and output$mpgPlot. 
+      #   # To update our user interface to display the output we need to add some elements to the main UI panel.
+      #   # In the updated user-interface definition below you can see that we’ve added the caption as an h3 element 
+      #   # and filled in its value using the textOutput function, and also rendered the plot by calling the plotOutput function:
+      # 
+      #   # Output: Formatted text for caption ----
+      #   h3(textOutput("caption")),
+      #   
+      #   # Output: Plot of the requested variable against mpg ----
+      #   plotOutput("mpgPlot")
         
-        # Ad 3:
-        # The server function assigned two output values: output$caption and output$mpgPlot. 
-        # To update our user interface to display the output we need to add some elements to the main UI panel.
-        # In the updated user-interface definition below you can see that we’ve added the caption as an h3 element 
-        # and filled in its value using the textOutput function, and also rendered the plot by calling the plotOutput function:
-
-        # Output: Formatted text for caption ----
-        h3(textOutput("caption")),
-        
-        # Output: Plot of the requested variable against mpg ----
-        plotOutput("mpgPlot")
-        
-      )
+      #)
     )
   )
   
@@ -80,8 +80,9 @@ ui <- pageWithSidebar(
 # Tweak the "am" variable to have nicer factor labels -- since this
 # doesn't rely on any user inputs, we can do this once at startup
 # and then use the value throughout the lifetime of the app
-mpgData <- mtcars
-mpgData$am <- factor(mpgData$am, labels = c("Automatic", "Manual"))
+
+#mpgData <- completeDat
+#mpgData$am <- factor(mpgData$am, labels = c("Automatic", "Manual"))
 
 # Define server logic to plot various variables against mpg ----
 server <- function(input, output) {

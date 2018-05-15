@@ -42,7 +42,7 @@ dat.nona <- na.omit(dat)
 #--------------------------------------------------------------
 #--------------------------------------------------------------
 #---see also: https://www.statmethods.net/stats/regression.html
-#---FITTING THE MODEL-------------------------------
+#---FITTING THE MODEL-----------------------------------------
 # Multiple Linear Regression Example
 # on complete data set (samples with missing values removed), 42 samples
 fit.nona <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Hemoglobin.concentration..g.dL. + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)

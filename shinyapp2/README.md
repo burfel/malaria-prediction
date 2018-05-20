@@ -13,17 +13,15 @@ This allows the user to know the number of reads necessary for their study.
  library(ggExtra)
  library(ggplot2)
  ### run the application:
- shiny::runGitHub("malaria-prediction/shinyapp2", "burfel")
+ shiny::runGitHub("malaria-prediction", "burfel", subdir="shinyapp2")
  ```
  
  ## Author
  Felicia Burtscher | felicia.burtscher17@imperial.ac.uk
  
  ## Credit
- 
  This application was developed with [shiny](http://shiny.rstudio.com/) in 
  [R studio](https://www.rstudio.com/).
  
- --->
- 
+
  

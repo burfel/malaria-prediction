@@ -14,6 +14,9 @@ dat <- merge(supp, hg_pf, by.y = "samples", by.x = "Subject.ID")
 # add column "outcome" which gives the proportion of pathogen reads
 dat$outcome <- dat$pf_count / (dat$hg_count + dat$pf_count)
 
+# add column "total.number.of.cells" 
+dat$total.number.of.cells <- dat$Total.White.Cell.Count..x109.L. + (1000 * dat$Red.blood.cell.count..x1012.L)
+
 # most important non-categorical variables 
 dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Red.blood.cell.count..x1012.L))
 
@@ -24,6 +27,7 @@ dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White
 
 # drop the samples that have blanks
 dat.nona <- na.omit(dat)
+dat.nc.nona <- na.omit(dat.nc)
 
 #set.seed(1895) # to reproduce same result, for every model set new seed, different seed functions?
 #lm.fit <- train(outcome ~ ., data = dat, trControl = reg.ctrl, method = "lm")
@@ -45,18 +49,131 @@ dat.nona <- na.omit(dat)
 #---FITTING THE MODEL-----------------------------------------
 # Multiple Linear Regression Example
 # on complete data set (samples with missing values removed), 42 samples
-fit.nona <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Hemoglobin.concentration..g.dL. + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
-summary(fit) # show results: R^2: 0.45
 
-fit <- lm(dat$outcome ~ dat$Percentage.parasitemia + dat$Total.White.Cell.Count..x109.L., data=dat)
-summary(fit)
+# (1)
+fit.nona.paras <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, data=dat.nona)
+summary(fit.nona.paras) # # show results: R^2: 0.4078
+summary(fit.nona.paras)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
+# plot the statistics
+par(mfrow = c(2, 2))  
+plot(fit.nona.paras) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
+#par(mfrow = c(1, 1)) 
+hist(fit.nona.paras$res,main="Residuals") # residuals not really Gaussian
 
-# on original data set, 46 samples
-# ---------WHAT HAPPENS TO MISSING VALUES HERE? HOW ARE THEY IMPLICITLY IMPUTED??
-fit <- lm(dat$outcome ~ dat$Percentage.parasitemia + dat$Hemoglobin.concentration..g.dL. + dat$Total.White.Cell.Count..x109.L., data=dat)
-summary(fit) # show results: R^2: 0.37
+# (2)
+fit.nona.total <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$total.number.of.cells, data=dat.nona)
+summary(fit.nona.total) # show results: R^2: 0.4622
+summary(fit.nona.total)$sigma^2 # estimated variance of residuals around a fitted line: 0.02268394
+
+# plot the statistics, OUTLIERS 35, 39 -- both in UM group? -- kept them -- BUT MIGHT BE WORTH TRYING WITHOUT THEM
+par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+plot(fit.nona.total)  # Plot the model information/ 
+# diagnostic plots to CHECK ASSUMPTIONS FOR LINEAR REGRESSION:
+# - residuals do not have non-linear patterns
+# - residuals about Normally distributed (except for 35, 39)
+# - residuals about homoscedastic
+# - residuals still within Cook distance (but you can see the dotted lines)
+par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+hist(fit.nona.total$res,main="Residuals") # residuals not really Gaussian
+
+#plot(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, data = dat.nona)
+#abline(fit.nona.total)
+
+# PLOT the best linear regression model
+library(ggplot2)
+ggplot(dat.nona, aes(x = dat.nona$Percentage.parasitemia, y = dat.nona$total.number.of.cells)) + 
+  geom_point() +
+  stat_smooth(method = "lm", col = "red")
+
+# Write a function that also returns statistics
+ggplotRegression <- function (fit) {
+  
+  require(ggplot2)
+  
+  ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
+    geom_point() +
+    stat_smooth(method = "lm", col = "red") +
+    labs(title = paste("Adj R^2 = ",signif(summary(fit)$adj.r.squared, 5),
+                       #"Mult R^2 = ",signif(summary(fit)$mult.r.squared, 5),
+                       "Intercept =",signif(fit$coef[[1]],5 ),
+                       " Slope =",signif(fit$coef[[2]], 5),
+                       " P =",signif(summary(fit)$coef[2,4], 5)))
+}
+
+ggplotRegression(fit.nona.paras) # for most simple model (parasitemia percentage)
+#par(new=TRUE)
+#ggplotRegression(fit.nona.total) # the same plot
+
+# Are the residuals of the linear regression model homoscedastic, ie the RVs have the same finite variance?
+# SIZE AND COLOR #https://drsimonj.svbtle.com/visualising-residuals
+# Same coloring as above, size corresponding as well
+d <- dat.nona
+d$predicted <- predict(fit.nona.total) 
+d$residuals <- residuals(fit.nona.total)
+library(dplyr)
+d %>% select(outcome, predicted, residuals) %>% head() # quick look at the actual, predicted and residual values
+#head(d)
+# ADD LEGEND HERE
+ggplot(d, aes(x = Percentage.parasitemia, y = outcome)) +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
+  geom_segment(aes(xend = Percentage.parasitemia, yend = predicted), alpha = .2) +
+  
+  # > Color AND size adjustments made here...
+  geom_point(aes(color = abs(residuals), size = abs(residuals))) + # size also mapped
+  scale_color_continuous(low = "black", high = "red") +
+  guides(color = FALSE, size = FALSE) +  # Size legend also removed
+  # <
+  geom_point(aes(y = predicted), shape = 1) +
+  theme_bw()
+
+# Let's crank up the complexity! PLOTTING a multiple linear regression model
+library(tidyr)
+#d2 <- subset(d, select = c(Percentage.parasitemia, Total.White.Cell.Count..x109.L., Red.blood.cell.count..x1012.L, total.number.of.cells, outcome, predicted, residuals))
+# just percentage parasetemia, total number of cells
+d2 <- subset(d, select = c(Percentage.parasitemia, total.number.of.cells, outcome, predicted, residuals))
+d2 %>% 
+  gather(key = "iv", value = "x", -outcome, -predicted, -residuals) %>%  # Get data into shape
+  ggplot(aes(x = x, y = outcome)) +  # Note use of `x` here and next line
+  geom_segment(aes(xend = x, yend = predicted), alpha = .2) +
+  geom_point(aes(color = residuals)) +
+  scale_color_gradient2(low = "blue", mid = "white", high = "red") +
+  guides(color = FALSE) +
+  geom_point(aes(y = predicted), shape = 1) +
+  facet_grid(~ iv, scales = "free_x") +  # Split panels here by `iv`
+  theme_bw()
 
 
+# TO MAKE PLOT INTERACTIVE. PACKAGES NOT COMPATIBLE -- NEEDS FIXING!
+# require(ggiraph)
+# require(ggiraphExtra)
+# require(plyr)
+# ggPredict(fit.nona.total,se=TRUE,interactive=TRUE)
+
+# (2b)
+fit.nona.white <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
+summary(fit.nona.white) # show results: R^2: 0.442
+par(mfrow = c(2, 2))  
+plot(fit.nona.white)  
+
+# (3a)
+fit.nona.red <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Red.blood.cell.count..x1012.L + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
+summary(fit.nona.red) # show results: R^2: 0.4671
+par(mfrow = c(2, 2))  
+plot(fit.nona.red) 
+
+# (3b)
+fit.nona.hemo <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Hemoglobin.concentration..g.dL. + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
+summary(fit.nona.hemo) # show results: R^2: 0.4527
+par(mfrow = c(2, 2))  
+plot(fit.nona.hemo) 
+
+
+# # on original data set, 46 samples
+# # ---------WHAT HAPPENS TO MISSING VALUES HERE? HOW ARE THEY IMPLICITLY IMPUTED??
+# fit <- lm(dat$outcome ~ dat$Percentage.parasitemia + dat$Hemoglobin.concentration..g.dL. + dat$Total.White.Cell.Count..x109.L., data=dat)
+# summary(fit) # show results: R^2: 0.37
+
+######--------------------------------NO LONGER NECESSARY--------------------------------------------------
 # Other useful functions
 coefficients(fit) # model coefficients
 confint(fit, level=0.95) # CIs for model parameters
@@ -120,7 +237,9 @@ fit <- lm(y~x1+x2+x3,data=mydata)
 step <- stepAIC(fit, direction="both")
 step$anova # display results 
 
+######--------------------------------NO LONGER NECESSARY--------------------------------------------------
 
+######--------------------------------NO LONGER NECESSARY--------------------------------------------------
 # Alternatively: perform all-subsets regression using the leaps( ) function 
 # from the leaps package. 
 # In the following code nbest indicates the number of subsets of each 
@@ -159,7 +278,10 @@ boot <- boot.relimp(fit, b = 1000, type = c("lmg",
                     diff = TRUE, rela = TRUE)
 booteval.relimp(boot) # print result
 plot(booteval.relimp(boot,sort=TRUE)) # plot result 
+######--------------------------------NO LONGER NECESSARY--------------------------------------------------
 
+
+######--------------------------------NO LONGER NECESSARY--------------------------------------------------
 #----https://www.statmethods.net/stats/rdiagnostics.html-------
 #-----------REGRESSION DIAGNOSTICS-----------------------------
 
@@ -238,7 +360,9 @@ durbinWatsonTest(fit)
 library(gvlma)
 gvmodel <- gvlma(fit)
 summary(gvmodel) 
+######--------------------------------NO LONGER NECESSARY--------------------------------------------------
 
+######--------------------------------NO LONGER NECESSARY--------------------------------------------------
 #--------------------------------------------------------------
 #--------------------------------------------------------------
 #histogram(dat.nona$outcome ~ dat.nona$Percentage.parasitemia)
@@ -251,12 +375,14 @@ theme_set(theme_bw())
 ggplot(dat, aes(x=Percentage.parasitemia/100, y=outcome)) + 
   geom_bar(stat="identity", width=.01, fill="tomato3") + 
   labs(title="Ordered Bar Chart", 
-       subtitle="Make Vs Avg. Mileage", 
+       subtitle="Percentage parasitemia vs outcome", 
        caption="source: mpg") + 
   theme(axis.text.x = element_text(angle=65, vjust=0.6))
 
 #--------------------------------------------------------------
 #--------------------------------------------------------------
+######--------------------------------NO LONGER NECESSARY--------------------------------------------------
+
 
 # PREPROCESSING
 ##--- TODO: VISUALISE IT NICELY FOR WEBSITE, TO SHOW ON WHICH DATA THE MODEL HAS BEEN TRAINED
@@ -298,8 +424,9 @@ dev.off()
 
 ##--- remove categorical variables
 #dat.nc <- subset(dat, select = -c(Sex, Ethnicity, Sickle.cell.screen))
-dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Red.blood.cell.count..x1012.L, Parasite.clones, outcome))
-
+# SINGULAR MATRIX --> CHOOSE LESS VARIABLES
+#dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, total.number.of.cells, Total.White.Cell.Count..x109.L., Monocyte.count...x109.L., Lymphocyte.count...x109.L., Red.blood.cell.count..x1012.L, Hemoglobin.concentration..g.dL., Parasite.density...µl., Parasite.clones, outcome))
+dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, total.number.of.cells, Monocyte.count...x109.L., Lymphocyte.count...x109.L., outcome))
 
 imputed_dat <- mice(dat.nc, m=5, maxit=50, method='pmm', seed=500)
 
@@ -321,6 +448,8 @@ completeDat
 ##          ie no need to separate or treat categorical variables
 ## - mi
 
+
+######--------------------------------NO LONGER NECESSARY--------------------------------------------------
 #---2. PREDICTIVE / LINEAR REGRESSION MODEL
 # build models on all 5 datasets
 fit <- with(data = dat, exp = lm(outcome ~ Percentage.parasitemia + Total.White.Cell.Count..x109.L. + Red.blood.cell.count..x1012.L))
@@ -361,7 +490,7 @@ summary(fit.pw) # R^2 = 0.158
 
 fit.pcw = lm(outcome ~ Percentage.parasitemia + Parasite.clones + Total.White.Cell.Count..x109.L., data=dat)
 summary(fit.pcw) # R^2 = 0.48
-
+######--------------------------------NO LONGER NECESSARY--------------------------------------------------
 
 # check that the models assumptions are met, 
 # indeed linear models make a few assumptions on the data, 
@@ -391,6 +520,8 @@ plot(fit.pc)
 
 par(mfrow=c(2,2))
 plot(fit.pcw)
+
+######--------------------------------CONTINUE ON FROM HERE--------------------------------------------------
 
 # 3. TRANSFORMING AND REMOVING OUTLIERS FROM THE DATA
 #----Transforming the data (for non-normal or heterogeneous data)

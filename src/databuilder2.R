@@ -152,20 +152,37 @@ corrplot(M, order = "AOE") ### PLOT FOR WEBSITE
 corrplot(M, order = "hclust")
 corrplot(M, order = "FPC")
 corrplot(M, order = "alphabet")
-corrplot(M, order = "hclust", addrect = 2)
+corrplot(M, order = "hclust", addrect = 2) # !!!!!!!!!
 
 corrplot(Mp, order = "AOE") ### PLOT FOR WEBSITE
 corrplot(Mp, order = "hclust")
 corrplot(Mp, order = "FPC")
 corrplot(Mp, order = "alphabet")
-corrplot(Mp, order = "hclust", addrect = 2)
+corrplot(Mp, order = "hclust", addrect = 2) # !!!!
 
 corrplot(Ms, order = "AOE") ### PLOT FOR WEBSITE
 corrplot(Ms, order = "hclust")
 corrplot(Ms, order = "FPC")
 corrplot(Ms, order = "alphabet")
-corrplot(Ms, order = "hclust", addrect = 2)
+corrplot(Ms, order = "hclust", addrect = 2) # !!!
 
+# APPLY LOGIT TRANSFORMATION --- no effect
+library(car)
+#log.dat <- logit(dat.nc.nona[,-1])
+
+#log.outcome <- logit(dat.nc.nona$outcome)
+dat.nc.nona.log <- dat.nc.nona
+dat.nc.nona.log$logit.outcome <- logit(dat.nc.nona$outcome)
+
+X <- cor(dat.nc.nona.log[,-1], method="spearman")
+corrplot(X, order = "AOE") ### PLOT FOR WEBSITE
+corrplot(X, order = "hclust")
+corrplot(X, order = "FPC")
+corrplot(X, order = "alphabet")
+corrplot(X, order = "hclust", addrect = 2) # !!!
+
+
+####-------------------------------------
 # matrix of the p-value of the correlation
 p.mat <- cor.mtest(la)$p
 head(p.mat[, 1:5])

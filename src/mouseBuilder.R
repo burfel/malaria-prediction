@@ -31,4 +31,8 @@ corrplot(MM, order = "alphabet")
 corrplot(MM, order = "hclust", addrect = 2)
 
 fit.mouse <- lm(mouseDat$outcome ~ mouseDat$Parasitemia.., data=mouseDat)
-fit.mouse
+summary(fit.mouse)
+par(mfrow = c(2, 2))  
+plot(fit.mouse)
+
+# MOUSE DATA -- SOME NON-LINEAR CORRELATIONS

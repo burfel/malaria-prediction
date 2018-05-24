@@ -11,14 +11,18 @@ supp <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/data/Supplementary_Data
 # merge data sets (by samples/ subjectID)
 dat <- merge(supp, hg_pf, by.y = "samples", by.x = "Subject.ID")
 
+library(car)
 # add column "outcome" which gives the proportion of pathogen reads
 dat$outcome <- dat$pf_count / (dat$hg_count + dat$pf_count)
+dat$outcome.logit <-  logit(dat$outcome, percents=TRUE)
 
 # add column "total.number.of.cells" 
 dat$total.number.of.cells <- dat$Total.White.Cell.Count..x109.L. + (1000 * dat$Red.blood.cell.count..x1012.L)
 
 # most important non-categorical variables 
-dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Red.blood.cell.count..x1012.L))
+#dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Red.blood.cell.count..x1012.L, outcome))
+dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Percentage.lymphocytes, Percentage.monocytes, outcome))
+dat.nc.logit <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Percentage.lymphocytes, Percentage.monocytes, outcome.logit))
 
 #reg.ctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, allowParallel = TRUE)
 
@@ -26,8 +30,9 @@ dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White
 #tempData <- mice(dat,m=5)
 
 # drop the samples that have blanks
-dat.nona <- na.omit(dat)
+dat.nona <- na.omit(dat) # ONLY 21 OBSERVATIONS ANYMORE
 dat.nc.nona <- na.omit(dat.nc)
+dat.nc.nona.logit <- na.omit(dat.nc.logit)
 
 #set.seed(1895) # to reproduce same result, for every model set new seed, different seed functions?
 #lm.fit <- train(outcome ~ ., data = dat, trControl = reg.ctrl, method = "lm")
@@ -50,7 +55,18 @@ dat.nc.nona <- na.omit(dat.nc)
 # Multiple Linear Regression Example
 # on complete data set (samples with missing values removed), 42 samples
 
-# (1)
+# (1) SIMPLEST MODEL (JUST PARASITEMIA), WITHOUT TRANSFORMATION, ON WHOLE DATASET
+fit.paras <- lm(dat$outcome ~ dat$Percentage.parasitemia, data=dat)
+summary(fit.paras) # # show results: R^2: 0.4078
+summary(fit.paras)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
+# plot the statistics
+par(mfrow = c(2, 2))  
+plot(fit.paras) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
+#par(mfrow = c(1, 1)) 
+hist(fit.paras$res, main="Residuals") # residuals not really Gaussian
+
+
+# (1) SIMPLEST MODEL (JUST PARASITEMIA), WITHOUT TRANSFORMATION, ON COMPLETE SAMPLES
 fit.nona.paras <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, data=dat.nona)
 summary(fit.nona.paras) # # show results: R^2: 0.4078
 summary(fit.nona.paras)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
@@ -59,6 +75,29 @@ par(mfrow = c(2, 2))
 plot(fit.nona.paras) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
 #par(mfrow = c(1, 1)) 
 hist(fit.nona.paras$res,main="Residuals") # residuals not really Gaussian
+
+# (1) SIMPLEST MODEL (JUST PARASITEMIA), WITH TRANSFORMATION, ON WHOLE DATASET
+fit.paras.log <- lm(dat$outcome.logit ~ dat$Percentage.parasitemia, data=dat)
+summary(fit.paras.log) # # show results: R^2: 0.4078
+summary(fit.paras.log)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
+# plot the statistics
+par(mfrow = c(2, 2))  
+plot(fit.paras.log) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
+#par(mfrow = c(1, 1)) 
+hist(fit.paras.log$res,main="Residuals") # residuals not really Gaussian
+
+# (1) SIMPLEST MODEL (JUST PARASITEMIA), WITH TRANSFORMATION, ON COMPLETE SAMPLES
+fit.nona.paras.log <- lm(dat.nona$outcome.logit ~ dat.nona$Percentage.parasitemia, data=dat.nona)
+summary(fit.nona.paras.log) # # show results: R^2: 0.4078
+summary(fit.nona.paras.log)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
+# plot the statistics
+par(mfrow = c(2, 2))  
+plot(fit.nona.paras.log) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
+#par(mfrow = c(1, 1)) 
+hist(fit.nona.paras.log$res,main="Residuals") # residuals not really Gaussian
+
+
+
 
 # (2)
 fit.nona.total <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$total.number.of.cells, data=dat.nona)

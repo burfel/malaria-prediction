@@ -169,12 +169,19 @@ corrplot(Ms, order = "hclust", addrect = 2) # !!!
 # APPLY LOGIT TRANSFORMATION --- no effect
 library(car)
 #log.dat <- logit(dat.nc.nona[,-1])
+#dat.nc.nona.log <- dat.nc.nona
 
-#log.outcome <- logit(dat.nc.nona$outcome)
-dat.nc.nona.log <- dat.nc.nona
-dat.nc.nona.log$logit.outcome <- logit(dat.nc.nona$outcome)
+dat.nona.log <- dat.nona
+logit.outcome <- logit(dat.nc.nona$outcome, percents=TRUE)
+logit.outcome
+#as.vector(logit.outcome)
+dat.nc.nona["outcome.logit"] <- logit.outcome
+dat.nona.log["outcome.logit"] <- logit.outcome
 
-X <- cor(dat.nc.nona.log[,-1], method="spearman")
+ncol(dat.nona.log)
+nrow(dat.nona.log)
+
+X <- cor(dat.nc.nona[,-1], method="spearman")
 corrplot(X, order = "AOE") ### PLOT FOR WEBSITE
 corrplot(X, order = "hclust")
 corrplot(X, order = "FPC")

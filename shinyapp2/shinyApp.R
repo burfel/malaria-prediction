@@ -13,8 +13,9 @@ library(ggExtra)
 
 #fields <- c("name","age","height","weight")
 
-### Title:
+#if (interactive()) {
 
+### Title:
 header <- dashboardHeader(title = "Mapped reads prediction")
 
 ### SideBar:
@@ -63,17 +64,17 @@ body <- dashboardBody(
                         
                         helpText("Choose the parameters: You can choose between parasetemia percentage and parasitemia density."),
                         
-                        # Input: Select the random distribution type ----
+                        # Input: Select the parasitemia type ----
                         # radioButtons("ptype", "Which data do you have?",
-                        #              c("Percentage of parasetemia" = "ppercentage",
+                        #              c("Percentage of parasitemia" = "ppercentage",
                         #                "Parasitemia density (/µl)" = "pdensity"
                         #                )),
 
                         selectInput("ptype",
                                     label = "Which data do you have?",
-                                    choices = c("Percentage of parasetemia", "Parasitemia density (/µl)"),
-                                    selected = "Percentage of parasetemia"),
-                        
+                                    choices = c("Percentage of parasitemia" = "ppercentage", "Parasitemia density (/µl)" = "pdensity"),
+                                    #selected = "Percentage of parasitemia"
+                                    ),
                        
                         # checkboxInput("ptype1", "Percentage of parasetemia"),
                         # conditionalPanel(
@@ -82,10 +83,10 @@ body <- dashboardBody(
                         #               list("lm", "glm", "gam", "loess", "rlm"))
                         # ),
                         
-                        br(),
-                        #checkboxInput("ptype1", "Percentage of parasetemia"),
+                        #br(),
+                        #checkboxInput("ptype", "Percentage of parasetemia"),
                         conditionalPanel(
-                          condition = "input.ptype == ppercentage",
+                          condition = "input.ptype == 'ppercentage'",
                           sliderInput(inputId = "percentage-parasitemia",
                                       label = "Percentage of parasitemia",
                                       value = 8, min = 0, max = 100, step =1.)
@@ -93,7 +94,7 @@ body <- dashboardBody(
                         ),
                        
                         conditionalPanel(
-                          condition = "input.ptype == pdensity",
+                          condition = "input.ptype == 'pdensity'",
                           sliderInput(inputId = "parasetemia-density",
                                     label = "Parasitemia density (/ql)",
                                     value = 800000, min = 0, max = 1500000, step = 1000)
@@ -120,7 +121,9 @@ body <- dashboardBody(
                         actionButton("go-simple", "Compute"),
                         
                         br(),
-                        textOutput("text_calc")
+                        renderText({ "text_calc"})
+                      
+                        #textOutput("text_calc") # prevents plot from being plotted for some reason
                   
                         # sliderInput(inputId = "white-blood",
                         #       label = "Total number of white blood cells (x 10^9/ L)",
@@ -134,7 +137,7 @@ body <- dashboardBody(
                   
                       tabPanel("Complex model",
                                
-                        helpText("Choose the parameters. You can choose between parasetemia percentage and parasitemia density and between total number of white blood cells and lymphoctye and monocyte percentage."),
+                        helpText("Choose the parameters: You can choose between parasetemia percentage and parasitemia density and between total number of white blood cells and lymphoctye and monocyte percentage."),
                         
                         # ###
                         # selectInput("dataset", "Dataset", c("diamonds", "rock", "pressure", "cars")),
@@ -150,16 +153,21 @@ body <- dashboardBody(
                         #                label = "Parasitemia density (/ql)",
                         #                value = 800000, min = 0, max = 1500000, step = 1000),  
                         
-                        selectInput("ptype",
-                                    label = "Which data do you have?",
-                                    choices = c("Percentage of parasetemia", "Parasitemia density (/µl)"),
-                                    selected = "Percentage of parasetemia"),
+                        # selectInput("ptype",
+                        #             label = "Which data do you have?",
+                        #             choices = c("Percentage of parasetemia", "Parasitemia density (/µl)"),
+                        #             selected = "Percentage of parasetemia"),
+                        
+                        radioButtons("ptype", "Which data do you have?",
+                                     c("Percentage of parasitemia" = "ppercentage",
+                                       "Parasitemia density (/µl)" = "pdensity"
+                                     )),
                         
                         
                         br(),
                         #checkboxInput("ptype1", "Percentage of parasetemia"),
                         conditionalPanel(
-                          condition = "input.ptype == ppercentage",
+                          condition = "input.ptype == 'ppercentage'",
                           sliderInput(inputId = "percentage-parasitemia",
                                       label = "Percentage of parasitemia",
                                       value = 8, min = 0, max = 100, step =1.)
@@ -167,7 +175,7 @@ body <- dashboardBody(
                         ),
                         
                         conditionalPanel(
-                          condition = "input.ptype == pdensity",
+                          condition = "input.ptype == 'pdensity'",
                           sliderInput(inputId = "parasetemia-density",
                                       label = "Parasitemia density (/ql)",
                                       value = 800000, min = 0, max = 1500000, step = 1000)
@@ -179,7 +187,7 @@ body <- dashboardBody(
                                     selected = "Total number of white blood cells (* 10^9/ L)"),
                         
                         conditionalPanel(
-                          condition = "input.wtype == white-blood",
+                          condition = "input.wtype == 'white-blood'",
                           sliderInput(inputId = "white-blood",
                                       label = "Total number of white blood cells (* 10^9/ L)",
                                       value = 9, min = 0, max = 20, step = .25)
@@ -220,7 +228,7 @@ body <- dashboardBody(
                           tabPanel("Summary", 
                                    verbatimTextOutput("summary")),
                           tabPanel("Table", 
-                                   tableOutput("table"))
+                                   textOutput("table"))
            
               ) # close tabsetpanel           
             ) # close mainpanel
@@ -267,6 +275,35 @@ body <- dashboardBody(
               box(width = 10,status = "success",
                   shiny::includeMarkdown("md/discussion.md"))
             )
+            
+            # ##########
+            # 
+            # titlePanel("Dynamically generated user interface components"),
+            # fluidRow(
+            #   
+            #   column(3, wellPanel(
+            #     selectInput("input_type", "Input type",
+            #                 c("slider", "text", "numeric", "checkbox",
+            #                   "checkboxGroup", "radioButtons", "selectInput",
+            #                   "selectInput (multi)", "date", "daterange"
+            #                 )
+            #     )
+            #   )),
+            #   
+            #   column(3, wellPanel(
+            #     # This outputs the dynamic UI component
+            #     uiOutput("ui")
+            #   )),
+            #   
+            #   column(3,
+            #          tags$p("Input type:"),
+            #          verbatimTextOutput("input_type_text"),
+            #          tags$p("Dynamic input value:"),
+            #          verbatimTextOutput("dynamic_value")
+            #   )
+            # )
+            # 
+            # #########
     ),
     
     # TAB
@@ -331,6 +368,19 @@ server <- function(input, output, session) {
 
     })
   
+  # output$plot <- renderPlot({
+  #   if (input$plotType == "scatter") {
+  #     plot(x, y)
+  #   } else {
+  #     breaks <- input$breaks
+  #     if (breaks == "custom") {
+  #       breaks <- input$breakCount
+  #     }
+  #     
+  #     hist(x, breaks = breaks)
+  #   }
+  # })
+  
   # MODEL O
   formula0 <- reactive({
     I <- 0.151312
@@ -339,19 +389,76 @@ server <- function(input, output, session) {
     I + 0.010838 * P
   })
   
-  output$text_calc <- renderText({
+  output$text_calc <- reactiveUI(renderText({
     paste("Prediction:")
     paste("Percentage of reads that will map to pathogen: ", formula0())
     paste("Percentage of reads that will map to host: ", 1 - formula0())
 
   })
+  )
   
   # Generate a summary of the dataset ----
-  output$summary <- renderPrint({
+  output$summary <- reactiveUI(renderPrint({
     # dataset <- datasetInput()
     # summary(dataset)
     summary(fit.paras)
   })
+  )
+  
+  ######
+  
+  
+  # output$ui <- renderUI({
+  #   if (is.null(input$input_type))
+  #     return()
+  #   
+  #   # Depending on input$input_type, we'll generate a different
+  #   # UI component and send it to the client.
+  #   switch(input$input_type,
+  #          "slider" = sliderInput("dynamic", "Dynamic",
+  #                                 min = 1, max = 20, value = 10),
+  #          "text" = textInput("dynamic", "Dynamic",
+  #                             value = "starting value"),
+  #          "numeric" =  numericInput("dynamic", "Dynamic",
+  #                                    value = 12),
+  #          "checkbox" = checkboxInput("dynamic", "Dynamic",
+  #                                     value = TRUE),
+  #          "checkboxGroup" = checkboxGroupInput("dynamic", "Dynamic",
+  #                                               choices = c("Option 1" = "option1",
+  #                                                           "Option 2" = "option2"),
+  #                                               selected = "option2"
+  #          ),
+  #          "radioButtons" = radioButtons("dynamic", "Dynamic",
+  #                                        choices = c("Option 1" = "option1",
+  #                                                    "Option 2" = "option2"),
+  #                                        selected = "option2"
+  #          ),
+  #          "selectInput" = selectInput("dynamic", "Dynamic",
+  #                                      choices = c("Option 1" = "option1",
+  #                                                  "Option 2" = "option2"),
+  #                                      selected = "option2"
+  #          ),
+  #          "selectInput (multi)" = selectInput("dynamic", "Dynamic",
+  #                                              choices = c("Option 1" = "option1",
+  #                                                          "Option 2" = "option2"),
+  #                                              selected = c("option1", "option2"),
+  #                                              multiple = TRUE
+  #          ),
+  #          "date" = dateInput("dynamic", "Dynamic"),
+  #          "daterange" = dateRangeInput("dynamic", "Dynamic")
+  #   )
+  # })
+  # 
+  # output$input_type_text <- renderText({
+  #   input$input_type
+  # })
+  # 
+  # output$dynamic_value <- renderPrint({
+  #   str(input$dynamic)
+  # })
+  # 
+  # 
+  #####
   
   # output$table <- renderTable({
   #   # head(datasetInput(), n = input$obs)
@@ -410,7 +517,8 @@ server <- function(input, output, session) {
   
 }
     
-
-
 shinyApp(ui = ui, server = server)
+
+
+#}
 

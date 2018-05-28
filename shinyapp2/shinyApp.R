@@ -54,40 +54,73 @@ body <- dashboardBody(
                   solidHeader = TRUE, status = "primary",
                   
                   sidebarPanel(
-                    helpText("You can choose between the simple and a more complex model."),
+                    helpText("Choose between the simple and a more complex model."),
                   
                     
                     tabsetPanel(id="tabset",
                           
                       tabPanel("Simple model",
                         
-                        helpText("Choose the parameters. You can choose between parasetemia percentage and parasitemia density."),
+                        helpText("Choose the parameters: You can choose between parasetemia percentage and parasitemia density."),
                         
                         # Input: Select the random distribution type ----
-                        # radioButtons("ptype_visible", "Which data do you have?",
+                        # radioButtons("ptype", "Which data do you have?",
                         #              c("Percentage of parasetemia" = "ppercentage",
                         #                "Parasitemia density (/µl)" = "pdensity"
                         #                )),
-                        # 
-                        
-                        selectInput("ptype", 
+
+                        selectInput("ptype",
                                     label = "Which data do you have?",
-                                    choices = c("Perentage of parasetemia", "Parasitemia density (/µl)"),
+                                    choices = c("Percentage of parasetemia", "Parasitemia density (/µl)"),
                                     selected = "Percentage of parasetemia"),
                         
-                        # br() element to introduce extra vertical spacing ----
+                       
+                        # checkboxInput("ptype1", "Percentage of parasetemia"),
+                        # conditionalPanel(
+                        #   condition = "input.ptype1 == true",
+                        #   selectInput("smoothMethod", "Method",
+                        #               list("lm", "glm", "gam", "loess", "rlm"))
+                        # ),
+                        
                         br(),
+                        #checkboxInput("ptype1", "Percentage of parasetemia"),
+                        conditionalPanel(
+                          condition = "input.ptype == ppercentage",
+                          sliderInput(inputId = "percentage-parasitemia",
+                                      label = "Percentage of parasitemia",
+                                      value = 8, min = 0, max = 100, step =1.)
+
+                        ),
+                       
+                        conditionalPanel(
+                          condition = "input.ptype == pdensity",
+                          sliderInput(inputId = "parasetemia-density",
+                                    label = "Parasitemia density (/ql)",
+                                    value = 800000, min = 0, max = 1500000, step = 1000)
+                        ),
+                        
+                        # #########
+                        # selectInput("dataset", "Dataset", c("diamonds", "rock", "pressure", "cars")),
+                        # conditionalPanel( condition = "output.nrows",
+                        #                   checkboxInput("headonly", "Only use first 1000 rows")),
+                        # ########
+                        
+                        # br() element to introduce extra vertical spacing ----
+                        # br(),
                      
                         # parasetemia input
-                        sliderInput(inputId = "percentage-parasitemia",
-                                label = "Percentage of parasitemia",
-                                value = 8, min = 0, max = 100, step =1.),
+                        # sliderInput(inputId = "percentage-parasitemia",
+                        #         label = "Percentage of parasitemia",
+                        #         value = 8, min = 0, max = 100, step =1.),
                         # OR
-                        sliderInput(inputId = "parasetemia-density",
-                                label = "Parasitemia density (/ql)",
-                                value = 800000, min = 0, max = 1500000, step = 1000), 
+                        # sliderInput(inputId = "parasetemia-density",
+                        #         label = "Parasitemia density (/ql)",
+                        #         value = 800000, min = 0, max = 1500000, step = 1000), 
                         
-                        actionButton("go-simple", "Plot")
+                        actionButton("go-simple", "Compute"),
+                        
+                        br(),
+                        textOutput("text_calc")
                   
                         # sliderInput(inputId = "white-blood",
                         #       label = "Total number of white blood cells (x 10^9/ L)",
@@ -102,28 +135,69 @@ body <- dashboardBody(
                       tabPanel("Complex model",
                                
                         helpText("Choose the parameters. You can choose between parasetemia percentage and parasitemia density and between total number of white blood cells and lymphoctye and monocyte percentage."),
-                               
+                        
+                        # ###
+                        # selectInput("dataset", "Dataset", c("diamonds", "rock", "pressure", "cars")),
+                        # conditionalPanel( condition = "output.nrows",
+                        #                   checkboxInput("headonly", "Only use first 1000 rows")),
+                        # ####      
                         # parasetemia input
-                        sliderInput(inputId = "percentage-parasitemia",
-                                       label = "Percentage of parasitemia",
-                                       value = 8, min = 0, max = 100, step =1.),
-                        # OR
-                        sliderInput(inputId = "parasetemia-density",
-                                       label = "Parasitemia density (/ql)",
-                                       value = 800000, min = 0, max = 1500000, step = 1000),  
+                        # sliderInput(inputId = "percentage-parasitemia",
+                        #                label = "Percentage of parasitemia",
+                        #                value = 8, min = 0, max = 100, step =1.),
+                        # # OR
+                        # sliderInput(inputId = "parasetemia-density",
+                        #                label = "Parasitemia density (/ql)",
+                        #                value = 800000, min = 0, max = 1500000, step = 1000),  
+                        
+                        selectInput("ptype",
+                                    label = "Which data do you have?",
+                                    choices = c("Percentage of parasetemia", "Parasitemia density (/µl)"),
+                                    selected = "Percentage of parasetemia"),
+                        
+                        
+                        br(),
+                        #checkboxInput("ptype1", "Percentage of parasetemia"),
+                        conditionalPanel(
+                          condition = "input.ptype == ppercentage",
+                          sliderInput(inputId = "percentage-parasitemia",
+                                      label = "Percentage of parasitemia",
+                                      value = 8, min = 0, max = 100, step =1.)
+                          
+                        ),
+                        
+                        conditionalPanel(
+                          condition = "input.ptype == pdensity",
+                          sliderInput(inputId = "parasetemia-density",
+                                      label = "Parasitemia density (/ql)",
+                                      value = 800000, min = 0, max = 1500000, step = 1000)
+                        ),
                            
-                        sliderInput(inputId = "white-blood",
-                                       label = "Total number of white blood cells (x 10^9/ L)",
-                                       value = 9, min = 0, max = 20, step = .25),
+                        selectInput("wtype",
+                                    label = "Which data do you have?",
+                                    choices = c("Total number of white blood cells (* 10^9/ L)", "Percentage of lymphoctyes and monocytes"),
+                                    selected = "Total number of white blood cells (* 10^9/ L)"),
+                        
+                        conditionalPanel(
+                          condition = "input.wtype == white-blood",
+                          sliderInput(inputId = "white-blood",
+                                      label = "Total number of white blood cells (* 10^9/ L)",
+                                      value = 9, min = 0, max = 20, step = .25)
+                        ),
                         # OR
-                        sliderInput(inputId = "lymphocyte-percentage",
+                        conditionalPanel(
+                          condition = "input.wtype == lympho",
+                          sliderInput(inputId = "lymphocyte-percentage",
                                     label = "Percentage of lymphoctyes (in white blood cells)",
                                     value = 30, min = 0, max = 100, step = .5),
-                        sliderInput(inputId = "monocyte-percentage",
+                          sliderInput(inputId = "monocyte-percentage",
                                     label = "Percentage of monocytes (in white blood cells)",
-                                    value = 10, min = 0, max = 100, step = .5),
+                                    value = 10, min = 0, max = 100, step = .5)
+                        ),
                   
-                        actionButton("go-complex", "Plot")
+                        actionButton("go-complex", "Compute"),
+                        br(),
+                        textOutput("text_calc")
                 ) # close tabpanel
               ) # close tabsetpanel
               
@@ -141,9 +215,13 @@ body <- dashboardBody(
             mainPanel(
               # Output: Tabset w/ plot, summary, and table ----
               tabsetPanel(type = "tabs",
-                          tabPanel("Plot", plotOutput(outputId = "distPlot")),
-                          tabPanel("Summary", verbatimTextOutput("summary")),
-                          tabPanel("Table", tableOutput("table"))
+                          tabPanel("Plot", 
+                                   plotOutput(outputId = "distPlot")),
+                          tabPanel("Summary", 
+                                   verbatimTextOutput("summary")),
+                          tabPanel("Table", 
+                                   tableOutput("table"))
+           
               ) # close tabsetpanel           
             ) # close mainpanel
             
@@ -164,6 +242,7 @@ body <- dashboardBody(
               box(width = 10,status = "success",
                   shiny::includeMarkdown("md/abstract.md"))
             )
+            #source('abstract-app.R', local = TRUE)
     ),
     
     # TAB 
@@ -251,6 +330,46 @@ server <- function(input, output, session) {
       
 
     })
+  
+  # MODEL O
+  formula0 <- reactive({
+    I <- 0.151312
+    P <- input$percentage-parasitemia
+    #W <- input$white-blood
+    I + 0.010838 * P
+  })
+  
+  output$text_calc <- renderText({
+    paste("Prediction:")
+    paste("Percentage of reads that will map to pathogen: ", formula0())
+    paste("Percentage of reads that will map to host: ", 1 - formula0())
+
+  })
+  
+  # Generate a summary of the dataset ----
+  output$summary <- renderPrint({
+    # dataset <- datasetInput()
+    # summary(dataset)
+    summary(fit.paras)
+  })
+  
+  # output$table <- renderTable({
+  #   # head(datasetInput(), n = input$obs)
+  # })
+  
+  
+  # datasetInput <- reactive({
+  #   switch(input$dataset,
+  #          "rock" = rock,
+  #          "pressure" = pressure,
+  #          "cars" = cars)
+  # })
+  # 
+  # output$nrows <- reactive({
+  #   nrow(datasetInput())
+  # })
+  # 
+  # outputOptions(output, "nrows", suspendWhenHidden = FALSE) 
   
   # #create a data frame called responses
   # saveData <- function(data) {

@@ -4,7 +4,7 @@ library(shinydashboard)
 library(grid)
 library(markdown)
 library(ggExtra)
-
+library(shinyBS)
 
 ####
 
@@ -16,30 +16,56 @@ library(ggExtra)
 #if (interactive()) {
 
 ### Title:
-header <- dashboardHeader(title = "Mapped reads prediction")
+header <- dashboardHeader(title = "Read map prediction", titleWidth = 250)
+
+menue <- dropdownMenu(type = "messages",
+             messageItem(
+               from = "Sales Dept",
+               message = "Sales are steady this month."
+             ),
+             messageItem(
+               from = "New User",
+               message = "How do I register?",
+               icon = icon("question"),
+               time = "13:45"
+             ),
+             messageItem(
+               from = "Support",
+               message = "The new server is ready.",
+               icon = icon("life-ring"),
+               time = "2014-12-01"
+             )
+)
 
 ### SideBar:
 sidebar <- dashboardSidebar(
+  width = 250,
   sidebarMenu(
-    # ##### ADD LAY-SUMMARY
+    sidebarSearchForm(textId = "searchText", buttonId = "searchButton",
+                      label = "Search..."),
+    #menuItem("Rmd", tabName = "Rmd", icon = icon("fa fa-circle"), badgeLabel = "for user", badgeColor = "green"),
+    menuItem("Lay-summary", tabName = "lay-summary", icon = icon("fa fa-circle"), badgeLabel = "for user", badgeColor = "green"),
     menuItem("Abstract", tabName = "abstract", icon = icon("fa fa-circle")),
     menuItem("Introduction", tabName = "introduction", icon = icon("fa fa-circle")),
     menuItem("Methods", tabName = "methods", icon = icon("fa fa-circle")),
-    menuItem("Results", tabName = "results", icon = icon("fa fa-circle")),
+    menuItem("Results", tabName = "results", icon = icon("fa fa-chart-bar"), badgeLabel = "for user", badgeColor = "green"),
     menuItem("Discussion", tabName = "discussion", icon = icon("fa fa-circle")),
     menuItem("Conclusion", tabName = "conclusion", icon = icon("fa fa-circle")),
-    #menuItem("Introduction", tabName = "introduction", icon = icon("fa fa-circle")),
-    #menuItem("Graphs", tabName = "graphs", icon = icon("fa fa-circle")),
     menuItem("Raw Data", tabName = "data", icon = icon("fa fa-circle")),
     menuItem("References", tabName = "references", icon = icon("fa fa-circle")),
     menuItem("Glossary", tabName = "glossary", icon = icon("fa fa-circle")),
-    menuItem("About", tabName = "about", icon = icon("fa fa-info-circle"))
+    menuItem("About", tabName = "about", icon = icon("file-code-o")#, href = "https://github.com/burfel/malaria-prediction"
+             )
   )
 )
 
 
 ### Dashboard:
 body <- dashboardBody(
+  ## From ui.R: Adds a tooltip to element with inputId = "someInput" 
+  ## with text, "This is an input.", that appears to the left on hover.
+  bsTooltip(id = "go-simple", title = "Compute a prediction!", 
+            placement = "left", trigger = "hover"),
   
   ### Tabintes:
   
@@ -49,6 +75,7 @@ body <- dashboardBody(
     tabItem(tabName = "results",
             
             fluidRow(
+              
               
               # Sample size slider
               box(width = 60, title = "Parameters",
@@ -60,21 +87,22 @@ body <- dashboardBody(
                     
                     tabsetPanel(id="tabset",
                           
+                      # SIMPLE MODEL          
                       tabPanel("Simple model",
                         
-                        helpText("Choose the parameters: You can choose between parasetemia percentage and parasitemia density."),
+                        helpText("Choose the parameters: You can choose between parasitemia percentage and parasitemia density."),
                         
                         # Input: Select the parasitemia type ----
-                        # radioButtons("ptype", "Which data do you have?",
-                        #              c("Percentage of parasitemia" = "ppercentage",
-                        #                "Parasitemia density (/µl)" = "pdensity"
-                        #                )),
+                        radioButtons("ptype", "Which data do you have?",
+                                     c("Percentage of parasitemia" = "ppercentage",
+                                       "Parasitemia density (/µl)" = "pdensity"
+                                       )),
 
-                        selectInput("ptype",
-                                    label = "Which data do you have?",
-                                    choices = c("Percentage of parasitemia" = "ppercentage", "Parasitemia density (/µl)" = "pdensity"),
-                                    #selected = "Percentage of parasitemia"
-                                    ),
+                        # selectInput("ptype",
+                        #             label = "Which data do you have?",
+                        #             choices = c("Percentage of parasitemia" = "ppercentage", "Parasitemia density (/µl)" = "pdensity")
+                        #             #selected = "Percentage of parasitemia"
+                        #             ),
                        
                         # checkboxInput("ptype1", "Percentage of parasetemia"),
                         # conditionalPanel(
@@ -135,6 +163,7 @@ body <- dashboardBody(
                   
                       ), # close tabpanel
                   
+                      # COMPLEX MODEL
                       tabPanel("Complex model",
                                
                         helpText("Choose the parameters: You can choose between parasetemia percentage and parasitemia density and between total number of white blood cells and lymphoctye and monocyte percentage."),
@@ -181,10 +210,15 @@ body <- dashboardBody(
                                       value = 800000, min = 0, max = 1500000, step = 1000)
                         ),
                            
-                        selectInput("wtype",
-                                    label = "Which data do you have?",
-                                    choices = c("Total number of white blood cells (* 10^9/ L)", "Percentage of lymphoctyes and monocytes"),
-                                    selected = "Total number of white blood cells (* 10^9/ L)"),
+                        # selectInput("wtype",
+                        #             label = "Which data do you have?",
+                        #             choices = c("Total number of white blood cells (* 10^9/ L)", "Percentage of lymphoctyes and monocytes"),
+                        #             selected = "Total number of white blood cells (* 10^9/ L)"),
+                        
+                        radioButtons("wtype", "Which data do you have?",
+                                     c("Total number of white blood cells (* 10^9/ L)" = "white-blood",
+                                       "Percentage of lymphoctyes and monocytes" = "lympho"
+                                     )),
                         
                         conditionalPanel(
                           condition = "input.wtype == 'white-blood'",
@@ -207,7 +241,11 @@ body <- dashboardBody(
                         br(),
                         textOutput("text_calc")
                 ) # close tabpanel
-              ) # close tabsetpanel
+                
+              ), # close tabsetpanel
+              
+              br(),
+              bookmarkButton()
               
               # mainPanel(
               #   
@@ -246,9 +284,15 @@ body <- dashboardBody(
     
     # TAB 
     tabItem(tabName = "abstract",
+            #h2("Abstract"),
             fluidPage(
-              box(width = 10,status = "success",
+              box(width = 20,status = "success",
                   shiny::includeMarkdown("md/abstract.md"))
+              # actionButton(inputId='read-more1', label="Learn More", 
+              #              icon = icon("th"), 
+              #              onclick ="window.open('http://google.com', '_blank')")
+              
+              # uiOutput("doc_to_display")
             )
             #source('abstract-app.R', local = TRUE)
     ),
@@ -256,7 +300,7 @@ body <- dashboardBody(
     # TAB 
     tabItem(tabName = "introduction",
             fluidPage(
-              box(width = 10,status = "success",
+              box(width = 20,status = "success",
                   shiny::includeMarkdown("md/introduction.md"))
             )
     ),
@@ -264,7 +308,7 @@ body <- dashboardBody(
     # TAB 
     tabItem(tabName = "methods",
             fluidPage(
-              box(width = 10,status = "success",
+              box(width = 20,status = "success",
                   shiny::includeMarkdown("md/methods.md"))
             )
     ),
@@ -272,7 +316,7 @@ body <- dashboardBody(
     # TAB 
     tabItem(tabName = "discussion",
             fluidPage(
-              box(width = 10,status = "success",
+              box(width = 20,status = "success",
                   shiny::includeMarkdown("md/discussion.md"))
             )
             
@@ -346,14 +390,23 @@ body <- dashboardBody(
             )
     )
   ) # close tabitems
-) # close body
+)# close body
 
 
 
 
 ui <- dashboardPage(header, sidebar, body)
 
+
+################
+
 server <- function(input, output, session) {
+  
+  # ####
+  # output$doc_to_display <- renderUI({
+  #   includeMarkdown("md/abstract.md")
+  # })
+  # ###
 
   output$distPlot <- renderPlot({
     
@@ -389,22 +442,34 @@ server <- function(input, output, session) {
     I + 0.010838 * P
   })
   
-  output$text_calc <- reactiveUI(renderText({
+  # MODEL 1
+  # formula1
+  
+  output$text_calc <- renderUI({
     paste("Prediction:")
     paste("Percentage of reads that will map to pathogen: ", formula0())
     paste("Percentage of reads that will map to host: ", 1 - formula0())
 
   })
-  )
+  
+  output$dynamic_value <- renderPrint({
+    str(input$dynamic)
+  }) 
   
   # Generate a summary of the dataset ----
-  output$summary <- reactiveUI(renderPrint({
+  output$summary <- renderUI({
     # dataset <- datasetInput()
     # summary(dataset)
     summary(fit.paras)
   })
-  )
   
+  ###
+  
+  ## From server.R: Add the same tooltip as above
+  addTooltip(session, id = "go-simple", title = "Click here to compute a prediction!",
+             placement = "left", trigger = "hover")
+  
+  ###
   ######
   
   
@@ -517,6 +582,8 @@ server <- function(input, output, session) {
   
 }
     
+enableBookmarking(store = "url")
+
 shinyApp(ui = ui, server = server)
 
 

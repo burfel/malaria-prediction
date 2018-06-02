@@ -92,6 +92,11 @@ plot(fit.nona.paras) # diagnostic plots: residuals do not have non-linear patter
 hist(fit.nona.paras$res,main="Residuals") # residuals not really Gaussian
 # MODEL: 0.090267 + 0.013339*dat.nona$Percentage.parasitemia
 ggplotRegression(fit.nona.paras)
+# coef(fit.nona.paras)
+# vcov(fit.nona.paras)
+# predict(fit.nona.paras)
+# fitted(fit.nona.paras)
+# residuals(fit.nona.paras)
 
 
 # # (1) SIMPLEST MODEL (JUST PARASITEMIA), WITHOUT TRANSFORMATION, ON WHOLE DATASET
@@ -181,6 +186,9 @@ par(mfrow = c(1, 1))  # Return plotting panel to 1 section
 ggplotRegression(fit.nona.total) #---NEED 3-DIM PLOT
 #ggplotRegression2(fit.nona.total) ## NEEDS FIXING!!!!!!
 
+# likelihood ratio test of nested models
+#lrtest(fit.nona.paras, fit.nona.total)
+
 # # (2) MORE COMPLEX MODEL, WITH LOGIT TRANSFORMATION --- NOT ANY GOOD
 # fit.nona.total.logit <- lm(dat.nona$outcome.logit ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
 # summary(fit.nona.total.logit) # show results: R^2: 0.33, F-stats: 5.976, p-value: 0.01022
@@ -257,6 +265,67 @@ ggplotRegression(fit.nona.N)
 #plot(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, data = dat.nona)
 #abline(fit.nona.total)
 
+# https://stats.stackexchange.com/questions/38201/problems-plotting-glm-data-of-binomial-proportional-data?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+# GLM
+GM1<-glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=binomial (logit), data=dat.nona)
+# plot(BPT,p1,col="black",pch=1,main="Relationship a",xlab="Browsing pressure", ylab="Moose Damage Survey")
+# range(log(density))
+# #[1] 0.000000 6.095825
+# xv<-seq(0,6,0.1)
+# range(xv)
+# #[1] 0 6
+# lines(BPT,predict(GM1,type="response"))
+# xv<-seq(0,0.7,length.out = length(BPT))
+# lines(xv,predict(GM1, list(BPT = xv), type="response"))
+#predict(GM1,list(density=exp(xv)),type="response")
+
+
+# ------ BETA FUNCTIONS
+# Zeileis, Kleiber, and Jackman (2018): generalized count data regression
+# model shares some properties with generalized linear models (GLMs, McCullagh and Nelder 1989) like linear predictor, link function, dispersion parameter, 
+# but it is not a special case of this framework. 
+
+library(betareg)
+
+set.seed(123)
+
+beta <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
+beta_log <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona, link = "log")
+#beta_logit <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona, link = "logit")
+beta_loglog <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona, link = "loglog")
+summary(beta)
+#summary(beta_log)
+summary(beta_logit)
+summary(beta_loglog) # improves pseudo R^2 of the model
+#summary(beta_loglog)$pseudo.r.squared
+# CONCLUSION: THERE ARE A FEW OBSERVATIONS ABOVE THE DIAGONAL WHERE THE LOG-LOG LINK FITS BETTER THAN THE LOGIT LINK..
+# WHEREAS THERE ARE FEWER SUCH OBSERVATIONS BELOW THE DIAGONAL.
+
+# NOT USEFUL, DOES NOT REDUCE NUMBER OF ITERATIONS
+#beta_loglog2 <- update(beta_loglog, link.phi = "log")
+#summary(beta_loglog2)
+#summary(beta_loglog)
+
+# NOT USEFUL
+#plot(beta, type="pearson")
+#plot(beta, which = 5, type = "deviance", sub.caption = "")
+
+AIC(beta, beta_logit, beta_loglog)
+BIC(beta, beta_logit, beta_loglog)
+
+# Compare means of a likelihood-ratio test to confirm results
+# ie testing H_0 of equidispersion against a specific alternative of variable dispersion
+lrtest(beta, beta_logit, beta_loglog)
+
+# NOT IMPORTANT
+# # DOES MODEL EXHIBIT HETEROSKEDASTICITY? use studentised Breusch and Pagan (1979) test of Koenker (1981)
+# library(lmtest)
+# bptest(fit.nona.paras)
+# bptest(fit.nona.total)
+
+# https://www.theanalysisfactor.com/r-tutorial-glm1/
+# http://www.simonqueenborough.info/R/stats-basic/glm.html
+# http://www.simonqueenborough.info/R/statistics/glm-binomial 
 
 ##########################################
 
@@ -402,6 +471,9 @@ fit2 <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, data=dat.nona)
 anova(fit1, fit2) 
 
 #---COMPARING MODELS---------------
+#---CROSSVALIDATION---------------
+#cv.lm(df = houseprices, form.lm = formula(sale.price ~ area), m=3, dots = 
+        FALSE, seed=29, plotit=TRUE, printit=TRUE)
 # K-fold cross-validation
 library(DAAG)
 cv.lm(df=dat.nona, fit, m=3) # 3 fold cross-validation ----UNUSED ARGUMENT?
@@ -815,3 +887,4 @@ head(pp <- fitted(test))
 
 #dses <- data.frame(ses = c("low", "middle", "high"), write = mean(completeDat$outcome))
 #predict(test, newdata = dses, "probs")
+

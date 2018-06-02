@@ -166,7 +166,7 @@ body <- dashboardBody(
                       # COMPLEX MODEL
                       tabPanel("Complex model",
                                
-                        helpText("Choose the parameters: You can choose between parasetemia percentage and parasitemia density and between total number of white blood cells and lymphoctye and monocyte percentage."),
+                        helpText("Choose the parameters: You can choose between parasitemia percentage and parasitemia density and between total number of white blood cells and lymphoctye, monocyte or neutrophil percentage."),
                         
                         # ###
                         # selectInput("dataset", "Dataset", c("diamonds", "rock", "pressure", "cars")),
@@ -217,8 +217,11 @@ body <- dashboardBody(
                         
                         radioButtons("wtype", "Which data do you have?",
                                      c("Total number of white blood cells (* 10^9/ L)" = "white-blood",
-                                       "Percentage of lymphoctyes and monocytes" = "lympho"
-                                     )),
+                                       "Percentage of lymphoctyes" = "lympho",
+                                       "Percentage of monocytes" = "mono",
+                                       "Percentage of neutrophils" = "neutro"
+                                     )
+                        ),
                         
                         conditionalPanel(
                           condition = "input.wtype == 'white-blood'",
@@ -228,13 +231,24 @@ body <- dashboardBody(
                         ),
                         # OR
                         conditionalPanel(
-                          condition = "input.wtype == lympho",
+                          condition = "input.wtype == 'lympho'",
                           sliderInput(inputId = "lymphocyte-percentage",
                                     label = "Percentage of lymphoctyes (in white blood cells)",
-                                    value = 30, min = 0, max = 100, step = .5),
+                                    value = 30, min = 0, max = 100, step = .5)
+                        ),
+                        
+                        conditionalPanel(
+                          condition = "input.wtype == 'mono'",
                           sliderInput(inputId = "monocyte-percentage",
-                                    label = "Percentage of monocytes (in white blood cells)",
-                                    value = 10, min = 0, max = 100, step = .5)
+                                      label = "Percentage of monocytes (in white blood cells)",
+                                      value = 10, min = 0, max = 100, step = .5)
+                        ),
+                        
+                        conditionalPanel(
+                          condition = "input.wtype == 'neutro'",
+                          sliderInput(inputId = "neutrophil-percentage",
+                                      label = "Percentage of neutrophils (in white blood cells)",
+                                      value = 60, min = 0, max = 100, step = .5)
                         ),
                   
                         actionButton("go-complex", "Compute"),

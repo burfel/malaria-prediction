@@ -311,26 +311,42 @@ summary(model_log) ## ---> LOGIT TRANSFORMATION / LOGIT LINK NOT NECESSARY
 glm_paras2 <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia, family=quasibinomial, data=dat.nona)
 summary(glm_paras2)
 # MODEL: -1.96396 + 0.06550*dat.nona$Percentage.parasitemia
+glm_paras2.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia, family=binomial(link = 'logit'), data=dat.nona)
+summary(glm_paras2.logit)
+#predict(glm_paras2.logit,type='response')
+# MODEL.log: -1.964e+00 + 6.550e-02*dat.nona$Percentage.parasitemia
 
 # (2a) GLM
 glm_total2 <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=quasibinomial, data=dat.nona)
 summary(glm_total2)
 # MODEL: -1.11189 + 0.05324*dat.nona$Percentage.parasitemia + (-0.07415)*dat.nona$Total.White.Cell.Count..x109.L.
+glm_total2.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=binomial(link = 'logit'), data=dat.nona)
+summary(glm_total2.logit)
+# MODEL.log: -1.112e+00 + 5.324e-02*dat.nona$Percentage.parasitemia + (-7.415e-02)*dat.nona$Total.White.Cell.Count..x109.L.
 
 # (2b) GLM -- lympho
 glm_lympho2 <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.lymphocytes, family=quasibinomial, data=dat.nona)
 summary(glm_lympho2)
 # MODEL: -1.77229 + 0.07545*dat.nona$Percentage.parasitemia + (-0.01056)*dat.nona$Percentage.lymphocytes
+glm_lympho2.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.lymphocytes, family=binomial(link = 'logit'), data=dat.nona)
+summary(glm_lympho2.logit)
+# MODEL.log: -1.772e+00 + 7.545e-02*dat.nona$Percentage.parasitemia + (-1.056e-02)*dat.nona$Percentage.lymphocytes
 
 # (2b) GLM -- mono
 glm_mono2 <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.monocytes, family=quasibinomial, data=dat.nona)
 summary(glm_mono2)
 # MODEL: -2.02525 + 0.06461*dat.nona$Percentage.parasitemia + 0.01143*dat.nona$Percentage.monocytes
+glm_mono2.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.monocytes, family=binomial(link = 'logit'), data=dat.nona)
+summary(glm_mono2.logit)
+# MODE.logL: -2.025e+00 + 6.461e-02*dat.nona$Percentage.parasitemia + 1.143e-02*dat.nona$Percentage.monocytes
 
 # (2b) GLM -- neutro
 glm_neutro2 <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils, family=quasibinomial, data=dat.nona)
 summary(glm_neutro2)
-# MODEL: -2.581276 + 0.073414 + 0.008204
+# MODEL: -2.581276 + 0.073414*dat.nona$Percentage.parasitemia + 0.008204*dat.nona$Percentage.neutrophils
+glm_neutro2.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils, family=binomial(link = 'logit'), data=dat.nona)
+summary(glm_neutro2.logit)
+# MODEL.log: -2.581e+00 + 7.341e-02*dat.nona$Percentage.parasitemia + 8.204e-03*dat.nona$Percentage.neutrophils
 
 # We now can compare the two models as before using ANOVA. In the case of binary data, we need to do a Chi-squared test.
 anova(glm_paras, glm_total, test = "Chi")

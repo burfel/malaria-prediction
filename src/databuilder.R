@@ -390,15 +390,21 @@ library(betareg)
 
 set.seed(123)
 
-beta <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
-beta_log <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona, link = "log")
-#beta_logit <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona, link = "logit")
-beta_loglog <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona, link = "loglog")
-summary(beta)
-#summary(beta_log)
-summary(beta_logit)
-summary(beta_loglog) # improves pseudo R^2 of the model
-#summary(beta_loglog)$pseudo.r.squared
+beta_paras <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia |  dat.nona$Percentage.parasitemia, data=dat.nona)
+
+beta_total <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L. |  dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
+#beta_total.log <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L. |  dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona, link = "log")
+beta_total.logit <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L. |  dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona, link = "logit")
+beta_total.loglog <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L. |  dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona, link = "loglog")
+summary(beta_paras)
+# MODEL: -1.86818 + 0.05910*dat.nona$Percentage.parasitemia, Pseudo R-squared: 0.2972
+#summary(beta_total.log)
+summary(beta_total)
+# MODEL: -1.20699 + 0.04832*dat.nona$Percentage.parasitemia + (-0.05682)*dat.nona$Total.White.Cell.Count..x109.L.
+# Pseudo R-squared: 0.4065
+summary(beta_total.logit)
+summary(beta_total.loglog) # improves pseudo R^2 of the model
+#summary(beta_total.loglog)$pseudo.r.squared
 # CONCLUSION: THERE ARE A FEW OBSERVATIONS ABOVE THE DIAGONAL WHERE THE LOG-LOG LINK FITS BETTER THAN THE LOGIT LINK..
 # WHEREAS THERE ARE FEWER SUCH OBSERVATIONS BELOW THE DIAGONAL.
 

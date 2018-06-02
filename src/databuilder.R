@@ -106,6 +106,149 @@ ggplotRegression(fit.nona.paras)
 # fitted(fit.nona.paras)
 # residuals(fit.nona.paras)
 
+### PLOTS
+
+library(dplyr)
+# display first x entries of dataset
+set.seed(1234)
+dplyr::sample_n(dat, 10)
+
+# (1i) plot of observed vs predicted values
+# The points should be symmetrically distributed around a diagonal line, with a roughly constant variance.
+# Here, the observed (dat$Head) on predicted (or fitted: m$fitted.values)
+plot(dat.nona$outcome ~ fit.nona.paras$fitted)
+# add 1:1 line
+abline(0, 1) 
+#...not really the case.
+
+# (1ii) Plot of residuals versus predicted values.
+# The points should be symmetrically distributed around a horizontal line, with a roughly constant variance.
+# Here, the residuals (m$residuals) on predicted (or fitted: m$fitted.values)
+plot(fit.nona.paras$residual ~ fit.nona.paras$fitted)
+# add horizontal line at 0
+abline(h = 0)
+
+# (1iii) Plots of the residuals versus individual independent variables.
+par(mfrow = c(1,2))
+plot(fit.nona.paras$residual ~ dat.nona$Percentage.parasitemia)
+#plot(fit.nona.paras$residual ~ dat.nona$Total.White.Cell.Count..x109.L.)
+
+
+# (2) Statistical independence of the errors (in particular, no correlation between consecutive errors in the case of time series data)
+# This assumption is particularly important for data that are known to be autocorrelated (time series, spatial data). 
+# However, it is possible that the predictor variables account for the autocorrelation.
+
+# (2i) Plot of residuals versus time series/row number.
+plot(fit.nona.paras$residuals)
+
+# (2ii) Plot estimates of the autocorrelation function
+acf(fit.nona.paras$residuals) # residuals are not auto-correlated as expected since no time-series data
+# The X axis corresponds to the lags of the residual, increasing in steps of 1. 
+# The very first line (to the left) shows the correlation of residual with itself (Lag0), 
+# therefore, it will always be equal to 1.
+# If the residuals were not autocorrelated, the correlation (Y-axis) from the immediate 
+# next line onwards will drop to a near zero value below the dashed blue line (significance level).
+
+# (2) Homoscedasticity (constant variance) of the errors
+# Violations of constant variance make it hard to estimate the standard deviation of the coefficient estimates.
+# (i) Plots residuals versus the predicted values.
+plot(fit.nona.paras$residual ~ fit.nona.paras$fitted)
+# (ii) Plot residuals versus independent variables.
+par(mfrow = c(1,2))
+plot(fit.nona.paras$residual ~ dat.nona$Percentage.parasitemia)
+#plot(fit.nona.paras$residual ~ dat.nona$Total.White.Cell.Count..x109.L.)
+
+# (3) Normality of the error distribution.
+# Violations of normality create problems for determining whether model coefficients are significantly different from zero and for calculating confidence intervals. It is not required for estimating the coefficients.
+# Outliers Parameter estimation is based on the minimization of squared error, thus a few extreme observations can exert a disproportionate influence on parameter estimates.
+hist(fit.nona.paras$residuals)
+# (i) Normal probability plot or normal quantile plot of the residuals.
+# These are plots of the fractiles of error distribution versus the fractiles of a normal distribution with the same mean and variance.
+qqnorm(fit.nona.paras$residuals)
+qqline(fit.nona.paras$residuals)
+library(ggpubr) 
+## PLOT -- FOR WEBSITE
+# ggqqplot(fit.nona.paras$residuals, main = "Normal Q-Q",
+#          xlab = "Theoretical Quantiles", ylab = "Standardized residuals")
+library(car)
+qqPlot(fit.nona.paras$residuals, main = "Normal Q-Q",
+         xlab = "Theoretical Quantiles", ylab = "Standardized residuals")
+# (ii) Outliers
+#stripchart(dat$outcome~dat$Percentage.parasitemia, vertical = TRUE, method = 'jitter', col = c('darkgrey', 'red'), pch = 21)
+# (iii) Statistical tests for normality
+# Kolmogorov-Smirnov test
+ks.test(fit.nona.paras$residuals, pnorm) # D = 0.42605, p-value = 0.0005636
+# Shapiro-Wilk test
+shapiro.test(fit.nona.paras$residuals) # not good! W = 0.8791, p-value = 0.01406
+# From the output, the p-value > 0.05 implying that the distribution of the data are not significantly 
+# different from normal distribution. In other words, we can assume the normality.
+
+# data is not sufficiently inconsistent with a normal that you would reject the null
+#qqnorm(dat$Percentage.parasitemia)
+
+vif(fit.nona.paras)
+
+# NOT NECESSARY
+# #...more normality tests
+# library(nortest)
+# ad.test(dat$Percentage.parasitemia)
+# cvm.test(dat$Percentage.parasitemia)
+# #pearson.test(dat$Percentage.parasitemia)
+# sf.test(dat$Percentage.parasitemia)
+
+# test whether parasitemia percentage is normally distributed
+# - visual inspection (q-q plot)
+# - statistical test 
+# SKEWNESS AND KURTOSIS
+library(moments)
+skewness(dat.nona$Percentage.parasitemia) # 1.851069
+kurtosis(dat.nona$Percentage.parasitemia) # 5.830453
+#Histogram -- far from normally distributed
+library(ggplot2)
+datasim <- data.frame(dat.nona$Percentage.parasitemia)
+ggplot(datasim, aes(x = dat.nona$Percentage.parasitemia), binwidth = 2) + 
+  geom_histogram(aes(y = ..density..), fill = 'red', alpha = 0.5) + 
+  geom_density(colour = 'blue') + xlab(expression(bold('Simulated Samples'))) + 
+  ylab(expression(bold('Density')))
+
+# PLOTS
+library("ggpubr")
+ggdensity(dat$outcome, 
+          main = "Density plot of pathogen reads",
+          xlab = "Percentage of reads that map to pathogen")
+ggdensity(dat.nona$Percentage.parasitemia, 
+          main = "Density plot of Percentage of parasitemia",
+          xlab = "Percentage of parasitemia")
+ggdensity(dat.nona$Total.White.Cell.Count..x109.L., 
+          main = "Density plot of total white cell count",
+          xlab = "total white cell count")
+
+# NOT NECESSARY
+# # define kurtosis function
+# kurtosis.test <- function (x) {
+#   m4 <- sum((x-mean(x))^4)/length(x)
+#   s4 <- var(x)^2
+#   kurt <- (m4/s4) - 3
+#   sek <- sqrt(24/length(x))
+#   totest <- kurt/sek
+#   pvalue <- pt(totest,(length(x)-1))
+#   pvalue 
+# }
+# kurtosis.test(dat$Percentage.parasitemia)
+# 
+# # define skewness function
+# skew.test <- function (x) {
+#   m3 <- sum((x-mean(x))^3)/length(x)
+#   s3 <- sqrt(var(x))^3
+#   skew <- m3/s3
+#   ses <- sqrt(6/length(x))
+#   totest <- skew/ses
+#   pt(totest,(length(x)-1))
+#   pval <- pt(totest,(length(x)-1))
+#   pval
+# }
+# 
+# skew.test(dat$Percentage.parasitemia)
 
 # # (1) SIMPLEST MODEL (JUST PARASITEMIA), WITHOUT TRANSFORMATION, ON WHOLE DATASET
 # fit.paras <- lm(dat$outcome ~ dat$Parasite.density...µl., data=dat)
@@ -387,11 +530,9 @@ anova(glm_paras2, glm_total2, test = "Chi")
 # but it is not a special case of this framework. 
 
 library(betareg)
-
 set.seed(123)
 
 beta_paras <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia |  dat.nona$Percentage.parasitemia, data=dat.nona)
-
 beta_total <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L. |  dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
 #beta_total.log <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L. |  dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona, link = "log")
 beta_total.logit <- betareg(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L. |  dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona, link = "logit")
@@ -408,6 +549,21 @@ summary(beta_total.loglog) # improves pseudo R^2 of the model
 # CONCLUSION: THERE ARE A FEW OBSERVATIONS ABOVE THE DIAGONAL WHERE THE LOG-LOG LINK FITS BETTER THAN THE LOGIT LINK..
 # WHEREAS THERE ARE FEWER SUCH OBSERVATIONS BELOW THE DIAGONAL.
 
+# # HOW WELL ON NEW/ IMPUTED DATA? -- ERROR BARS TO BIG!! BETA DOES NOT PERFORM WELL --> TUNE HYPERPARAM link.phi!
+# GTest <- completeDat[1:21,]
+# model <- predict(beta_paras,newdata=GTest)
+# library(ggplot2)
+# ggplot(data=GTest,aes(x=model,y=outcome)) + 
+#   geom_point() + geom_abline(slope=1)
+# 
+# GTest$modelErr <- sqrt(predict(beta_paras,newdata=GTest,
+#                                type='variance'))
+# ggplot(data=GTest,aes(x=model,y=outcome)) +
+#   geom_point() +
+#   geom_errorbarh(aes(xmin=model-modelErr,xmax=model+modelErr)) +
+#   geom_abline(slope=1)
+
+
 # NOT USEFUL, DOES NOT REDUCE NUMBER OF ITERATIONS
 #beta_loglog2 <- update(beta_loglog, link.phi = "log")
 #summary(beta_loglog2)
@@ -417,7 +573,7 @@ summary(beta_total.loglog) # improves pseudo R^2 of the model
 #plot(beta, type="pearson")
 #plot(beta, which = 5, type = "deviance", sub.caption = "")
 
-AIC(beta, beta_logit, beta_loglog)
+AIC(beta, beta_logit, beta_loglog) # beta_loglog not much better
 BIC(beta, beta_logit, beta_loglog)
 
 # Compare means of a likelihood-ratio test to confirm results
@@ -811,9 +967,10 @@ dev.off()
 #dat.nc <- subset(dat, select = -c(Sex, Ethnicity, Sickle.cell.screen))
 # SINGULAR MATRIX --> CHOOSE LESS VARIABLES
 #dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, total.number.of.cells, Total.White.Cell.Count..x109.L., Monocyte.count...x109.L., Lymphocyte.count...x109.L., Red.blood.cell.count..x1012.L, Hemoglobin.concentration..g.dL., Parasite.density...µl., Parasite.clones, outcome))
-dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, total.number.of.cells, Monocyte.count...x109.L., Lymphocyte.count...x109.L., outcome))
+dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Percentage.lymphocytes, Percentage.monocytes, Percentage.neutrophils, outcome, total_reads))
 
-imputed_dat <- mice(dat.nc, m=5, maxit=50, method='pmm', seed=500)
+#imputed_dat <- mice(dat.nc, m=5, maxit=50, method='pmm', seed=500)
+imputed_dat <- mice(dat.nc, m=5, maxit=50, method='cart', seed=500)
 
 summary(imputed_dat)
 # missing cells per column: 0 | 1 | 3 | 2

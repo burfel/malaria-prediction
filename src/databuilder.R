@@ -13,8 +13,14 @@ dat <- merge(supp, hg_pf, by.y = "samples", by.x = "Subject.ID")
 
 library(car)
 # add column "outcome" which gives the proportion of pathogen reads
+dat$total_reads <- dat$pf_count + dat$hg_count
 dat$outcome <- dat$pf_count / (dat$hg_count + dat$pf_count)
 dat$outcome.logit <-  logit(dat$outcome, percents=TRUE)
+
+# PLOT PROPORTION OF PATHOGEN READS, BOTH AS NORMAL AND A LOG SCALE -- FOR WEBSITE
+par(mfrow = c(1, 2))
+plot(dat$total_reads, dat$outcome, xlab = "Total number of reads", ylab = "Proportion reads that map to pathogen")
+plot(log(dat$total_reads), dat$outcome, xlab = "Total number of reads", ylab = "Proportion reads that map to pathogen")
 
 # NOT MEANINGFUL
 # # add column "total.number.of.cells" 
@@ -265,6 +271,8 @@ ggplotRegression(fit.nona.N)
 #plot(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, data = dat.nona)
 #abline(fit.nona.total)
 
+
+####----- GLM
 # https://stats.stackexchange.com/questions/38201/problems-plotting-glm-data-of-binomial-proportional-data?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 # GLM
 GM1<-glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=binomial (logit), data=dat.nona)
@@ -278,6 +286,48 @@ GM1<-glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.Whi
 # xv<-seq(0,0.7,length.out = length(BPT))
 # lines(xv,predict(GM1, list(BPT = xv), type="response"))
 #predict(GM1,list(density=exp(xv)),type="response")
+
+glm_paras <- glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, family=quasibinomial, data=dat.nona)
+#glm_paras_logit <- glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, family=quasibinomial (logit), data=dat.nona)
+glm_total <-glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=quasibinomial, data=dat.nona)
+#glm_total_logit <-glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=quasibinomial (logit), data=dat.nona)
+summary(glm_paras)
+# MODEL1: -1.97632 + 0.06533*dat.nona$Percentage.parasitemia
+#summary(glm_paras_logit)
+summary(glm_total)
+# MODEL2: -1.13941 + 0.05487*dat.nona$Percentage.parasitemia + (-0.07721)*dat.nona$Total.White.Cell.Count..x109.L.
+#summary(glm_total_logit)
+
+# We now can compare the two models as before using ANOVA. In the case of binary data, we need to do a Chi-squared test.
+anova(glm_paras, glm_total, test = "Chi")
+#anova(glm_paras_logit, glm_total_logit, test = "Chi")
+
+
+# # run the two models MODEL1, MODEL2
+# # set up a two-panel plotting area
+# par(mfrow = c(1, 2))
+# # use the predict() function to create the fitted y values
+# ## 1. parsitemia
+# # create a sequence of x values
+# xv <- seq(0, 9, 0.01)
+# # y values
+# yv <- predict(glm_paras, list(area = xv), type = "response")
+# # plot the raw data
+# plot(dat.nona$Percentage.parasitemia, dat.nona$outcome)
+# # use the lines function to add the fitted lines
+# lines(xv, yv)
+# ## 2. parasitemia and white blood cells
+# xv2 <- seq(0, 10, 0.1)
+# yv2 <- predict(glm_total, list(isolation = xv2), type = "response")
+# plot(dat.nona$Total.White.Cell.Count..x109.L., dat.nona$outcome)
+# lines(xv2, yv2)
+
+
+
+# https://www.theanalysisfactor.com/r-tutorial-glm1/
+# http://www.simonqueenborough.info/R/stats-basic/glm.html
+# http://www.simonqueenborough.info/R/statistics/glm-binomial 
+
 
 
 # ------ BETA FUNCTIONS
@@ -323,9 +373,9 @@ lrtest(beta, beta_logit, beta_loglog)
 # bptest(fit.nona.paras)
 # bptest(fit.nona.total)
 
-# https://www.theanalysisfactor.com/r-tutorial-glm1/
-# http://www.simonqueenborough.info/R/stats-basic/glm.html
-# http://www.simonqueenborough.info/R/statistics/glm-binomial 
+#####-------- MULTINOMIAL MODEL
+library(nnet)
+#multinom
 
 ##########################################
 

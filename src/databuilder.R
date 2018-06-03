@@ -218,9 +218,11 @@ ggplot(datasim, aes(x = dat.nona$outcome), binwidth = 2) +
 
 # PLOTS: IS RESPONSE VARIABLE CLOSE TO NORMALITY?
 library("ggpubr")
+png("../shinyapp2/img/pathogen-read-density.png")
 ggdensity(dat$outcome, 
           main = "Density plot of pathogen reads",
           xlab = "Percentage of reads that map to pathogen")
+dev.off()
 # ggdensity(dat.nona$Percentage.parasitemia, 
 #           main = "Density plot of Percentage of parasitemia",
 #           xlab = "Percentage of parasitemia")

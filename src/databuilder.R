@@ -106,6 +106,10 @@ ggplotRegression(fit.nona.paras)
 # fitted(fit.nona.paras)
 # residuals(fit.nona.paras)
 
+library(gvlma)
+gvmodel <- gvlma(fit.nona.paras)
+summary(gvmodel)
+
 ### PLOTS
 
 library(dplyr)
@@ -186,7 +190,8 @@ shapiro.test(fit.nona.paras$residuals) # not good! W = 0.8791, p-value = 0.01406
 # data is not sufficiently inconsistent with a normal that you would reject the null
 #qqnorm(dat$Percentage.parasitemia)
 
-vif(fit.nona.paras)
+#library(MASS)
+#vif(fit.nona.paras)
 
 # NOT NECESSARY
 # #...more normality tests
@@ -199,29 +204,36 @@ vif(fit.nona.paras)
 # test whether parasitemia percentage is normally distributed
 # - visual inspection (q-q plot)
 # - statistical test 
-# SKEWNESS AND KURTOSIS
+# SKEWNESS AND KURTOSIS response variable
 library(moments)
-skewness(dat.nona$Percentage.parasitemia) # 1.851069
-kurtosis(dat.nona$Percentage.parasitemia) # 5.830453
+skewness(dat.nona$outcome) # 1.071187
+kurtosis(dat.nona$outcome) # 3.373337
 #Histogram -- far from normally distributed
 library(ggplot2)
-datasim <- data.frame(dat.nona$Percentage.parasitemia)
-ggplot(datasim, aes(x = dat.nona$Percentage.parasitemia), binwidth = 2) + 
+datasim <- data.frame(dat.nona$outcome)
+ggplot(datasim, aes(x = dat.nona$outcome), binwidth = 2) + 
   geom_histogram(aes(y = ..density..), fill = 'red', alpha = 0.5) + 
   geom_density(colour = 'blue') + xlab(expression(bold('Simulated Samples'))) + 
   ylab(expression(bold('Density')))
 
-# PLOTS
+# PLOTS: IS RESPONSE VARIABLE CLOSE TO NORMALITY?
 library("ggpubr")
 ggdensity(dat$outcome, 
           main = "Density plot of pathogen reads",
           xlab = "Percentage of reads that map to pathogen")
-ggdensity(dat.nona$Percentage.parasitemia, 
-          main = "Density plot of Percentage of parasitemia",
-          xlab = "Percentage of parasitemia")
-ggdensity(dat.nona$Total.White.Cell.Count..x109.L., 
-          main = "Density plot of total white cell count",
-          xlab = "total white cell count")
+# ggdensity(dat.nona$Percentage.parasitemia, 
+#           main = "Density plot of Percentage of parasitemia",
+#           xlab = "Percentage of parasitemia")
+# ggdensity(dat.nona$Total.White.Cell.Count..x109.L., 
+#           main = "Density plot of total white cell count",
+#           xlab = "total white cell count")
+
+
+# PLOT --- FOR WEBSITE
+library(e1071)
+plot(density(dat$outcome), main="Density Plot: Percentage of reads that map to pathogen", ylab="Density", sub=paste("Skewness:", round(e1071::skewness(dat$outcome), 2)))  # density plot for 'speed'
+polygon(density(cars$speed), col="red")
+
 
 # NOT NECESSARY
 # # define kurtosis function
@@ -336,6 +348,9 @@ par(mfrow = c(1, 1))  # Return plotting panel to 1 section
 # MODEL: 0.204181 + 0.011821*dat.nona$Percentage.parasitemia + (-0.010121)*dat.nona$Total.White.Cell.Count..x109.L.
 ggplotRegression(fit.nona.total) #---NEED 3-DIM PLOT
 #ggplotRegression2(fit.nona.total) ## NEEDS FIXING!!!!!!
+
+gvmodel_total <- gvlma(fit.nona.total)
+summary(gvmodel_total) # STILL SKEWED, BUT KURTOSIS ACCEPTABLE
 
 # likelihood ratio test of nested models
 #lrtest(fit.nona.paras, fit.nona.total)
@@ -517,7 +532,6 @@ anova(glm_paras2, glm_total2, test = "Chi")
 # lines(xv2, yv2)
 
 
-
 # https://www.theanalysisfactor.com/r-tutorial-glm1/
 # http://www.simonqueenborough.info/R/stats-basic/glm.html
 # http://www.simonqueenborough.info/R/statistics/glm-binomial 
@@ -680,6 +694,23 @@ d2 %>%
   facet_grid(~ iv, scales = "free_x") +  # Split panels here by `iv`
   theme_bw()
 
+# ADDING POINTS TO PLOT
+# ggplot(d, aes(x = Percentage.parasitemia, y = outcome)) +
+#   geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
+#   geom_segment(aes(xend = Percentage.parasitemia, yend = predicted), alpha = .2) +
+#   
+#   # > Color AND size adjustments made here...
+#   geom_point(aes(color = abs(residuals), size = abs(residuals))) + # size also mapped
+#   scale_color_continuous(low = "black", high = "red") +
+#   guides(color = FALSE, size = FALSE) +  # Size legend also removed
+#   # <
+#   #geom_point(size = 3, aes(colour = highlight)) +
+#   #scale_color_manual("Status", values = mycolours) +
+#   geom_text(data = d, aes(x = 2 * 5.05, y = 1.0, label = "prediction")) 
+#   #geom_point(shape=23, fill="blue", color="darkred", size=3)
+#   geom_point(aes(y = predicted), shape = 1) +
+#   theme_bw()
+
 
 # TO MAKE PLOT INTERACTIVE. PACKAGES NOT COMPATIBLE -- NEEDS FIXING!
 # require(ggiraph)
@@ -735,11 +766,97 @@ anova(fit1, fit2)
 
 #---COMPARING MODELS---------------
 #---CROSSVALIDATION---------------
+
+# 1. Validation set approach -- NOT SUITABLE HERE
+# # Split the data into training and test set
+# set.seed(123)
+# training.samples <- swiss$Fertility %>%
+#   createDataPartition(p = 0.8, list = FALSE)
+# train.data  <- swiss[training.samples, ]
+# test.data <- swiss[-training.samples, ]
+# # Build the model
+# model <- lm(Fertility ~., data = train.data)
+# Make predictions and compute the R2, RMSE and MAE
+predictions <- fit.nona.paras %>% predict(completeDat[1:21,])
+data.frame( R2 = R2(predictions, completeDat[1:21,]$outcome),
+            RMSE = RMSE(predictions, completeDat[1:21,]$outcome),
+            MAE = MAE(predictions, completeDat[1:21,]$outcome))
+# the model with the lowest test sample RMSE is the preferred one. 
+# prediction error rate should also be as small as possible:
+RMSE(predictions, completeDat[1:21,]$outcome)/mean(completeDat[1:21,]$outcome) # 0.7742042
+
+# # 2. Leave one out cross-validation
+# library(caret)
+# # Define training control
+# train.control <- trainControl(method = "LOOCV")
+# # Train the model
+# model <- train(outcome ~., data = dat.nona, method = "lm",
+#                trControl = train.control)
+# # Summarize the results
+# print(model)
+
+# 3. k-fold cross validation
+# Define training control
+set.seed(123) 
+train.control <- trainControl(method = "cv", number = 10)
+# Train the model
+model1 <- train(outcome ~ Percentage.parasitemia, data=dat.nona, method = "lm",
+               trControl = train.control)
+# Summarize the results
+print(model1)
+# RMSE       Rsquared   MAE      
+# 0.1395187  0.9950257  0.1265135
+
+# Define training control
+set.seed(123) 
+train.control <- trainControl(method = "cv", number = 10)
+# Train the model
+model1B <- train(outcome ~ Percentage.parasitemia + Total.White.Cell.Count..x109.L., data=dat.nona, method = "lm",
+                trControl = train.control)
+# Summarize the results
+print(model1B)
+#   RMSE       Rsquared   MAE      
+# 0.1351248  0.9444301  0.1183391
+
+# 4. Repeated K-fold cross-validation
+# Define training control
+set.seed(123)
+train.control <- trainControl(method = "repeatedcv", 
+                              number = 10, repeats = 3)
+# Train the model
+model2 <- train(outcome ~ Percentage.parasitemia, data=dat.nona, method = "lm",
+               trControl = train.control)
+# Summarize the results
+print(model2)
+#   RMSE       Rsquared  MAE      
+# 0.1433029  0.958348  0.1277027
+
+# Define training control
+set.seed(123)
+train.control <- trainControl(method = "repeatedcv", 
+                              number = 10, repeats = 3)
+# Train the model
+model2B <- train(outcome ~ Percentage.parasitemia + Total.White.Cell.Count..x109.L., data=dat.nona, method = "lm",
+                trControl = train.control)
+# Summarize the results
+print(model2B)
+# RMSE       Rsquared   MAE      
+# 0.1381558  0.9442862  0.1193008
+
+
 #cv.lm(df = houseprices, form.lm = formula(sale.price ~ area), m=3, dots = 
-        FALSE, seed=29, plotit=TRUE, printit=TRUE)
-# K-fold cross-validation
-library(DAAG)
-cv.lm(df=dat.nona, fit, m=3) # 3 fold cross-validation ----UNUSED ARGUMENT?
+#        FALSE, seed=29, plotit=TRUE, printit=TRUE)
+  
+# # K-fold cross-validation
+# library(DAAG)
+# cv.lm(df=dat.nona, fit, m=3) # 3 fold cross-validation ----UNUSED ARGUMENT?
+# # cv.lm(df = mydata, form.lm = formula(y ~ .))
+# reg<-lm(logWet.weight~logAverageBL)
+# cv.lm(mtross, reg, m=5)
+# 
+# library(DAAG)
+# cvResults <- suppressWarnings(CVlm(df=cars, fit.nona.paras, m=5, dots=FALSE, seed=29, legend.pos="topleft",  printit=FALSE, main="Small symbols are predicted values while bigger ones are actuals."));  # performs the CV
+# attr(cvResults, 'ms')  # => 251.2783 mean squared error
 
 # Sum the MSE for each fold, 
 # divide by the number of observations, 

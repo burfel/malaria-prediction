@@ -1,13 +1,9 @@
 ## Conclusion
 
-- COMPARE TO MOUSE DATA SET? BUT NOT MUCH INSIGHT...
+Based on the given data sets of dual RNA-seq reads and different measurements of the malaria patients, we developed a simple general linear model that appropriately [SHOW THAT!] predicts the percentage of reads that will map to the host and to the pathogen. [GIVE SOME STATISTICS HERE]
 
+The model was kept simple in order for the malaria community to be easy to use and the results easy to interpret. Also, we restricted the variables to the measurements a user is most likely to have. 
 
-We wanted to avoid models that generate highly complex, non-linear relationships between the predictors and the outcome. 
+We hope that this webtool will turn out to be useful for the malaria community.
 
-Unfortunately, the predictive models that are most powerful are usually the least interpretable. 
-However, as interpretability is not the primary goal in predictive models, it may not be appropriate to use a model that is built for interpretation rather than predictive performance as long as complex models are properly validated.
-
-Additional insight can be gained by 
-
-Once data has become available...
+If you have any further questions, suggestions and feedback, please get in touch at [INSERT EMAIL/ MAILTO].

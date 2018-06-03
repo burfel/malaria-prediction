@@ -1,8 +1,5 @@
 ## Introduction
 
-#### Dual RNA-seq is an increasing popular approach to investigate host-pathogen interaction. Malaria is an excellent paradigm for its application in humans, because both human leukocytes and malaria parasites are present in circulating blood. However application of this approach has been limited by variability in the depth of reads mapped to parasites, with some studies finding insufficient parasite reads for analysis. It has been found that parasite reads constitute between 1% and 70% of the total reads obtained from patient blood samples (see figure 1 [INSERT LINK TO FIGURE 1]), and this appears to be dependent on three main factors: 1) the number of parasites in the blood sample, 2) the number of human white blood cells in the sample, and 3) the developmental stage of the parasites. 
-For phsicians and biologists in the malaria community it is of substantial use to know how many of the dual RNA-seq reads will map to the host, and how many will map to the pathogen in order to know how many reads are necessary in the first place for the study they are interested. 
-The purpose of this project is to develop a simple prediction tool that will enable a user to estimate the likely proportion of reads that will map to parasite and host, given basic information about the sample. This will be of substantial use to the malaria research community and may result in a publication.
-
-[INSERT FIGURE 1]
+EXPLAIN MALARIA. WHY SO INTERESTING?
+BIOLOGIGAL BACKGROUND.
  

@@ -117,6 +117,9 @@ library(dplyr)
 set.seed(1234)
 dplyr::sample_n(dat, 10)
 
+library(MASS)
+summary(dat)
+
 # (1i) plot of observed vs predicted values
 # The points should be symmetrically distributed around a diagonal line, with a roughly constant variance.
 # Here, the observed (dat$Head) on predicted (or fitted: m$fitted.values)
@@ -218,11 +221,9 @@ ggplot(datasim, aes(x = dat.nona$outcome), binwidth = 2) +
 
 # PLOTS: IS RESPONSE VARIABLE CLOSE TO NORMALITY?
 library("ggpubr")
-png("../shinyapp2/img/pathogen-read-density.png")
 ggdensity(dat$outcome, 
           main = "Density plot of pathogen reads",
           xlab = "Percentage of reads that map to pathogen")
-dev.off()
 # ggdensity(dat.nona$Percentage.parasitemia, 
 #           main = "Density plot of Percentage of parasitemia",
 #           xlab = "Percentage of parasitemia")
@@ -233,9 +234,10 @@ dev.off()
 
 # PLOT --- FOR WEBSITE
 library(e1071)
+png("GITHUB/shinyapp2/img/pathogen-read-density.png")
 plot(density(dat$outcome), main="Density Plot: Percentage of reads that map to pathogen", ylab="Density", sub=paste("Skewness:", round(e1071::skewness(dat$outcome), 2)))  # density plot for 'speed'
 polygon(density(cars$speed), col="red")
-
+dev.off()
 
 # NOT NECESSARY
 # # define kurtosis function
@@ -1048,31 +1050,33 @@ library(nnet)
 # ##--- TODO: VISUALISE IT NICELY FOR WEBSITE, TO SHOW ON WHICH DATA THE MODEL HAS BEEN TRAINED
 # summary(dat) 
 # 
-# ##---MISSING VALUES #--analyticsvidhya.com
-# #install.packages("missForest")
-# #library(missForest)
-# #dat.mis <- prodNA(dat, noNA = 0.1) # generate 10% missing values at random
-# #summary(dat.mis) # check missing values introduced in the data
-# 
-# install.packages("mice")
-# library(mice)
-# 
-# md.pattern(dat) # returns a tabular form of missing value present in each variable in a dataset
-# # 21 observations with no missing values
-# # (5 missing values in mean cell volume 
-# # 8 missing values in parasite clones
-# # 3 missing values in lactate
-# # 2 missing values in mean cell and parasite clones..)
-# 
-# installed.packages("VIM")
+##---MISSING VALUES #--analyticsvidhya.com
+#install.packages("missForest")
+#library(missForest)
+#dat.mis <- prodNA(dat, noNA = 0.1) # generate 10% missing values at random
+#summary(dat.mis) # check missing values introduced in the data
+
+library(mice)
+par(las=2) # make label text perpendicular to axis
+#text(quantile(resS2$dif, 0.005), 5, "0.5% FP rate", pos = 2, cex = 0.6, srt = 90)
+md.pattern(dat) # returns a tabular form of missing value present in each variable in a dataset
+# 21 observations with no missing values
+# (5 missing values in mean cell volume
+# 8 missing values in parasite clones
+# 3 missing values in lactate
+# 2 missing values in mean cell and parasite clones..)
+
+library(visdat)
+png("GITHUB/shinyapp2/img/missingData.png")
+vis_miss(dat[,-c(23,24,25,27)])
+dev.off()
+
 # library(VIM)
-# png("GITHUB/shinyapp/img/missingData.png")
 # mice_plot <- aggr(dat, col=c('navyblue', 'yellow'), numbers=TRUE, sortVars=TRUE,
 #                   labels=names(dat), cex.axis=.7, gap=3, ylab=c("Missing data", "Pattern"))
-# dev.off()
-# # There are 45.7% values in the data set with no missing values 
+# # There are 45.7% values in the data set with no missing values
 # # 17.4% missing values in parasite clone...
-# 
+
 # ##--- 1. Impute missing values
 # 
 # #imputed_dat <- mice(dat, m=5, maxit=50, method='pmm', seed=500)

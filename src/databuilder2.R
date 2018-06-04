@@ -2,7 +2,7 @@ library(caret)
 library(doParallel)
 registerDoParallel(detectCores() - 1)
 
-setwd("~/Documents/IMPERIAL/PROJECTS/project2")
+setwd("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB")
 
 #--- run databuilder.R ---------------------------------------------------------------------------------
 

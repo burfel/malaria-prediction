@@ -236,8 +236,8 @@ ggdensity(dat$outcome,
 # PLOT --- FOR WEBSITE
 library(e1071)
 png("GITHUB/shinyapp2/img/pathogen-read-density.png")
-plot(density(dat$outcome), main="Density Plot: Percentage of reads that map to pathogen", ylab="Density", sub=paste("Skewness:", round(e1071::skewness(dat$outcome), 2)))  # density plot for 'speed'
-polygon(density(cars$speed), col="red")
+plot(density(dat$outcome), main="Figure 1: Percentage of reads that map to pathogen", ylab="Density", sub=paste("Skewness:", round(e1071::skewness(dat$outcome), 2)))  # density plot for 'speed'
+#polygon(density(cars$speed), col="red")
 dev.off()
 
 # NOT NECESSARY

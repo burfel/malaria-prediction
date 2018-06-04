@@ -19,24 +19,24 @@ library(qtl)
 ### Title:
 header <- dashboardHeader(title = "Read map prediction", titleWidth = 250)
 
-menue <- dropdownMenu(type = "messages",
-             messageItem(
-               from = "Sales Dept",
-               message = "Sales are steady this month."
-             ),
-             messageItem(
-               from = "New User",
-               message = "How do I register?",
-               icon = icon("question"),
-               time = "13:45"
-             ),
-             messageItem(
-               from = "Support",
-               message = "The new server is ready.",
-               icon = icon("life-ring"),
-               time = "2014-12-01"
-             )
-)
+# menue <- dropdownMenu(type = "messages",
+#              messageItem(
+#                from = "Sales Dept",
+#                message = "Sales are steady this month."
+#              ),
+#              messageItem(
+#                from = "New User",
+#                message = "How do I register?",
+#                icon = icon("question"),
+#                time = "13:45"
+#              ),
+#              messageItem(
+#                from = "Support",
+#                message = "The new server is ready.",
+#                icon = icon("life-ring"),
+#                time = "2014-12-01"
+#              )
+# )
 
 ### SideBar:
 sidebar <- dashboardSidebar(
@@ -65,7 +65,9 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
   ## From ui.R: Adds a tooltip to element with inputId = "someInput" 
   ## with text, "This is an input.", that appears to the left on hover.
-  bsTooltip(id = "go-simple", title = "Compute a prediction!", 
+  bsTooltip(id = "go-simple", title = "Make a prediction!", 
+            placement = "left", trigger = "hover"),
+  bsTooltip(id = "go-complex", title = "Make a prediction!", 
             placement = "left", trigger = "hover"),
   
   ### Tabintes:
@@ -94,26 +96,20 @@ body <- dashboardBody(
                         helpText("Choose the parameters: You can choose between parasitemia percentage and parasitemia density."),
                         
                         # Input: Select the parasitemia type ----
-                        radioButtons("ptype", "Which data do you have?",
+                        radioButtons("ptype", "Which type of data do you have?",
                                      c("Percentage of parasitemia" = "ppercentage",
                                        "Parasitemia density (/µl)" = "pdensity"
                                        )),
 
                         # selectInput("ptype",
-                        #             label = "Which data do you have?",
+                        #             label = "Which type of data do you have?",
                         #             choices = c("Percentage of parasitemia" = "ppercentage", "Parasitemia density (/µl)" = "pdensity")
                         #             #selected = "Percentage of parasitemia"
                         #             ),
                        
-                        # checkboxInput("ptype1", "Percentage of parasetemia"),
-                        # conditionalPanel(
-                        #   condition = "input.ptype1 == true",
-                        #   selectInput("smoothMethod", "Method",
-                        #               list("lm", "glm", "gam", "loess", "rlm"))
-                        # ),
                         
                         #br(),
-                        #checkboxInput("ptype", "Percentage of parasetemia"),
+                        #checkboxInput("ptype", "Percentage of parasitemia"),
                         conditionalPanel(
                           condition = "input.ptype == 'ppercentage'",
                           sliderInput(inputId = "percentage-parasitemia",
@@ -129,11 +125,6 @@ body <- dashboardBody(
                                     value = 800000, min = 0, max = 1500000, step = 1000)
                         ),
                         
-                        # #########
-                        # selectInput("dataset", "Dataset", c("diamonds", "rock", "pressure", "cars")),
-                        # conditionalPanel( condition = "output.nrows",
-                        #                   checkboxInput("headonly", "Only use first 1000 rows")),
-                        # ########
                         
                         # br() element to introduce extra vertical spacing ----
                         # br(),
@@ -143,24 +134,17 @@ body <- dashboardBody(
                         #         label = "Percentage of parasitemia",
                         #         value = 8, min = 0, max = 100, step =1.),
                         # OR
-                        # sliderInput(inputId = "parasetemia-density",
+                        # sliderInput(inputId = "parasitemia-density",
                         #         label = "Parasitemia density (/ql)",
                         #         value = 800000, min = 0, max = 1500000, step = 1000), 
                         
-                        actionButton("go-simple", "Compute"),
+                        actionButton("go-simple", "Compute")
                         
-                        br(),
-                        renderText({ "text_calc"})
+                        #br(),
+                        #renderText({ "comp_paras"})
                       
                         #textOutput("text_calc") # prevents plot from being plotted for some reason
                   
-                        # sliderInput(inputId = "white-blood",
-                        #       label = "Total number of white blood cells (x 10^9/ L)",
-                        #       value = 9, min = 0, max = 20, step = .25)
-              
-                  #sliderInput(inputId = "red-blood",
-                  #            label = "Total number of red blood cells (x 10^12/ L)",
-                  #            value = 4, min = 0, max = 10, step = .25)
                   
                       ), # close tabpanel
                   
@@ -188,14 +172,12 @@ body <- dashboardBody(
                         #             choices = c("Percentage of parasetemia", "Parasitemia density (/µl)"),
                         #             selected = "Percentage of parasetemia"),
                         
-                        radioButtons("ptype", "Which data do you have?",
+                        # Input: Select the parasitemia type ----
+                        radioButtons("ptype", "Which type of data do you have?",
                                      c("Percentage of parasitemia" = "ppercentage",
                                        "Parasitemia density (/µl)" = "pdensity"
                                      )),
-                        
-                        
-                        br(),
-                        #checkboxInput("ptype1", "Percentage of parasetemia"),
+      
                         conditionalPanel(
                           condition = "input.ptype == 'ppercentage'",
                           sliderInput(inputId = "percentage-parasitemia",
@@ -206,10 +188,11 @@ body <- dashboardBody(
                         
                         conditionalPanel(
                           condition = "input.ptype == 'pdensity'",
-                          sliderInput(inputId = "parasetemia-density",
+                          sliderInput(inputId = "parasitemia-density",
                                       label = "Parasitemia density (/ql)",
                                       value = 800000, min = 0, max = 1500000, step = 1000)
-                        ),
+                        ),   
+                        
                            
                         # selectInput("wtype",
                         #             label = "Which data do you have?",
@@ -253,8 +236,8 @@ body <- dashboardBody(
                         ),
                   
                         actionButton("go-complex", "Compute"),
-                        br(),
-                        textOutput("text_calc")
+                        br()
+                        #textOutput("text_calc")
                 ) # close tabpanel
                 
               ), # close tabsetpanel
@@ -276,12 +259,12 @@ body <- dashboardBody(
             mainPanel(
               # Output: Tabset w/ plot, summary, and table ----
               tabsetPanel(type = "tabs",
+                          tabPanel("Output", 
+                                   verbatimTextOutput("comp_total")),
+                          tabPanel("summary", 
+                                   textOutput("summary_paras")),
                           tabPanel("Plot", 
-                                   plotOutput(outputId = "distPlot")),
-                          tabPanel("Summary", 
-                                   verbatimTextOutput("summary")),
-                          tabPanel("Table", 
-                                   textOutput("table"))
+                                   plotOutput(outputId = "plot_paras"))
            
               ) # close tabsetpanel           
             ) # close mainpanel
@@ -298,10 +281,10 @@ body <- dashboardBody(
               # )
     
     # TAB 
-    tabItem(tabName = "abstract",
+    tabItem(tabName = "Abstract",
             #h2("Abstract"),
             fluidPage(
-              box(width = 20,status = "success",
+              box(width = 60,status = "success",
                   shiny::includeMarkdown("md/abstract.md"))
               # actionButton(inputId='read-more1', label="Learn More", 
               #              icon = icon("th"), 
@@ -313,25 +296,25 @@ body <- dashboardBody(
     ),
     
     # TAB 
-    tabItem(tabName = "introduction",
+    tabItem(tabName = "Introduction",
             fluidPage(
-              box(width = 20,status = "success",
+              box(width = 60,status = "success",
                   shiny::includeMarkdown("md/introduction.md"))
             )
     ),
     
     # TAB 
-    tabItem(tabName = "methods",
+    tabItem(tabName = "Methods",
             fluidPage(
-              box(width = 20,status = "success",
+              box(width = 60,status = "success",
                   shiny::includeMarkdown("md/methods.md"))
             )
     ),
     
     # TAB 
-    tabItem(tabName = "discussion",
+    tabItem(tabName = "Discussion",
             fluidPage(
-              box(width = 20,status = "success",
+              box(width = 60,status = "success",
                   shiny::includeMarkdown("md/discussion.md"))
             )
             
@@ -366,15 +349,15 @@ body <- dashboardBody(
     ),
     
     # TAB
-    tabItem(tabName = "conclusion",
+    tabItem(tabName = "Conclusion",
             fluidPage(
-              box(width = 10,status = "success",
+              box(width = 60,status = "success",
                   shiny::includeMarkdown("md/conclusion.md"))
             )
     ),
     
     # TAB 
-    tabItem(tabName = "data",
+    tabItem(tabName = "Data preparation",
             fluidPage(
               box(width = 10,status = "success",
                   shiny::includeMarkdown("md/data.md"))
@@ -382,7 +365,7 @@ body <- dashboardBody(
     ),
     
     # TAB 
-    tabItem(tabName = "references",
+    tabItem(tabName = "References",
             fluidPage(
               box(width = 10,status = "success",
                   shiny::includeMarkdown("md/references.md"))
@@ -390,7 +373,7 @@ body <- dashboardBody(
     ),
     
     # TAB 
-    tabItem(tabName = "glossary",
+    tabItem(tabName = "Glossary",
             fluidPage(
               box(width = 10,status = "success",
                   shiny::includeMarkdown("md/glossary.md"))
@@ -398,7 +381,7 @@ body <- dashboardBody(
     ),
     
     # TAB 3 = About
-    tabItem(tabName = "about",
+    tabItem(tabName = "About",
             fluidPage(
               box(width = 10,status = "success",
                   shiny::includeMarkdown("README.md"))
@@ -408,12 +391,10 @@ body <- dashboardBody(
 )# close body
 
 
-
-
 ui <- dashboardPage(header, sidebar, body)
 
 
-################
+#########################################################################################################################
 
 server <- function(input, output, session) {
   
@@ -422,19 +403,6 @@ server <- function(input, output, session) {
   #   includeMarkdown("md/abstract.md")
   # })
   # ###
-
-  output$distPlot <- renderPlot({
-    
-      # fit.nona.total <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$total.number.of.cells, data=dat.nona)
-      # summary(fit.nona.total) # show results: R^2: 0.4622
-      # summary(fit.nona.total)$sigma^2 # estimated variance of residuals around a fitted line: 0.02268394
-      # 
-      # # plot the statistics, OUTLIERS 35, 39 -- both in UM group? -- kept them -- BUT MIGHT BE WORTH TRYING WITHOUT THEM
-      # par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-    plot(fit.nona.total)  # Plot the model information/ 
-      
-
-    })
   
   # output$plot <- renderPlot({
   #   if (input$plotType == "scatter") {
@@ -448,41 +416,74 @@ server <- function(input, output, session) {
   #     hist(x, breaks = breaks)
   #   }
   # })
+
+  output$plot_paras <- renderPlot({
+    plot(fit.nona.paras)
+  })
+  
+  output$plot_total <- renderPlot({
+    
+      # fit.nona.total <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$total.number.of.cells, data=dat.nona)
+      # summary(fit.nona.total) # show results: R^2: 0.4622
+      # summary(fit.nona.total)$sigma^2 # estimated variance of residuals around a fitted line: 0.02268394
+      # 
+      # # plot the statistics, OUTLIERS 35, 39 -- both in UM group? -- kept them -- BUT MIGHT BE WORTH TRYING WITHOUT THEM
+      # par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+    plot(fit.nona.total)  # Plot the model information/ 
+  })
   
   # MODEL O
   formula0 <- reactive({
-    I <- 0.151312
+    I <- 0.090267
     P <- input$percentage-parasitemia
     #W <- input$white-blood
     I + 0.010838 * P
   })
   
   # MODEL 1
-  # formula1
-  
-  output$text_calc <- renderUI({
-    paste("Prediction:")
-    paste("Percentage of reads that will map to pathogen: ", formula0())
-    paste("Percentage of reads that will map to host: ", 1 - formula0())
-
+  formula1 <- reactive({
+    I <- 0.204181
+    P <- input$percentage-parasitemia
+    W <- input$white-blood
+    #W <- input$white-blood
+    I + 0.011821*P + (-0.010121)*W
   })
   
-  output$dynamic_value <- renderPrint({
-    str(input$dynamic)
-  }) 
+  output$comp_paras <- renderText({
+    "Prediction:"
+  })
+  
+  output$comp_total <- renderUI({
+    paste("Prediction:")
+    paste("Percentage of reads that will map to pathogen: ", formula1())
+    paste("Percentage of reads that will map to host: ", 1 - formula1())
+  })
+  
+  # output$dynamic_value <- renderPrint({
+  #   str(input$dynamic)
+  # }) 
   
   # Generate a summary of the dataset ----
-  output$summary <- renderUI({
+  output$summary_paras <- renderUI({
     # dataset <- datasetInput()
     # summary(dataset)
-    summary(fit.paras)
+    summary(fit.nona.paras)
   })
+  
+  output$summary_total <- renderUI({
+    # dataset <- datasetInput()
+    # summary(dataset)
+    summary(fit.nona.total)
+  })
+  
+  
+  
   
   ###
   
-  ## From server.R: Add the same tooltip as above
-  addTooltip(session, id = "go-simple", title = "Click here to compute a prediction!",
-             placement = "left", trigger = "hover")
+  # ## From server.R: Add the same tooltip as above
+  # addTooltip(session, id = "go-simple", title = "Click here to compute a prediction!",
+  #            placement = "left", trigger = "hover")
   
   ###
   ######

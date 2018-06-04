@@ -99,12 +99,13 @@ plot(fit.nona.paras) # diagnostic plots: residuals do not have non-linear patter
 #par(mfrow = c(1, 1)) 
 hist(fit.nona.paras$res,main="Residuals") # residuals not really Gaussian
 # MODEL: 0.090267 + 0.013339*dat.nona$Percentage.parasitemia
-ggplotRegression(fit.nona.paras)
-# coef(fit.nona.paras)
-# vcov(fit.nona.paras)
-# predict(fit.nona.paras)
-# fitted(fit.nona.paras)
-# residuals(fit.nona.paras)
+
+# ggplotRegression(fit.nona.paras)
+# # coef(fit.nona.paras)
+# # vcov(fit.nona.paras)
+# # predict(fit.nona.paras)
+# # fitted(fit.nona.paras)
+# # residuals(fit.nona.paras)
 
 library(gvlma)
 gvmodel <- gvlma(fit.nona.paras)
@@ -309,7 +310,7 @@ plot(fit.nona.paras.log) # diagnostic plots: residuals do not have non-linear pa
 #par(mfrow = c(1, 1)) 
 #hist(fit.nona.paras.log$res,main="Residuals") # residuals not really Gaussian
 # MODEL: -7.50325 + 0.08221*dat.nona$Percentage.parasitemia
-ggplotRegression(fit.nona.paras.log)
+#ggplotRegression(fit.nona.paras.log)
 
 
 # # (1) SIMPLEST MODEL (JUST PARASITEMIA), WITH TRANSFORMATION, ON WHOLE DATASET
@@ -350,8 +351,8 @@ plot(fit.nona.total)  # Plot the model information/
 par(mfrow = c(1, 1))  # Return plotting panel to 1 section
 #hist(fit.nona.total$res,main="Residuals") # residuals not really Gaussian
 # MODEL: 0.204181 + 0.011821*dat.nona$Percentage.parasitemia + (-0.010121)*dat.nona$Total.White.Cell.Count..x109.L.
-ggplotRegression(fit.nona.total) #---NEED 3-DIM PLOT
-#ggplotRegression2(fit.nona.total) ## NEEDS FIXING!!!!!!
+# ggplotRegression(fit.nona.total) #---NEED 3-DIM PLOT
+# #ggplotRegression2(fit.nona.total) ## NEEDS FIXING!!!!!!
 
 gvmodel_total <- gvlma(fit.nona.total)
 summary(gvmodel_total) # STILL SKEWED, BUT KURTOSIS ACCEPTABLE
@@ -375,7 +376,7 @@ plot(fit.nona.L)  # Plot the model information
 par(mfrow = c(1, 1))  # Return plotting panel to 1 section
 #hist(fit.nona.L$res,main="Residuals") # residuals not really Gaussian
 # MODEL: 0.0829492 + 0.0130663*dat.nona$Percentage.parasitemia + 0.0003475*dat.nona$Percentage.lymphocytes
-ggplotRegression(fit.nona.L)
+# ggplotRegression(fit.nona.L)
 
 # (2B) MORE COMPLEX MODEL --- just with monocytes ----FOR WEBSITE
 fit.nona.M <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.monocytes, data=dat.nona)
@@ -385,7 +386,7 @@ plot(fit.nona.M)  # Plot the model information
 par(mfrow = c(1, 1))  # Return plotting panel to 1 section
 #hist(fit.nona.M$res,main="Residuals") # residuals not really Gaussian
 # MODEL: 0.0867926 + 0.0132895*dat.nona$Percentage.parasitemia + 0.0006445*dat.nona$Percentage.monocytes
-ggplotRegression(fit.nona.M)
+#ggplotRegression(fit.nona.M)
 
 # (2B) MORE COMPLEX MODEL --- just with neutrophils ----FOR WEBSITE
 fit.nona.N <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils, data=dat.nona)
@@ -395,7 +396,7 @@ plot(fit.nona.N)  # Plot the model information
 par(mfrow = c(1, 1))  # Return plotting panel to 1 section
 #hist(fit.nona.N$res,main="Residuals") # residuals not really Gaussian
 # MODEL: 0.1053476 + 0.0131751*dat.nona$Percentage.parasitemia + (-0.0002101)*dat.nona$Percentage.neutrophils
-ggplotRegression(fit.nona.N)
+# ggplotRegression(fit.nona.N)
 
 # # (2B) MORE COMPLEX MODEL -- with Neutrophil and monocyte percentages ---- BEST --- FOR WEBSITE
 # fit.nona.NM <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils + dat.nona$Percentage.monocytes, data=dat.nona)
@@ -618,20 +619,21 @@ library(nnet)
 # 
 # # ADJUST NAMES OF AXES!!!!
 # # Write a function that also returns statistics
-# ggplotRegression <- function (fit) {
-#   
-#   require(ggplot2)
-#   
-#   #ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
-#   ggplot(fit$model, aes_string(x = "Percentage of parasitemia", y = "Percentage of reads that map to pathogen") + 
-#     geom_point() +
-#     stat_smooth(method = "lm", col = "red") +
-#     labs(title = paste("Adj R^2 = ",signif(summary(fit)$adj.r.squared, 5),
-#                        #"Mult R^2 = ",signif(summary(fit)$mult.r.squared, 5),
-#                        "Intercept =",signif(fit$coef[[1]],5 ),
-#                        " Slope =",signif(fit$coef[[2]], 5),
-#                        " P =",signif(summary(fit)$coef[2,4], 5)))
-#   }
+ggplotRegression <- function (fit) {
+
+  require(ggplot2)
+
+  #ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) +
+  ggplot(fit$model, aes_string(x = "Percentage of parasitemia", y = "Percentage of reads that map to pathogen") +
+    geom_point() +
+    stat_smooth(method = "lm", col = "red") +
+    labs(title = paste("Adj R^2 = ",signif(summary(fit)$adj.r.squared, 5),
+                       #"Mult R^2 = ",signif(summary(fit)$mult.r.squared, 5),
+                       "Intercept =",signif(fit$coef[[1]],5 ),
+                       " Slope =",signif(fit$coef[[2]], 5),
+                       " P =",signif(summary(fit)$coef[2,4], 5)))
+  )
+}
 # 
 # # ggplotRegression2 <- function (fit) {
 # #   
@@ -1070,6 +1072,21 @@ library(visdat)
 png("GITHUB/shinyapp2/img/missingData.png")
 vis_miss(dat[,-c(23,24,25,27)])
 dev.off()
+
+png("GITHUB/shinyapp2/img/missingData2.png")
+gg_miss_var(dat[,-c(23,24,25,27)])
+dev.off
+
+library(naniar)
+png("GITHUB/shinyapp2/img/parasitemia.png")
+ggplot(dat,
+       aes(x = Percentage.parasitemia,
+           y = outcome)) +
+  geom_point() 
+dev.off()
+
+library(ggplot2)
+gg_miss_fct(x = dat, fct = Subject.ID) + labs(title = "Missing values")
 
 # library(VIM)
 # mice_plot <- aggr(dat, col=c('navyblue', 'yellow'), numbers=TRUE, sortVars=TRUE,

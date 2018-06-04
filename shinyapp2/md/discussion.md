@@ -1,6 +1,6 @@
 ## Discussion
 
-A parametric model was appropriate in our case, as the data showed fairly normal distributions (see chapter _Methods_ [INSERT LINK HERE]) and we could identify linear relationships between variables and the response variable. Also, we had very few data available that it was not possible to divide the data into separate train and test data sets to use more elaborate Machine Learning methods, including Random Forest, Support Vector Machines (SVMs), and Elastic map.  
+A parametric model was appropriate in our case, as the data showed fairly normal distributions (see chapter _Methods_ [INSERT LINK HERE]) and we could identify linear relationships between variables and the response variable. Also, we had very few data available that it was not possible to divide the data into separate train and test data sets to use more elaborate Machine Learning methods, including Random Forest, Support Vector Machines (SVMs), Ridge, Lasso and Elastic net.  
 We wanted to avoid such models that generate highly complex, non-linear relationships between the predictors and the outcome. Also, we wanted to keep the model interpretable, more complex models quickly tend to lose interpretability and more importantly, overfit the data.
 Another aspect we considered when designing the models was which type of data data a user is most likely to have. 
 Once more data has become available, it might be meaningful to explore more elaborate non-parametric predictive models that are more powerful. 

@@ -200,11 +200,9 @@ body <- dashboardBody(
                         #             choices = c("Total number of white blood cells (* 10^9/ L)", "Percentage of lymphoctyes and monocytes"),
                         #             selected = "Total number of white blood cells (* 10^9/ L)"),
                         
-                        radioButtons("wtype", "Which data do you have?",
+                        radioButtons("wtype", "Which type of data do you have?",
                                      c("Total number of white blood cells (* 10^9/ L)" = "white_blood",
-                                       "Percentage of lymphocytes" = "lympho",
-                                       "Percentage of monocytes" = "mono",
-                                       "Percentage of neutrophils" = "neutro"
+                                       "Counts of different white blood cell types (lymphocytes, monocytes, neutrophils)" = "counts"
                                      )
                         ),
                         
@@ -216,24 +214,16 @@ body <- dashboardBody(
                         ),
                         # OR
                         conditionalPanel(
-                          condition = "input.wtype == 'lympho'",
+                          condition = "input.wtype == 'counts'",
                           sliderInput(inputId = "lymphocyte_percentage",
-                                    label = "Percentage of lymphoctyes (in white blood cells)",
-                                    value = 30, min = 0, max = 100, step = .5)
-                        ),
-                        
-                        conditionalPanel(
-                          condition = "input.wtype == 'mono'",
+                                    label = "Total number of lymphoctyes (* 10^9/ L)",
+                                    value = 2.7, min = 0, max = 20, step = .1),
                           sliderInput(inputId = "monocyte_percentage",
-                                      label = "Percentage of monocytes (in white blood cells)",
-                                      value = 10, min = 0, max = 100, step = .5)
-                        ),
-                        
-                        conditionalPanel(
-                          condition = "input.wtype == 'neutro'",
+                                      label = "Total number of of monocytes (* 10^9/ L)",
+                                      value = 0.9, min = 0, max = 100, step = .1),
                           sliderInput(inputId = "neutrophil_percentage",
-                                      label = "Percentage of neutrophils (in white blood cells)",
-                                      value = 60, min = 0, max = 100, step = .5)
+                                      label = "Total number of neutrophils (* 10^9/ L)",
+                                      value = 5.4, min = 0, max = 100, step = .1)
                         ),
                   
                         actionButton("go_complex", "Compute"),
@@ -274,15 +264,16 @@ body <- dashboardBody(
                           #     
                           #   ),
                           tabPanel("Output",
-                                   # verbatimTextOutput("comp_simple"),
-                                   conditionalPanel(
-                                      condition = "input.ptype2 == 'ppercentage'",
-                                      textOutput("comp_simple")
-                                   ),
-                                   conditionalPanel(
-                                      condition = "input.ptype2 == 'pdensity'",
-                                      textOutput("comp_simple_dens")
-                                   )
+                                    verbatimTextOutput("comp_simple"),
+                                   # conditionalPanel(
+                                   #    condition = "input.ptype2 == 'ppercentage'",
+                                   #    textOutput("comp_simple")
+                                   # ),
+                                   # conditionalPanel(
+                                   #    condition = "input.ptype2 == 'pdensity'",
+                                   #    textOutput("comp_simple_dens")
+                                   # )
+                                    verbatimTextOutput("comp_total")
                           ),
                           tabPanel("Summary", 
                                    textOutput("summary_total")
@@ -424,8 +415,10 @@ ui <- dashboardPage(header, sidebar, body)
 
 server <- function(input, output, session) {
 
-## MODELS
-# MODEL 0a: glm paras percentage
+#-----------MODELS-----------------
+#----------------------------------
+# MODEL 0a: GLM SIMPLE | PERCENTAGE 
+## MODEL.log: -1.964e+00 + 6.550e-02*dat.nona$Percentage.parasitemia
 glm_simple <- reactive({
   I <- -1.964e+00
   P <- input$parasitemia_percentage
@@ -435,7 +428,8 @@ glm_simple <- reactive({
 })
 
 
-# MODEL 0b: glm paras density
+# MODEL 0b: GLM SIMPLE | DENSITY
+## MODEL.log: -2.012e+00 + 2.031e-06*dat.nona$Parasite.density...µl.
 glm_simple_dens <- reactive({
   I <- 2.012e+00
   P <- input$parasitemia_density
@@ -444,8 +438,8 @@ glm_simple_dens <- reactive({
 })
 
 
-
-# MODEL 0a1a: glm total percentage white blood cell
+# MODEL 1a: GLM COMPLEX | PERCENTAGE | TOTAL WHITE BLOOD CELLS
+## MODEL.log: -1.112e+00 + 5.324e-02*dat.nona$Percentage.parasitemia + (-7.415e-02)*dat.nona$Total.White.Cell.Count..x109.L.
 glm_total <- function(){
   I <- -1.112e+00
   P <- input$parasitemia_percentage2
@@ -455,7 +449,8 @@ glm_total <- function(){
 }
 
 
-# MODEL 0b1a: glm total density white blood cell
+# MODEL 1b: GLM COMPLEX | DENSITY | TOTAL WHITE BLOOD CELLS
+# MODEL.log: -1.238e+00 + 1.676e-06*dat.nona$Parasite.density...µl. + (-6.638e-02)*dat.nona$Total.White.Cell.Count..x109.L.
 glm_total_dens <- function(){
   I <- -1.238e+00
   P <- input$parasitemia_percentage2
@@ -463,6 +458,20 @@ glm_total_dens <- function(){
   I + 1.676e-06*P + (-6.638e-02)*W
   exp(logit)/(1+exp(logit))
 }
+
+# MODEL 1c: GLM COMPLEX | PERCENTAGE | DIFFERENT WHITE BLOOD CELL COUNTS
+## MODEL.log: -1.068e+00 + 6.155e-02*dat.nona$Percentage.parasitemia + (-5.826e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.898e+00)*dat.nona$Monocyte.count...x109.L. + (-1.634e-01)*dat.nona$Neutrophil.count...x109.L.
+glm_total_counts <- function(){
+  I <- -1.068e+00
+  P <- input$parasitemia_percentage2
+  W <- input$white_blood
+  I + 6.155e-02*P + (-5.826e-01)*L + 2.898e+00*M + (-1.634e-01)*N
+  exp(logit)/(1+exp(logit))
+}
+
+# MODEL 1D: GLM COMPLEX | DENSITY | DIFFERENT WHITE BLOOD CELL COUNTS
+## MODEL.log: -1.129e+00 + 1.744e-06*dat.nona$Parasite.density...µl. + (-4.876e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.639e+00)*dat.nona$Monocyte.count...x109.L. + (-1.666e-01)*dat.nona$Neutrophil.count...x109.L.
+
 
 
 # MODEL 0b1b: glm total percentage lympho

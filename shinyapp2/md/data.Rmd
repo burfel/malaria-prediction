@@ -3,7 +3,7 @@
 # WHERE DOES DATA COME FROM?
 
 | Data set                  | Description |
-| -------------------------:| -----------:|
+| :-------------------------| :-----------|
 | #1: main data set         | 46 samples from malaria patients and 23 variables |
 | #2: mice data             | parasitemia perecentage and counts of pathogen and host read maps |
 | #3: developmental stages  | measurements at different time points in the cycle |

@@ -21,10 +21,10 @@ Tropical and subtropical regions are hit the hardest, together the most affected
 [![malaria_piechart](../img/malaria_piechart.png)](../img/malaria_piechart.png)  |  
 |:---:|:---:|
 | Figure 1: Malaria [prevalence](https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html "the proportion of a population that at some point in their life have experienced this disease") on a global scale [5][INSERT LINK HERE] |
-| Figure 2: 9% of deaths globally among children under five are caused by malaria. In Africa, 20% of children under 5 die due to malaria [6][INSERT LINK HERE]. |
+| Figure 2: 9% of deaths globally among children under the age of 5 are caused by malaria; in Africa 20% of this group dies [6][INSERT LINK HERE]. |
 
-## Are there different types of Plasmodium (P)?
-Yes, there are 100 of plasmodium species but only 5 cause malaria disease in humans:
+## Are there different types of Plasmodium (P.)?
+Yes, there are 100 of plasmodium species but only 5 cause malaria disease in humans [7]:
 * P. falciparum
 * P. malariae
 * P. ovale

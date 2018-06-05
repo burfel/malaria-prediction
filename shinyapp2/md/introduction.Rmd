@@ -1,0 +1,42 @@
+# Introduction <a id="chapter-1"></a>
+
+EXPLAIN MALARIA. WHY SO INTERESTING? WHAT IMPACT.
+BIOLOGIGAL BACKGROUND.
+ 
+## Why Malaria?
+Malaria is still one of the most devastating tropical diseases killing about 500,000 people every year, mainly children under the age of 5. An additional 200 million people get infected with devastating consequences for the economics and the healtcare systems of endemic countries [INSERT REFERENCE WTO].
+
+## What is Malaria?
+Malaria is an infectious disease caused by a few plasmodium species.
+which are single-cell parasites that  get spread around by mosquitos.
+Once the plasmodium enters the bloodstream it infects and destroys mainly liver cells and red blood cells
+which causes a variety of symptoms, and sometimes even death.
+
+## Who is affected by Malaria?
+Malaria is a serious global health problem and affects millions of people, especially
+- young children under 5 years old
+- pregnant women
+- patients with other health conditions like HIV/Aids
+- travellers with no prior exposure to malaria
+Tropical and subtropical regions are hit the hardest, together the most affected regions form the malaria belt, a belt around the equator that includes most of latin america, sub-saharan africa, south asia and south-east asia.
+
+## Different types of Malaria
+There are 100 of plasmodium species but only 5 cause malaria disease in humans?
+- P falciparum
+- P vivax
+- P malariae
+- P ovale
+- P knowlesi
+
+HOW CAN THEY BE MEASURED?
+HOW ABOUT IN OTHER SPECIES?
+
+
+
+Generating double RNA-seq reads from blood cells that are then mapped back to the host and the pathogen are important ...
+The read depth, ie the percentage of reads that map to the pathogen or to the host resp, is of special interest but often difficult to predict.
+
+A web tool that predicts the likely percentage of pathogen and host reads is useful to caluclate the required number of reads.
+
+
+[INSERT FIGURES OF STATSTICS]

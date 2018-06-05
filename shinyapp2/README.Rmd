@@ -23,5 +23,3 @@ This allows the user to know the number of reads necessary for their study.
  This application was developed with [shiny](http://shiny.rstudio.com/) in 
  [R studio](https://www.rstudio.com/).
  
-
- 

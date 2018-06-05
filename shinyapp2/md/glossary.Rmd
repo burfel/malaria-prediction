@@ -1,0 +1,10 @@
+## Glossary
+
+* LM
+
+* GLM
+
+* ML
+
+* SVM
+

@@ -38,17 +38,3 @@ For more information on what data set the model was built, see chapter _Data Pre
 ###A title using myStyle.css {.bigbaseline}
 </div>
 --->
-
-% True Happiness
-
-Introduction
-------------
-
-Many have posed the question of true happiness.  In this blog post we propose to
-solve it.
-
-First Attempts
---------------
-
-The earliest attempts at attaining true happiness of course aimed at pleasure. 
-Soon, though, the downside of pleasure was revealed.

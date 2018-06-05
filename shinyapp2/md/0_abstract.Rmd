@@ -9,7 +9,10 @@
 For physicians and biologists in the malaria community it is of substantial use to know how many of the dual RNA-seq reads will map to the host, and how many will map to the pathogen in order to compute the read depth. This way, they will know how many reads are necessary in the first place for the study of interest. 
 The purpose of this project is to develop a __simple prediction tool__ that will enable a user to __estimate the likely proportion of reads__ that will map to parasite and host, given basic information on the sample. This will be of substantial use to the __malaria__ research community.
 
-![alt text][density]
+![alt text][total_reads_outcome] |
+![alt text][density]            |
+|:--------------:|:--------------:|
+Figure 1: Visualising the sample data set: Number of total reads against the percentage that map to the pathogen | Figure 2: Density plot of reads that map to the pathogen | 
 <!--
 <img src="https://github.com/burfel/malaria-prediction/blob/master/shinyapp2/img/pathogen-read-density.png"
      alt="Markdown Monster icon"
@@ -32,6 +35,7 @@ For more information on what data set the model was built, see chapter _Data Pre
   * [Chapter 9: About](#chapter-9) 
 
 [density]: ../img/pathogen_read_density.png "Density plot visualising the variation of reads that map to the pathogen"
+[total_reads_outcome]: total_reads_outcome.png "Total number of reads plotted against the percentage of these reads that map to the pathogen"
 
 <!---
 <div>

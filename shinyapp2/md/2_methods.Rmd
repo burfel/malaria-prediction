@@ -131,6 +131,8 @@ It works with almost all markdown flavours (the below blank line matters).
 ---
 
 
+A lot of combinations have been tried out.
+
 [INSERT NORMALITY PROOF]
 [INSERT LINEAR RELATIONSHIP]
 
@@ -138,6 +140,7 @@ It works with almost all markdown flavours (the below blank line matters).
 
 As an example:
 ![alt text][fit_nona_paras]
+![alt text][test6_qq_residuals]
 
 Compare them:
 ![alt text][fit_nona_paras_dens]
@@ -149,6 +152,8 @@ Outliers even more apparent in [fit_nona_total], no matter whether we use percen
 ![alt text][glm_paras_dens_logit]
 
 ![alt text][glm_paras_logit_regression]
+
+![alt text][simple_perc_regression]
 
 ![alt text][lm_paras_dens]
 ![alt text][lm_paras_log]

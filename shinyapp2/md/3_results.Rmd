@@ -1,9 +1,9 @@
-## Results
+# Results
 
 
-# Plotting residuals of the simple linear regression model
+## Plotting residuals of the simple linear regression model
 
-The colours nicely help to identify non-linearity in the data. For example, we can see that there is one extreme value of Percentage of parasitemia (highly red) where the actual values are greater than what is being predicted. There is more blue in the centre, however, indicating that the actual values are less than what is being predicted. Together, this suggests that the relationship between the variables is non-linear, and might be better modelled by including a quadratic term in the regression equation. --> Tab "Discussion"
+The colours nicely help to identify non-linearity in the data. For example, we can see that there is one extreme value of percentage of parasitemia (highly red) where the actual values are greater than what is being predicted. There is more blue in the centre, however, indicating that the actual values are less than what is being predicted. Together, this suggests that the relationship between the variables is non-linear, and might be better modelled by including a quadratic term in the regression equation. --> Tab "Discussion"
 
 # diagnostic plots # http://data.library.virginia.edu/diagnostic-plots/
 # http://data.library.virginia.edu/understanding-q-q-plots/

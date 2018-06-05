@@ -1,4 +1,4 @@
-## Methods
+# Methods
 
 1. Data Splitting
 
@@ -11,7 +11,7 @@
 5. Model Selection
 
 
-### 0. Data pre-processing
+## Data pre-processing
 
 0.1 Data Transformation for Individual Predictors
 
@@ -124,6 +124,9 @@ For the categorical predictors, such as gender and ethnicity, we re-encoded the 
 
 - data not segmented in test and training data set, since data set so small.
 
+[INSERT NORMALITY PROOF]
+[INSERT LINEAR RELATIONSHIP]
+
 ![alt text][lm_paras_dens]
 ![alt text][lm_paras_log]
 
@@ -131,7 +134,7 @@ For the categorical predictors, such as gender and ethnicity, we re-encoded the 
 ![alt text][glm_paras_dens_logit]
 
 
-[correlation]: ../img/correlation.png "Correlations martix of all 27 variables"
+[correlation]: ../img/correlation.png "Correlations martix of all 23 variables"
 
 [lm_paras_dens]: ../img/fit_nona_paras_dens_regression.png
 [lm_paras_log]: ../img/fit_nona_paras_log_regression.png

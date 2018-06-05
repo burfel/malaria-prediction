@@ -1,18 +1,21 @@
-## Discussion
+# Discussion
 
-A parametric model was appropriate in our case, as the data showed fairly normal distributions (see chapter _Methods_ [INSERT LINK HERE]) and we could identify linear relationships between variables and the response variable. Also, we had very few data available that it was not possible to divide the data into separate train and test data sets to use more elaborate Machine Learning methods, including Random Forest, Support Vector Machines (SVMs), Ridge, Lasso and Elastic net.  
+In our case a parametric model was appropriate as we could identify linear relationships between variables and the response variable and the distribution of the residuals in our linear model showed fairly normal distributions (see chapter _Methods_ [INSERT LINK HERE]). Also, there was not enough data available to use more elaborate Machine Learning (ML) methods, including Random Forest (RF), Support Vector Machines (SVMs), Ridge, Lasso or Elastic net; it would not have been meaningful to divide the data into two separate data sets (a training and a test data set).
 We wanted to avoid such models that generate highly complex, non-linear relationships between the predictors and the outcome. Also, we wanted to keep the model interpretable, more complex models quickly tend to lose interpretability and more importantly, overfit the data.
-Another aspect we considered when designing the models was which type of data data a user is most likely to have. 
+Another aspect we considered when designing the models was which type of data a user is most likely to have. 
 Once more data has become available, it might be meaningful to explore more elaborate non-parametric predictive models that are more powerful. 
 
-We might want to consider models where outliers do not have much influence on the model, eg tree-based classification models if we formulate our problem as a classification problem. Also SVM (Support Vector Machines) for classification generally disregard a part of the training set (that may be far away from the decision boundary and outside of the data mainstream) when creating a prediction equation. However, there is always a trade-off between performance on existent data set and over-fitting, and also the loss of interpretability in case of Machine Learning methods. In any case, the complex model should be properly validated.
+We might want to consider models where outliers do not have much influence on the model, eg tree-based classification models if we formulate our problem as a classification problem. Also SVMs for classification generally disregard a part of the training set (that may be far away from the decision boundary and outside of the data mainstream) when creating a prediction equation. However, there is always a trade-off between performance on existent data set and over-fitting, and also the loss of interpretability in case of ML methods. In any case, the complex model should be properly validated.
+
+However, this was not the purpose of this project.
 <!--
 Thre predictive performance, provided the complex model is properly validated, may compensate the loss in interpretation. 
 -->
-However, this was not the purpose of this project.
+
+## Outlook
 
 For more complex models, one might want to incorporate the information of the developmental stage of the disease (given by the surrogate proportion variables (SPVs) at different time points in the life cycle) as well the level of gametocytes (Gam5) representing the sexual stage of the parasite.
-The observations found in chapter _Data preparation_ [INSERT LINK HERE] might help for that.
+The observations found in chapter _Data_ [INSERT LINK HERE] might help for that.
 
 Also, additional insight might be gained by comparing different species. We developed a logistic regression on the mouse data set; however, comparison to our models behind this web tool here, turned out to be difficult as it was not based on the same measurements and very few data was available. 
 

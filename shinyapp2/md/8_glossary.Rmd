@@ -5,7 +5,9 @@
 | LM                        | Linear model|
 | GLM                       | Generalized linear model |
 | ML                        | Machine Learning |
+| RF                        | Random Forest |
 | SVM                       | Support Vector Machines |
+| SPVs                      | surrogate proportion variables |
 | hrs                       | hours       |
 | outcome                   | response variable, here: the percentage of reads that map to the pathogen |
 | P.                        | here: Plasmodium |

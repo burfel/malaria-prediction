@@ -1,4 +1,4 @@
-## Conclusion
+# Conclusion
 
 Based on the given data sets of dual RNA-seq reads and different measurements of the malaria patients, we developed a simple general linear model that appropriately predicts the percentage of reads that will map to the host and to the pathogen. [GIVE SOME STATISTICS HERE]
 

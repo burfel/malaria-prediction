@@ -9,6 +9,10 @@
 
 [4] Kuhn M and Johnson K. Applied Predictive Modeling. Springer. 2013. 
 
-[5]
+[5] https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html
+
+[6] https://www.gla.ac.uk/myglasgow/library/collections/virtualdisplays/worldmalariaday/whatismalaria/
+
+[7] http://www.who.int/malaria/publications/world-malaria-report-2017/en/
 
 

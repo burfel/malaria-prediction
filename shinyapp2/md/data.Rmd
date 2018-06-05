@@ -1,6 +1,6 @@
-## Data
+# Data
 
-# Overview of the data sets used
+## Overview of the data sets used
 
 | Data set                  | Description |
 | --------------------------| ------------|
@@ -11,7 +11,7 @@
 ### 1. Main data set
 The data that was used consisted of 46 samples from malaria patients and 24 variables (see figure 1 for a preview [INSERT LINK HERE]). As various values were missing (see figure 2 and figure 3 below), we only took the samples that were complete. However, only 21 samples were complete on all 24 variables. Therefore, we only discarded the non-complete samples after variable selection (see chapter _Methods_ [INSERT LINK HERE]), ie the ones that were not complete on the variables that we identified as most explaining. This complete data set containing 40 samples and for 6 important variables (Parasitemia percentage, parasitemia density, total white blood cell count, as well as lymphocytes, monocytes and neutrophils counts) and the repsonse variable (percentage of reads that map to the pathogen, referred to as the _outcome_ here). It is important to note, that for computing the latter we assumed a unique map of every read to either the pathogen or the host. This was an important assumption and a constraint of our model(s).
 
-### 2. Two more data sets were available:
+### 2. Two other data sets
 One consisted of RNA Seq data from mice containing 33 samples. However, parasitemia percentage was the only variable available for prediction. Additionally, it contained many zero values that might have resulted from measurement errors or due to actual non-infected mice. 
 Here, the logit transformation proved to be useful as the residuals of a linear model showed highly non-normal behaviour. A logit regression model has been developed and is available, please [contact us](mailto:felicia.burtscher17@imperial.ac.uk).
 

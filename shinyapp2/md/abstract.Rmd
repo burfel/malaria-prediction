@@ -11,6 +11,7 @@
 ![alt text][density]
 
 
+
 <!--
 <img src="https://github.com/burfel/malaria-prediction/blob/master/shinyapp2/img/pathogen-read-density.png"
      alt="Markdown Monster icon"

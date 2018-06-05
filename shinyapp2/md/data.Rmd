@@ -11,7 +11,7 @@
 ### 1. Main data set
 The data that was used consisted of 46 samples from malaria patients and 24 variables (see figure 1 for a preview [INSERT LINK HERE]). As various values were missing (see figure 2 and figure 3 below), we only took the samples that were complete. However, only 21 samples were complete on all 24 variables. Therefore, we only discarded the non-complete samples after variable selection (see chapter _Methods_ [INSERT LINK HERE]), ie the ones that were not complete on the variables that we identified as most explaining. This complete data set containing 40 samples and for 6 important variables (Parasitemia percentage, parasitemia density, total white blood cell count, as well as lymphocytes, monocytes and neutrophils counts) and the repsonse variable (percentage of reads that map to the pathogen, referred to as the _outcome_ here). It is important to note, that for computing the latter we assumed a unique map of every read to either the pathogen or the host. This was an important assumption and a constraint of our model(s).
 
-[![missingData] | [![missingData2] | 
+[![missingData](../img/missingData.png)](../img/missingData.png)  | [![missingData2](../img/missingData2.png)](../img/missingData2.png) | 
 |:---:|:---:|
 | Figure 1: Missing values displayed over the data set matrix | Figure 2: Rank of variables with missing values |
 
@@ -38,8 +38,11 @@ gg_miss_var(dat[,-c(23,24,25,27)])
 ```
 --->
 
+<!---
+![alt text][missing]
+![alt text][missing2]
 
 [missing]: ../img/missingData.png "Missing values in the data set"
 
 [missing2]: ../img/missingData2.png "Missing values in the data set"
-
+--->

@@ -53,7 +53,7 @@ sidebar <- dashboardSidebar(
     menuItem("Results", tabName = "results", icon = icon("fa fa-chart-bar"), badgeLabel = "for user", badgeColor = "green"),
     menuItem("Discussion", tabName = "discussion", icon = icon("fa fa-circle")),
     menuItem("Conclusion", tabName = "conclusion", icon = icon("fa fa-circle")),
-    menuItem("Raw Data", tabName = "data", icon = icon("fa fa-circle")),
+    menuItem("Data", tabName = "data", icon = icon("fa fa-circle")),
     menuItem("References", tabName = "references", icon = icon("fa fa-circle")),
     menuItem("Glossary", tabName = "glossary", icon = icon("fa fa-circle")),
     menuItem("About", tabName = "about", icon = icon("file-code-o")#, href = "https://github.com/burfel/malaria-prediction"
@@ -299,7 +299,7 @@ body <- dashboardBody(
     tabItem(tabName = "Abstract",
             fluidPage(
               box(width = 12,status = "success",
-                  includeMarkdown("md/abstract.Rmd")
+                  includeMarkdown("md/0_abstract.Rmd")
                   )
               # actionButton(inputId='read-more1', label="Learn More",
               #              icon = icon("th"),
@@ -314,7 +314,7 @@ body <- dashboardBody(
     tabItem(tabName = "Introduction",
             fluidPage(
               box(width = 12,status = "success",
-                  shiny::includeMarkdown("md/introduction.Rmd"))
+                  shiny::includeMarkdown("md/1_introduction.Rmd"))
             )
     )
     # 
@@ -322,7 +322,7 @@ body <- dashboardBody(
     # tabItem(tabName = "Methods",
     #         fluidPage(
     #           box(width = 12,status = "success",
-    #               shiny::includeMarkdown("md/methods.Rmd"))
+    #               shiny::includeMarkdown("md/2_methods.Rmd"))
     #         )
     # ),
     # 
@@ -330,7 +330,7 @@ body <- dashboardBody(
     # tabItem(tabName = "Discussion",
     #         fluidPage(
     #           box(width = 12,status = "success",
-    #               shiny::includeMarkdown("md/discussion.Rmd"))
+    #               shiny::includeMarkdown("md/3_discussion.Rmd"))
     #         )
     #         
     #         # ##########
@@ -367,7 +367,7 @@ body <- dashboardBody(
     # tabItem(tabName = "Conclusion",
     #         fluidPage(
     #           box(width = 12,status = "success",
-    #               shiny::includeMarkdown("md/conclusion.Rmd"))
+    #               shiny::includeMarkdown("md/5_conclusion.Rmd"))
     #         )
     # ),
     # 
@@ -375,7 +375,7 @@ body <- dashboardBody(
     # tabItem(tabName = "Data preparation",
     #         fluidPage(
     #           box(width = 12,status = "success",
-    #               shiny::includeMarkdown("md/data.Rmd"))
+    #               shiny::includeMarkdown("md/6_data.Rmd"))
     #         )
     # ),
     # 
@@ -383,7 +383,7 @@ body <- dashboardBody(
     # tabItem(tabName = "References",
     #         fluidPage(
     #           box(width = 12,status = "success",
-    #               shiny::includeMarkdown("md/references.Rmd"))
+    #               shiny::includeMarkdown("md/7_references.Rmd"))
     #         )
     # ),
     # 
@@ -391,7 +391,7 @@ body <- dashboardBody(
     # tabItem(tabName = "Glossary",
     #         fluidPage(
     #           box(width = 12,status = "success",
-    #               shiny::includeMarkdown("md/glossary.Rmd"))
+    #               shiny::includeMarkdown("md/8_glossary.Rmd"))
     #         )
     # ),
     # 

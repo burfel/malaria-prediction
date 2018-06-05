@@ -26,7 +26,7 @@ For more information on what data set the model was built, see chapter _Data Pre
   * [Chapter 3: Results](#chapter-3) 
   * [Chapter 4: Discussion](#chapter-4) 
   * [Chapter 5: Conclusion](#chapter-5) 
-  * [Chapter 6: Data preparation](#chapter-6) 
+  * [Chapter 6: Data](#chapter-6) 
   * [Chapter 7: References](#chapter-7) 
   * [Chapter 8: Glossary](#chapter-8) 
   * [Chapter 9: About](#chapter-9) 

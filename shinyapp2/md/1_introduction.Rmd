@@ -4,7 +4,7 @@
 Malaria is still a serious global health problem killing about 500,000 people every year, more than any other infectious disease except tuberculosis, mainly children under the age of 5. An additional 200 million people get infected with devastating consequences for the economics and the healtcare systems of endemic countries [5] [INSERT LINK HERE].
 
 ## What is Malaria?
-Malaria is an infectious disease caused by a few plasmodium species which are single-cell parasites that  get spread around by mosquitos.
+Malaria is an infectious disease caused by a few plasmodium species (see below) which are single-cell parasites that  get spread around by mosquitos.
 Once the plasmodium enters the bloodstream it infects and destroys mainly liver cells and red blood cells
 which causes a variety of symptoms, and sometimes even death.
 
@@ -23,13 +23,13 @@ Tropical and subtropical regions are hit the hardest, together the most affected
 | Figure 1: Malaria [prevalence](https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html "the proportion of a population that at some point in their life have experienced this disease") on a global scale [5][INSERT LINK HERE] |
 | Figure 2: 9% of deaths globally among children under five are caused by malaria. In Africa, 20% of children under 5 die due to malaria [6][INSERT LINK HERE]. |
 
-## Are there different types of Malaria?
+## Are there different types of Plasmodium (P)?
 Yes, there are 100 of plasmodium species but only 5 cause malaria disease in humans:
-* P falciparum
-* P vivax
-* P malariae
-* P ovale
-* P knowlesi
+* P. falciparum
+* P. malariae
+* P. ovale
+* P. vivax
+* P. knowlesi (normally infects animals, but occasionally also humans)
 
 ## Motivation for the project
 To fight this devasating disease, scientists and physicians in the malaria community generate millions of reads from malaria patient blood samples to make diagnoses and push the research in this field forward. These RNA-seq reads are then mapped back to the host and the pathogen; here the read depth, ie number of reds that map to the pathogen or to the host relative to the respective genome, is of special interest but often difficult to predict.

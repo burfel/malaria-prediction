@@ -8,4 +8,5 @@
 | SVM                       | Support Vector Machines |
 | hrs                       | hours       |
 | outcome                   | response variable, here: the percentage of reads that map to the pathogen |
+| P.                        | here: Plasmodium |
 

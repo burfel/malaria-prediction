@@ -33,7 +33,7 @@
   * [Chapter 8: Glossary](#chapter-8) 
   * [Chapter 9: About](#chapter-9) 
 
-[density]: ../img/pathogen-read-density.png "Density plot visualising the variation of reads that map to the pathogen"
+[density]: img/pathogen-read-density.png "Density plot visualising the variation of reads that map to the pathogen"
 
 <!---
 <div>

@@ -30,12 +30,14 @@ However, we can no longer interpret the individual values since the data are no 
 In the model presented in tab "Results" (INSERT HYPERLINK), we did not center or scale the data.
 
 * skewness transformation
-..to remove distributional skewnes.
+..to remove distributional skewness.
 As the data was found to be skewed, ie not symmetric, especially .... (see tab "Raw Data" INSERT HYPERLINK) we applied different transformations (log, square root, inverse) to remove the skew, ie so that the probability of falling on either side of the distribution's mean is roughly equal. 
 
 We found the log transformation the most suitable to the given data set. The distribution is not entirely symmetric but the transformed data are better behaved than when they are in the original units.
 
 INSERT PLOTS HISTOGRAM PLOTS HERE (P. 32)
+
+[! alt text!] [fit_]
 
 Additionally, we used statistical methods as proposed in INSERT REFERENCE HERE to empirically identify an appropriate transformation. Box and Cox (1964) proposed a __family__ of transformations that are indexed by a parameter, denoted as LAMBDA. INSERT FORMULA HERE. 
 
@@ -97,10 +99,13 @@ We remove these __collinear__ predictor variables, ie variables that have a subs
 
 Figure ... shows the covariance matrix of the given data set.
 
-INSERT CORRELATION MATRIX
+![alt text][correlation]
+INSERT CORRELATION MATRIX NON-CLUSTERED
+
 Each pairwise correlation is computed from the data set and coloured according to its magnitude.
 This matrix is symmetric: the top and bottom diagonals show identical information. Dark blue colours indicate string positive correlations, dark red is used for strong negative correlations; white implies no empirical relationship between the predictors.
 
+![alt text][correlation]
 INSERT CORRELATION MATRIX CLUSTERED
 In this figure, the predictor variables have been grouped using a clustering technique (Everitt et al. 2011) so that that collinear groups of predictors are adjacent to one another. CHANGE THAT. Looking along the diagonal, there are blocks of strong positive correlations that indicate "clusters" of collinearity. .....
 
@@ -119,10 +124,20 @@ For the categorical predictors, such as gender and ethnicity, we re-encoded the 
 
 - data not segmented in test and training data set, since data set so small.
 
+![alt text][lm_paras_dens]
+![alt text][lm_paras_log]
 
-- 
+![alt text][glm_paras_dens]
+![alt text][glm_paras_dens_logit]
 
 
+[correlation]: ../img/correlation.png "Correlations martix of all 27 variables"
+
+[lm_paras_dens]: ../img/fit_nona_paras_dens_regression.png
+[lm_paras_log]: ../img/fit_nona_paras_log_regression.png
+
+[glm_paras_dens]: ../img/glm_paras_dens_regression.png
+[glm_paras_dens_logit]: ../img/glm_paras_dens_logit_regression.png
 
 
  

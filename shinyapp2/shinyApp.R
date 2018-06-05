@@ -540,7 +540,7 @@ observeEvent(input$go_simple, {
     # 
     # # plot the statistics, OUTLIERS 35, 39 -- both in UM group? -- kept them -- BUT MIGHT BE WORTH TRYING WITHOUT THEM
     par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-    plot(fit.nona.total, height=12)  # Plot the model information
+    plot(fit.nona.total)  # Plot the model information
   })
 
 # fit.nona.total.L

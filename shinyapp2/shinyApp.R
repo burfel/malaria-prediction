@@ -274,15 +274,15 @@ body <- dashboardBody(
                           #     
                           #   ),
                           tabPanel("Output",
-                                   verbatimTextOutput("comp_simple")
-                                   # conditionalPanel(
-                                   #   condition = "input.ptype2 == 'ppercentage'",
-                                   #    textOutput("comp_simple")
-                                   # ),
-                                   # conditionalPanel(
-                                   #   condition = "input.ptype2 == 'pdensity'",
-                                   #   textOutput("comp_simple_dens")
-                                   # )
+                                   # verbatimTextOutput("comp_simple"),
+                                   conditionalPanel(
+                                      condition = "input.ptype2 == 'ppercentage'",
+                                      textOutput("comp_simple")
+                                   ),
+                                   conditionalPanel(
+                                      condition = "input.ptype2 == 'pdensity'",
+                                      textOutput("comp_simple_dens")
+                                   )
                           ),
                           tabPanel("Summary", 
                                    textOutput("summary_total")

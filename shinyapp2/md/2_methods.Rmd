@@ -134,14 +134,33 @@ It works with almost all markdown flavours (the below blank line matters).
 [INSERT NORMALITY PROOF]
 [INSERT LINEAR RELATIONSHIP]
 
-![alt text][lm_paras_dens]
-![alt text][lm_paras_log]
+![alt text][correlation]
+
+As an example:
+![alt text][fit_nona_paras]
+
+Compare them:
+![alt text][fit_nona_paras_dens]
+![alt text][fit_nona_paras_dens_log]
+
+Outliers even more apparent in [fit_nona_total], no matter whether we use percentage or density of parasetemia 
 
 ![alt text][glm_paras_dens]
 ![alt text][glm_paras_dens_logit]
 
+![alt text][glm_paras_logit_regression]
+
+![alt text][lm_paras_dens]
+![alt text][lm_paras_log]
+
+
 
 [correlation]: ../img/correlation.png "Correlations martix of all 23 variables"
+
+[fit_nona_paras]: ../img/fit_nona_paras.png "Checking the linear model assumptions"
+
+[fit_nona_paras_dens]: ../img/fit_nona_paras_dens.png "Linear model with parasitemia density without transformation of the response variable"
+[fit_nona_paras_dens_log]: ../img/fit_nona_paras_dens_log.png "Linear model with parasitemia density with transformation of the response variable"
 
 [lm_paras_dens]: ../img/fit_nona_paras_dens_regression.png
 [lm_paras_log]: ../img/fit_nona_paras_log_regression.png

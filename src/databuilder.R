@@ -1356,16 +1356,16 @@ plot(glm.neutro.dens.logit)
 # # 2 missing values in mean cell and parasite clones..)
 # 
 # library(visdat)
-# ###png("GITHUB/shinyapp2/img/missingData.#png")
+# ###png("shinyapp2/img/missingData.#png")
 # vis_miss(dat[,-c(23,24,25,27)])
 # #dev.off()
 # 
-# # ##png("GITHUB/shinyapp2/img/missingData2.#png")
+# # ##png("shinyapp2/img/missingData2.#png")
 # # gg_miss_var(dat[,-c(23,24,25,27)])
 # # dev.off
 # 
 # library(naniar)
-# ##png("GITHUB/shinyapp2/img/parasitemia.#png")
+# ##png("shinyapp2/img/parasitemia.#png")
 # ggplot(dat,
 #        aes(x = Percentage.parasitemia,
 #            y = outcome)) +

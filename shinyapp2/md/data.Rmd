@@ -2,13 +2,13 @@
 
 # WHERE DOES DATA COME FROM?
 
-| Option | Description |
+| Data set | Description |
 | ------ | ----------- |
-| data set 1: main data set   | 46 samples from malaria patients and 23 variables |
-
-| data set 2: mice data | parasitemia perecentage and counts of pathogen and host read maps |
-
-| data set 3: developmental stages  | measurements at different time points in the cycle |
+| #1: main data set   | 46 samples from malaria patients and 23 variables |
+| ------ | ----------- |
+| #2: mice data | parasitemia perecentage and counts of pathogen and host read maps |
+| ------ | ----------- |
+| #3: developmental stages  | measurements at different time points in the cycle |
 
 ### 1. Main data set
 #### The data that was used consisted of 46 samples from malaria patients and 23 variables (see figure 1 for a preview [INSERT LINK HERE]). As various values were missing (see figure 2 and figure 3 [INSERT LINK HERE]), we only took the samples that were complete. However, only 21 samples were complete on all 23 variables. Therefore, we only discarded the non-complete samples after variable selection (see chapter _Methods_ [INSERT LINK HERE]), ie we discarded the samples that were not complete on the variables that we identified as most explaining. This complete data set containing 40 samples and for 6 important variables (Parasitemia percentage, parasitemia density, total white blood cell count, lymphocyte percentage, monocyte percentage, and neutrophil percentage) and the repsonse variable (percentage of reads that map to the pathogen).

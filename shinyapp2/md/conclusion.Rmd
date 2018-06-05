@@ -6,4 +6,4 @@ The model was kept simple in order for the malaria community to be easy to use a
 
 We hope that this webtool will turn out to be useful for the malaria community.
 
-If you have any further questions, suggestions and feedback, please [email us](mailto:mailto:felicia.burtscher17@imperial.ac.uk).
+If you have any further questions, suggestions and feedback, please [email us](mailto:felicia.burtscher17@imperial.ac.uk).

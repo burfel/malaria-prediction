@@ -1383,13 +1383,13 @@ plot(glm.total.counts.dens.logit)
 # # 2 missing values in mean cell and parasite clones..)
 # 
 # library(visdat)
-# ###png("shinyapp2/img/missingData.#png")
+# png("shinyapp2/img/missingData.png")
 # vis_miss(dat[,-c(23,24,25,27)])
-# #dev.off()
+# dev.off()
 # 
-# # ##png("shinyapp2/img/missingData2.#png")
-# # gg_miss_var(dat[,-c(23,24,25,27)])
-# # dev.off
+# png("shinyapp2/img/missingData2.png")
+# gg_miss_var(dat[,-c(23,24,25,27)])
+# dev.off
 # 
 # library(naniar)
 # ##png("shinyapp2/img/parasitemia.#png")

@@ -1,10 +1,14 @@
 ## Glossary
 
-* LM
+* LM 
 
 * GLM
 
 * ML
 
 * SVM
+
+* hrs -- hours
+
+* outcome -- the response variable, here the percentage of reads that map to the pathogen
 

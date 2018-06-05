@@ -734,80 +734,107 @@ plot(glm.total.dens.logit)
 # MODEL.log: -1.238e+00 + 1.676e-06*dat.nona$Parasite.density...µl. + (-6.638e-02)*dat.nona$Total.White.Cell.Count..x109.L.
 
 
-# (2b) GLM COMPLEX | PERCENTAGE | LYMPHO
-glm.lympho <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.lymphocytes, family=quasibinomial, data=dat.nona)
-summary(glm.lympho)
+# (2a) GLM COMPLEX | PERCENTAGE | DIFFERENT TYPES OF WHITE BLOOD CELLS COUNTS
+glm.total.counts <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Lymphocyte.count...x109.L. + dat.nona$Monocyte.count...x109.L. + dat.nona$Neutrophil.count...x109.L., family=quasibinomial, data=dat.nona)
+summary(glm.total.counts)
 par(mfrow = c(2, 2))
-plot(glm.lympho)
-# MODEL: -1.77229 + 0.07545*dat.nona$Percentage.parasitemia + (-0.01056)*dat.nona$Percentage.lymphocytes
-glm.lympho.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.lymphocytes, family=binomial(link = 'logit'), data=dat.nona)
-summary(glm.lympho.logit)
+plot(glm.total.counts)
+# MODEL: -1.06792 + 0.06155*dat.nona$Percentage.parasitemia + (-0.58256)*dat.nona$Lymphocyte.count...x109.L. + 2.89776*dat.nona$Monocyte.count...x109.L. + (-0.16340)*dat.nona$Neutrophil.count...x109.L.
+glm.total.counts.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Lymphocyte.count...x109.L. + dat.nona$Monocyte.count...x109.L. + dat.nona$Neutrophil.count...x109.L., family=binomial(link = 'logit'), data=dat.nona)
+summary(glm.total.counts.logit)
 par(mfrow = c(2, 2))
-plot(glm.lympho.logit)
-# MODEL.log: -1.772e+00 + 7.545e-02*dat.nona$Percentage.parasitemia + (-1.056e-02)*dat.nona$Percentage.lymphocytes
+plot(glm.total.counts.logit)
+# MODEL.log: -1.068e+00 + 6.155e-02*dat.nona$Percentage.parasitemia + (-5.826e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.898e+00)*dat.nona$Monocyte.count...x109.L. + (-1.634e-01)*dat.nona$Neutrophil.count...x109.L.
 
 
-# (2b) GLM COMPLEX | DENSITY | LYMPHO
-glm.lympho.dens <-glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.lymphocytes, family=quasibinomial, data=dat.nona)
-summary(glm.lympho.dens)
+# (2a) GLM COMPLEX | DENSITY | DIFFERENT TYPES OF WHITE BLOOD CELLS COUNTS
+glm.total.counts.dens <-glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Lymphocyte.count...x109.L. + dat.nona$Monocyte.count...x109.L. + dat.nona$Neutrophil.count...x109.L., family=quasibinomial, data=dat.nona)
+summary(glm.total.counts.dens)
 par(mfrow = c(2, 2))
-plot(glm.lympho.dens)
-# MODEL: -1.939e+00 + 2.125e-06*dat.nona$Parasite.density...µl. + (-3.870e-03)*dat.nona$Percentage.lymphocytes
-glm.lympho.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.lymphocytes, family=binomial(link = 'logit'), data=dat.nona)
-summary(glm.lympho.dens.logit)
+plot(glm.total.counts.dens)
+# MODEL: -1.129e+00 + 1.744e-06*dat.nona$Parasite.density...µl. + (-4.876e-01)*dat.nona$Lymphocyte.count...x109.L. + 2.639e+00*dat.nona$Monocyte.count...x109.L. + (-1.666e-01)*dat.nona$Neutrophil.count...x109.L.
+glm.total.counts.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Lymphocyte.count...x109.L. + dat.nona$Monocyte.count...x109.L. + dat.nona$Neutrophil.count...x109.L., family=binomial(link = 'logit'), data=dat.nona)
+summary(glm.total.counts.dens.logit)
 par(mfrow = c(2, 2))
-plot(glm.lympho.dens.logit)
-# MODEL.log: -1.939e+00 + 2.125e-06*dat.nona$Parasite.density...µl. + (-3.870e-03)*dat.nona$Percentage.lymphocytes
+plot(glm.total.counts.dens.logit)
+# MODEL.log: -1.129e+00 + 1.744e-06*dat.nona$Parasite.density...µl. + (-4.876e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.639e+00)*dat.nona$Monocyte.count...x109.L. + (-1.666e-01)*dat.nona$Neutrophil.count...x109.L.
 
 
-# (2b) GLM COMPLEX | PERCENTAGE | MONO
-glm.mono <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.monocytes, family=quasibinomial, data=dat.nona)
-summary(glm.mono)
-par(mfrow = c(2, 2))
-plot(glm.mono)
-# MODEL: -2.02525 + 0.06461*dat.nona$Percentage.parasitemia + 0.01143*dat.nona$Percentage.monocytes
-glm.mono.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.monocytes, family=binomial(link = 'logit'), data=dat.nona)
-summary(glm.mono.logit)
-par(mfrow = c(2, 2))
-plot(glm.mono.logit)
-# MODEL.logL: -2.025e+00 + 6.461e-02*dat.nona$Percentage.parasitemia + 1.143e-02*dat.nona$Percentage.monocytes
-
-# (2b) GLM COMPLEX | DENSITY | MONO
-glm.mono.dens <-glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.monocytes, family=quasibinomial, data=dat.nona)
-summary(glm.mono.dens)
-par(mfrow = c(2, 2))
-plot(glm.mono.dens)
-# MODEL: -2.226e+00 + 1.950e-06*dat.nona$Parasite.density...µl. + 3.953e-02*dat.nona$Percentage.monocytes
-glm.mono.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.monocytes, family=binomial(link = 'logit'), data=dat.nona)
-summary(glm.mono.dens.logit)
-par(mfrow = c(2, 2))
-plot(glm.mono.dens.logit)
-# MODEL.logL: -2.226e+00 + 1.951e-06*dat.nona$Parasite.density...µl. + 3.953e-02*dat.nona$Percentage.monocytes
-
-
-# (2b) GLM COMPLEX | PERCENTAGE | NEUTRO
-glm.neutro <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils, family=quasibinomial, data=dat.nona)
-summary(glm.neutro)
-par(mfrow = c(2, 2))
-plot(glm.neutro)
-# MODEL: -2.581276 + 0.073414*dat.nona$Percentage.parasitemia + 0.008204*dat.nona$Percentage.neutrophils
-glm.neutro.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils, family=binomial(link = 'logit'), data=dat.nona)
-summary(glm.neutro.logit)
-par(mfrow = c(2, 2))
-plot(glm.neutro.logit)
-# MODEL.log: -2.581e+00 + 7.341e-02*dat.nona$Percentage.parasitemia + 8.204e-03*dat.nona$Percentage.neutrophils
-
-# (2b) GLM COMPLEX | DENSITY | NEUTRO
-glm.neutro.dens <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.neutrophils, family=quasibinomial, data=dat.nona)
-summary(glm.neutro.dens)
-par(mfrow = c(2, 2))
-plot(glm.neutro.dens)
-# MODEL: -2.238e+00 + 2.106e-06*dat.nona$Parasite.density...µl. + 3.036e-03*dat.nona$Percentage.neutrophils
-glm.neutro.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.neutrophils, family=binomial(link = 'logit'), data=dat.nona)
-summary(glm.neutro.dens.logit)
-par(mfrow = c(2, 2))
-plot(glm.neutro.dens.logit)
-# MODEL.log: -2.238e+00 + 2.106e-06*dat.nona$Parasite.density...µl. + 3.036e-03*dat.nona$Percentage.neutrophils
+# #### NOT NEEDED ANYMORE
+# # (2b) GLM COMPLEX | PERCENTAGE | LYMPHO
+# glm.lympho <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.lymphocytes, family=quasibinomial, data=dat.nona)
+# summary(glm.lympho)
+# par(mfrow = c(2, 2))
+# plot(glm.lympho)
+# # MODEL: -1.77229 + 0.07545*dat.nona$Percentage.parasitemia + (-0.01056)*dat.nona$Percentage.lymphocytes
+# glm.lympho.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.lymphocytes, family=binomial(link = 'logit'), data=dat.nona)
+# summary(glm.lympho.logit)
+# par(mfrow = c(2, 2))
+# plot(glm.lympho.logit)
+# # MODEL.log: -1.772e+00 + 7.545e-02*dat.nona$Percentage.parasitemia + (-1.056e-02)*dat.nona$Percentage.lymphocytes
+# 
+# 
+# # (2b) GLM COMPLEX | DENSITY | LYMPHO
+# glm.lympho.dens <-glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.lymphocytes, family=quasibinomial, data=dat.nona)
+# summary(glm.lympho.dens)
+# par(mfrow = c(2, 2))
+# plot(glm.lympho.dens)
+# # MODEL: -1.939e+00 + 2.125e-06*dat.nona$Parasite.density...µl. + (-3.870e-03)*dat.nona$Percentage.lymphocytes
+# glm.lympho.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.lymphocytes, family=binomial(link = 'logit'), data=dat.nona)
+# summary(glm.lympho.dens.logit)
+# par(mfrow = c(2, 2))
+# plot(glm.lympho.dens.logit)
+# # MODEL.log: -1.939e+00 + 2.125e-06*dat.nona$Parasite.density...µl. + (-3.870e-03)*dat.nona$Percentage.lymphocytes
+# 
+# 
+# # (2b) GLM COMPLEX | PERCENTAGE | MONO
+# glm.mono <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.monocytes, family=quasibinomial, data=dat.nona)
+# summary(glm.mono)
+# par(mfrow = c(2, 2))
+# plot(glm.mono)
+# # MODEL: -2.02525 + 0.06461*dat.nona$Percentage.parasitemia + 0.01143*dat.nona$Percentage.monocytes
+# glm.mono.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.monocytes, family=binomial(link = 'logit'), data=dat.nona)
+# summary(glm.mono.logit)
+# par(mfrow = c(2, 2))
+# plot(glm.mono.logit)
+# # MODEL.logL: -2.025e+00 + 6.461e-02*dat.nona$Percentage.parasitemia + 1.143e-02*dat.nona$Percentage.monocytes
+# 
+# # (2b) GLM COMPLEX | DENSITY | MONO
+# glm.mono.dens <-glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.monocytes, family=quasibinomial, data=dat.nona)
+# summary(glm.mono.dens)
+# par(mfrow = c(2, 2))
+# plot(glm.mono.dens)
+# # MODEL: -2.226e+00 + 1.950e-06*dat.nona$Parasite.density...µl. + 3.953e-02*dat.nona$Percentage.monocytes
+# glm.mono.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.monocytes, family=binomial(link = 'logit'), data=dat.nona)
+# summary(glm.mono.dens.logit)
+# par(mfrow = c(2, 2))
+# plot(glm.mono.dens.logit)
+# # MODEL.logL: -2.226e+00 + 1.951e-06*dat.nona$Parasite.density...µl. + 3.953e-02*dat.nona$Percentage.monocytes
+# 
+# 
+# # (2b) GLM COMPLEX | PERCENTAGE | NEUTRO
+# glm.neutro <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils, family=quasibinomial, data=dat.nona)
+# summary(glm.neutro)
+# par(mfrow = c(2, 2))
+# plot(glm.neutro)
+# # MODEL: -2.581276 + 0.073414*dat.nona$Percentage.parasitemia + 0.008204*dat.nona$Percentage.neutrophils
+# glm.neutro.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils, family=binomial(link = 'logit'), data=dat.nona)
+# summary(glm.neutro.logit)
+# par(mfrow = c(2, 2))
+# plot(glm.neutro.logit)
+# # MODEL.log: -2.581e+00 + 7.341e-02*dat.nona$Percentage.parasitemia + 8.204e-03*dat.nona$Percentage.neutrophils
+# 
+# # (2b) GLM COMPLEX | DENSITY | NEUTRO
+# glm.neutro.dens <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.neutrophils, family=quasibinomial, data=dat.nona)
+# summary(glm.neutro.dens)
+# par(mfrow = c(2, 2))
+# plot(glm.neutro.dens)
+# # MODEL: -2.238e+00 + 2.106e-06*dat.nona$Parasite.density...µl. + 3.036e-03*dat.nona$Percentage.neutrophils
+# glm.neutro.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.neutrophils, family=binomial(link = 'logit'), data=dat.nona)
+# summary(glm.neutro.dens.logit)
+# par(mfrow = c(2, 2))
+# plot(glm.neutro.dens.logit)
+# # MODEL.log: -2.238e+00 + 2.106e-06*dat.nona$Parasite.density...µl. + 3.036e-03*dat.nona$Percentage.neutrophils
 
 
 # ######################

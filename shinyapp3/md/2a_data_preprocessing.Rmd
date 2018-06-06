@@ -1,4 +1,3 @@
-<link href="myStyle.css" rel="stylesheet"></link>
 ## Data pre-processing
 
 ### Centering and scaling

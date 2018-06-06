@@ -13,6 +13,7 @@ This approach has a couple of advantages
 
 ---
 **Note:**
+
 However, neither zeros nor ones can be included in a logit, since the logit transformation is not defined for those values. 
 A strategy for handling proportions data in which zeros and ones may appear as well as intermediate values was proposed by Papke and Wooldridge (1996). We did not face this problem in the given data set. 
 

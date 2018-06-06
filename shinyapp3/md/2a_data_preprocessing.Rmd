@@ -1,9 +1,10 @@
+<link href="myStyle.css" rel="stylesheet"></link>
 ## Data pre-processing
 
-#### Centering and scaling
-Often, individual predictors are transformed in the pre-processing of the data when they differ a lot in their magnitude of order. This includes [centering]("ie the average predictor value is substracted from all the values. Thus the predictor has a zero mean."), [scaling]("ie make the values have a common standard deviation of one").
+### Centering and scaling
+Often, individual predictors are transformed in the pre-processing of the data when they differ a lot in their magnitude of order. This includes **centering**, ie the average predictor value is substracted from all the values and thus the predictor has a zero mean, and **scaling**, ie make the values have a common standard deviation of one.
 
-As [standardising]("centering and scaling") predictor variables brings all the coefficients on the same scale, the size of the point estimates can give a rough idea of which predictor variables have the largest effect on the outcome variable. It also avoids regression coefficients that are on a very tiny scale. Also, these methods are often used to used to improve the numerical stability of some calculations [4][INSERT REFERENCE LINK HERE]. 
+As *standardising**, ie centering and scaling, predictor variables brings all the coefficients on the same scale, the size of the point estimates can give a rough idea of which predictor variables have the largest effect on the outcome variable. It also avoids regression coefficients that are on a very tiny scale. Also, these methods are often used to used to improve the numerical stability of some calculations [4][INSERT REFERENCE LINK HERE]. 
 ---
 **Note:**
 Shifting or scaling the variables does not change the model in terms of model fit, since the coefficients in a linear regression are linked to the correlation between variables. 

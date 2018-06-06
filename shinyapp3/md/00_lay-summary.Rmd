@@ -3,4 +3,4 @@
 ## Can we predict parasite read depth in whole blood Dual RNA-seq data from malaria patients?
 
 The following website provides a tool for physicians and biologists working in malaria research to assisst them to produce the right amount of total DNA sequences of a human blood cell sample necessary for their analysis; here we make use of the fact that the samples contain both white blood cells and malaria parasites.
-The web tool does this by computing the average percentage of reads that map to the host and to the pathogen genome based on some information of the patient, including the number of parasites and the number of white blood cells in the sample. 
+The web tool does this by computing the average percentage of reads that map to the host and to the pathogen genome based on some information of the sample, including the number of parasites and the number of white blood cells. 

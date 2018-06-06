@@ -510,11 +510,11 @@ glm_complex_counts_dens <- function(){
 
 # COMPUTE PREDICTION SIMPLE MODEL ----
 output$comp_simple <- renderText({
-  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", glm_simple(), '<br/>', "Percentage of reads that will map to host: ", 1 - glm_simple())
+  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", 100*glm_simple(), '<br/>', "Percentage of reads that will map to host: ", 100*(1 - glm_simple()))
 })
 
 output$comp_simple_dens <- renderText({
-  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", glm_simple_dens(), '<br/>', "Percentage of reads that will map to host: ", 1 - glm_simple_dens())
+  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", 100*glm_simple_dens(), '<br/>', "Percentage of reads that will map to host: ", 100*(1 - glm_simple_dens()))
 })
   
 # PLOT SIMPLE MODEL SUMMARY ----
@@ -544,19 +544,19 @@ output$summary_simple_dens <- renderUI({
 
 # COMPUTE PREDICTION COMPLEX MODEL ----
 output$comp_complex <- renderText({
-  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", glm_complex(), '<br/>', "Percentage of reads that will map to host: ", 1 - glm_complex())
+  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", 100*glm_complex(), '<br/>', "Percentage of reads that will map to host: ", 100*(1 - glm_complex()))
 })
 
 output$comp_complex_dens <- renderText({
-  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", glm_complex_dens(), '<br/>', "Percentage of reads that will map to host: ", 1 - glm_complex_dens())
+  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", 100*glm_complex_dens(), '<br/>', "Percentage of reads that will map to host: ", 100*(1 - glm_complex_dens()))
 })
 
 output$comp_complex_counts <- renderText({
-  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", glm_complex_counts(), '<br/>', "Percentage of reads that will map to host: ", 1 - glm_complex_counts())
+  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", 100*glm_complex_counts(), '<br/>', "Percentage of reads that will map to host: ", 100*(1 - glm_complex_counts()))
 })
 
 output$comp_complex_counts_dens <- renderText({
-  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", glm_complex_counts_dens(), '<br/>', "Percentage of reads that will map to host: ", 1 - glm_complex_counts_dens())
+  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", 100*glm_complex_counts_dens(), '<br/>', "Percentage of reads that will map to host: ", 100*(1 - glm_complex_counts_dens())
 })
 
   # output$comp_total <- renderUI({

@@ -66,9 +66,9 @@ sidebar <- dashboardSidebar(
 body <- dashboardBody(
   ## From ui.R: Adds a tooltip to element with inputId = "someInput" 
   ## with text, "This is an input.", that appears to the left on hover.
-  bsTooltip(id = "go-simple", title = "Make a prediction!", 
+  bsTooltip(id = "go_simple", title = "Make a prediction!", 
             placement = "left", trigger = "hover"),
-  bsTooltip(id = "go-complex", title = "Make a prediction!", 
+  bsTooltip(id = "go_complex", title = "Make a prediction!", 
             placement = "left", trigger = "hover"),
   
   ### Tabintes:
@@ -92,7 +92,7 @@ body <- dashboardBody(
                     tabsetPanel(id="tabset",
                           
                       # SIMPLE MODEL          
-                      tabPanel("Simple model",
+                      tabPanel("Simple model", id = "simple",
                         
                         helpText("Choose the parameters: You can choose between parasitemia percentage and parasitemia density."),
                         
@@ -103,15 +103,6 @@ body <- dashboardBody(
                                        )
                                      ),
 
-                        # selectInput("ptype",
-                        #             label = "Which type of data do you have?",
-                        #             choices = c("Percentage of parasitemia" = "ppercentage", "Parasitemia density (/µl)" = "pdensity")
-                        #             #selected = "Percentage of parasitemia"
-                        #             ),
-                       
-                        
-                        #br(),
-                        #checkboxInput("ptype", "Percentage of parasitemia"),
                         conditionalPanel(
                           condition = "input.ptype == 'ppercentage'",
                           sliderInput(inputId = "parasitemia_percentage",
@@ -127,51 +118,15 @@ body <- dashboardBody(
                                     value = 800000, min = 0, max = 1500000, step = 1000)
                         ),
                         
-                        
-                        # br() element to introduce extra vertical spacing ----
-                     
-                        # parasitemia input
-                        # sliderInput(inputId = "parasitemia_percentage",
-                        #         label = "Percentage of parasitemia",
-                        #         value = 8, min = 0, max = 100, step =1.),
-                        # OR
-                        # sliderInput(inputId = "parasitemia-density",
-                        #         label = "Parasitemia density (/ql)",
-                        #         value = 800000, min = 0, max = 1500000, step = 1000), 
-                        
                         actionButton("go_simple", "Compute")
-                        
-                        #br(),
-                        #renderText({ "comp_paras"})
-                      
-                        #textOutput("text_calc") # prevents plot from being plotted for some reason
                   
                   
                       ), # close tabpanel
                   
                       # COMPLEX MODEL
-                      tabPanel("Complex model",
+                      tabPanel("Complex model", id="complex",
                                
                         helpText("Choose the parameters: You can choose between parasitemia percentage and parasitemia density and between total number of white blood cells and lymphoctye, monocyte or neutrophil percentage."),
-                        
-                        # ###
-                        # selectInput("dataset", "Dataset", c("diamonds", "rock", "pressure", "cars")),
-                        # conditionalPanel( condition = "output.nrows",
-                        #                   checkboxInput("headonly", "Only use first 1000 rows")),
-                        # ####      
-                        # parasetemia input
-                        # sliderInput(inputId = "parasitemia_percentage",
-                        #                label = "Percentage of parasitemia",
-                        #                value = 8, min = 0, max = 100, step =1.),
-                        # # OR
-                        # sliderInput(inputId = "parasetemia_density",
-                        #                label = "Parasitemia density (/ql)",
-                        #                value = 800000, min = 0, max = 1500000, step = 1000),  
-                        
-                        # selectInput("ptype",
-                        #             label = "Which data do you have?",
-                        #             choices = c("Percentage of parasetemia", "Parasitemia density (/µl)"),
-                        #             selected = "Percentage of parasetemia"),
                         
                         # Input: Select the parasitemia type ----
                         radioButtons("ptype2", "Which type of data do you have?",
@@ -250,31 +205,41 @@ body <- dashboardBody(
             mainPanel(
               # Output: Tabset w/ plot, summary, and table ----
               tabsetPanel(type = "tabs",
-                          # conditionalPanel(
-                          #   condition = "input.ptype2 == 'ppercentage'",
-                          #   tabPanel("Output",
-                          #            textOutput("comp_simple")
-                          #           )
-                          #   ),
-                          #   conditionalPanel(
-                          #     condition = "input.ptype2 == 'pdensity'",
-                          #     tabPanel("Output",
-                          #              textOutput("comp_simple_dens")
-                          #             )
-                          #     
-                          #   ),
+                          
                           tabPanel("Output",
-                                    verbatimTextOutput("comp_simple"),
-                                   # conditionalPanel(
-                                   #    condition = "input.ptype2 == 'ppercentage'",
-                                   #    textOutput("comp_simple")
-                                   # ),
-                                   # conditionalPanel(
-                                   #    condition = "input.ptype2 == 'pdensity'",
-                                   #    textOutput("comp_simple_dens")
-                                   # )
-                                    verbatimTextOutput("comp_total")
-                          ),
+                                   
+                                   #observeEvent(input$go_simple, {
+                                     conditionalPanel(
+                                       condition = "input.ptype == 'ppercentage'",
+                                       textOutput("comp_simple")
+                                                      ),
+                                     conditionalPanel(
+                                       condition = "input.ptype == 'pdensity'",
+                                       textOutput("comp_simple_dens")
+                                                      ),
+                                   #}),
+                                  #verbatimTextOutput("comp_simple"),
+                                  #textOutput("comp_simple_dens")
+                                  #observeEvent(input$go_complex, {
+                                    conditionalPanel(
+                                      condition = "input.ptype2 == 'ppercentage2' && input.wytpe == 'white_blood'",
+                                      textOutput("comp_complex")
+                                                    ),
+                                    conditionalPanel(
+                                      condition = "input.ptype2 == 'pdensity2' && input.wytpe == 'white_blood'",
+                                      textOutput("comp_complex_dens")
+                                                    ),
+                                    conditionalPanel(
+                                      condition = "input.ptype2 == 'ppercentage2' && input.wytpe == 'counts'",
+                                      textOutput("comp_complex_counts")
+                                                    ),
+                                    conditionalPanel(
+                                      condition = "input.ptype2 == 'pdensity2' && input.wytpe == 'counts'",
+                                      textOutput("comp_complex_counts_dens")
+                                                    #)}
+                                    )
+                                    #verbatimTextOutput("comp_total")
+                          ), # end tabpanel
                           tabPanel("Summary", 
                                    textOutput("summary_total")
                                    ),
@@ -289,11 +254,6 @@ body <- dashboardBody(
       ) # close fluidrow
     ), # close tabitem
       
-              
-              # mainPanel(
-              #   img(src='img/mouseData_cov.png', align = "right"),
-              #   ### the rest of your code
-              # )
     
     # TAB
     tabItem(tabName = "Abstract",
@@ -419,23 +379,23 @@ server <- function(input, output, session) {
 #----------------------------------
 # MODEL 0a: GLM SIMPLE | PERCENTAGE 
 ## MODEL.log: -1.964e+00 + 6.550e-02*dat.nona$Percentage.parasitemia
-glm_simple <- reactive({
+glm_simple <- function(){
   I <- -1.964e+00
   P <- input$parasitemia_percentage
     #W <- input$white_blood
   logit <- I + 6.550e-02*P
   exp(logit)/(1+exp(logit))
-})
+}
 
 
 # MODEL 0b: GLM SIMPLE | DENSITY
 ## MODEL.log: -2.012e+00 + 2.031e-06*dat.nona$Parasite.density...µl.
-glm_simple_dens <- reactive({
+glm_simple_dens <- function(){
   I <- 2.012e+00
   P <- input$parasitemia_density
   logit <- I + 2.031e-06*P
   exp(logit)/(1+exp(logit))
-})
+}
 
 
 # MODEL 1a: GLM COMPLEX | PERCENTAGE | TOTAL WHITE BLOOD CELLS
@@ -510,11 +470,11 @@ glm_complex_counts_dens <- function(){
 
 # COMPUTE PREDICTION SIMPLE MODEL ----
 output$comp_simple <- renderText({
-  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", 100*glm_simple(), '<br/>', "Percentage of reads that will map to host: ", 100*(1 - glm_simple()))
+  paste("Prediction:", br(), "Percentage of reads that will map to pathogen: ", 100*glm_simple(), br(), "Percentage of reads that will map to host: ", 100*(1 - glm_simple()))
 })
 
 output$comp_simple_dens <- renderText({
-  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", 100*glm_simple_dens(), '<br/>', "Percentage of reads that will map to host: ", 100*(1 - glm_simple_dens()))
+  paste("Prediction:", br(), "Percentage of reads that will map to pathogen: ", 100*glm_simple_dens(), br(), "Percentage of reads that will map to host: ", 100*(1 - glm_simple_dens()))
 })
   
 # PLOT SIMPLE MODEL SUMMARY ----
@@ -540,24 +500,25 @@ output$summary_simple_dens <- renderUI({
   
 
 #------- UPON CLICKING 'COMPLEX MODEL'...
-#observeEvent(input$go-complex, {
+#observeEvent(input$go_complex, {
 
 # COMPUTE PREDICTION COMPLEX MODEL ----
 output$comp_complex <- renderText({
-  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", 100*glm_complex(), '<br/>', "Percentage of reads that will map to host: ", 100*(1 - glm_complex()))
+  paste("Prediction:", br(), "Percentage of reads that will map to pathogen: ", 100*glm_complex(), br(), "Percentage of reads that will map to host: ", 100*(1 - glm_complex()))
 })
 
 output$comp_complex_dens <- renderText({
-  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", 100*glm_complex_dens(), '<br/>', "Percentage of reads that will map to host: ", 100*(1 - glm_complex_dens()))
+  paste("Prediction:", br(), "Percentage of reads that will map to pathogen: ", 100*glm_complex_dens(), br(), "Percentage of reads that will map to host: ", 100*(1 - glm_complex_dens()))
 })
 
 output$comp_complex_counts <- renderText({
-  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", 100*glm_complex_counts(), '<br/>', "Percentage of reads that will map to host: ", 100*(1 - glm_complex_counts()))
+  paste("Prediction:", br(), "Percentage of reads that will map to pathogen: ", 100*glm_complex_counts(), br(), "Percentage of reads that will map to host: ", 100*(1 - glm_complex_counts()))
 })
 
 output$comp_complex_counts_dens <- renderText({
-  paste("Prediction:", '<br/>', "Percentage of reads that will map to pathogen: ", 100*glm_complex_counts_dens(), '<br/>', "Percentage of reads that will map to host: ", 100*(1 - glm_complex_counts_dens())
+  paste("Prediction:", br(), "Percentage of reads that will map to pathogen: ", 100*glm_complex_counts_dens(), br(), "Percentage of reads that will map to host: ", 100*(1 - glm_complex_counts_dens()))
 })
+                                                                                                                                                                               
 
   # output$comp_total <- renderUI({
   #   str1 <- paste("You have selected", input$parasitemia_percentage, " as percentage of parasitemia.")
@@ -607,7 +568,7 @@ output$comp_complex_counts_dens <- renderText({
   ###
   
   # ## From server.R: Add the same tooltip as above
-  # addTooltip(session, id = "go-simple", title = "Click here to compute a prediction!",
+  # addTooltip(session, id = "go_simple", title = "Click here to compute a prediction!",
   #            placement = "left", trigger = "hover")
   
   ###

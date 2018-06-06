@@ -1,0 +1,13 @@
+## The generalized linear model (GLM)
+
+In cases where for certain response variables the just tested assumptions do not hold, generalized linear models (GLM) are excellent at dealing with them. 
+GLMs are especially recommended either when
+* the variance is not constant (heteroscedasticity) and/or
+* the errors are not normally distributed.
+
+Especially in our case where the response variable is a percentage or a proportion derived from count data, GLMs prove especially useful. We use a logistic regression, which is similar to a linear regression except for the logit link function. The logit link function is simply a function that is applied to the mean of the outcome variable instead of the outcome itself. 
+It has a couple of advantages
+* The results are relatively easy to interpret.
+* Once the model is fit, we can easily back-transform the estimated regression coefficients off of a log scale so that we can interpret the effects of each independent variable.
+
+Additionally, we used statistical methods as proposed in INSERT REFERENCE HERE to empirically identify an appropriate transformation. Box and Cox (1964) proposed a __family__ of transformations that are indexed by a parameter, denoted as LAMBDA [INSERT REFERENCE HERE].

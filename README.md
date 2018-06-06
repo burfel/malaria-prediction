@@ -2,7 +2,7 @@
 
 We developed a simple prediction tool that enables the user to estimate the likely proportion of reads that will map to parasite and host given basic information about the sample. 
 
-The web tool can be found in the directory _shinyapp2_.
+The web tool can be found in the directory _shinyapp3_.
 To run the app from ```R Studio```, copy and paste the following code in the folder:
    ```{r} 
  # First install the following packages:
@@ -11,6 +11,6 @@ To run the app from ```R Studio```, copy and paste the following code in the fol
  library(ggExtra)
  library(ggplot2)
  ### run the application:
- shiny::runGitHub("malaria-prediction", "burfel", subdir="shinyapp2")
+ shiny::runGitHub("malaria-prediction", "burfel", subdir="shinyapp3")
  ```
 

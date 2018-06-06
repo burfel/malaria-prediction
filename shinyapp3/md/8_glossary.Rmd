@@ -1,0 +1,15 @@
+# Glossary
+
+| Abbreviation              | Desciption  |
+| --------------------------| ------------|
+| LM                        | Linear model|
+| GLM                       | Generalized linear model |
+| ML                        | Machine Learning |
+| RF                        | Random Forest |
+| SVM                       | Support Vector Machines |
+| SPVs                      | surrogate proportion variables |
+| hrs                       | hours       |
+| outcome                   | response variable, here: the percentage of reads that map to the pathogen |
+|                           | Note: we use _outcome_ and _response_ variable interchangably here |
+| P.                        | here: Plasmodium |
+

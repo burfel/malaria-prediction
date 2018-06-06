@@ -1,0 +1,9 @@
+## Variable Selection
+
+The goal was to keep the model as small as possible but as best performing as possible. Certainly there is a trade-off (see chapter _Discussion_ [INSERT LINK HERE]).
+The categorical variables (includin sex and ethnicity) were encoded as dummy variables.
+
+Moreover, we looked at the correlation matrix to choose "good" variables to include in our model, ie the ones that do not correlate much with the first independent variable so that a small model can caputure much variance and therefore delivers a better performance. 
+[EXPLAIN "ALGORITHM" TO IDENTIFY THESE]
+
+[INSERT CORRELATION MATRIX HERE]

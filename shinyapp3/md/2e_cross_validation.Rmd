@@ -1,0 +1,5 @@
+## Cross validation / estimating performance of model(s)
+
+As we only have one data set available to train and test our model, we use k-fold cross validation on the imputed original data set. We also tried different methods of imputing missing values.
+
+[MAYBE] comparing to peformance of linear model (with and without variable transformation) and beta regression. However difficult since only (imputed) training but not test data set available; also beta regression has an additional tunable parameter. 

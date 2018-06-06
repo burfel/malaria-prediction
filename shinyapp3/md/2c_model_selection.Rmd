@@ -1,0 +1,3 @@
+## Model selection (3 different models)
+
+By plotting the outcome variable against different variables, we can identify a linear relationship, especially between parasitemia percentage and the outcome variable which suggested to use a linear model. 

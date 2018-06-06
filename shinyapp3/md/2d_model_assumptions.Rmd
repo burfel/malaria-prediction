@@ -1,0 +1,31 @@
+## Checking assumptions of linear regression model
+
+Linear regression makes several key assumptions that we might want to test.
+
+* There must be a linear relationship between the outcome variable and the independent variables. Scatterplots can show whether there is a linear or curvilinear relationship.
+The plot of the relationship between percentage of parasetemia and the outcome variable is shown in figure X.
+
+[INSERT PLOT HERE]
+
+* 		Multivariate Normality–Multiple regression assumes that the residuals are normally distributed. The Q-Q plot in figure X shows that the residuals of the linear model with parasitemia percentage roughly follow a normal distribution. The two outliers we identified (sample 35 and 39) could be discarded but due to the very few data available, we decided not to but accepted it to represent variance in the biological data set. 
+
+[INSERT QQ PLOT HERE]
+
+
+* 		No Multicollinearity—Multiple regression assumes that the independent variables are not highly correlated with each other.  This assumption is tested using Variance Inflation Factor (VIF) values.
+
+[INSERT CORRELATION PLOT HERE]
+
+* 		Homoscedasticity, ie the variance of error terms are similar across the values of the independent variables. A plot of standardised residuals versus predicted values can show whether points are equally distributed across all values of the independent variables.
+
+[INSERT HETEROSCEDASTICITY PLOT HERE]
+
+---
+**The upshot**
+
+Checking the plots in figure X and the statistics [INSERT STATISTICS HERE], we can see that for a linear model with parasitemia percentage the model assumptions roughly hold, and with using the original outcome variable we can fit a line that is a good representtation of the relationship. However, for a more complex model (eg including white blood cells) and for the analysed mouse data set the assumptions clearly did not hold (see figure X). The residuals were not uniformally distributed (the response variable does not have to be Gaussian!).
+We might want to transform the outcome variable so that it forms a reasonable linear relationship with the independent variable(s).
+Therefore, we looked at various other models including generalized linear models (GLMs) and beta regression. 
+---
+
+In the web tool presented in chapter _Results_ [INSERT LINK HERE] we only use a generalised linear model with a logit function. 

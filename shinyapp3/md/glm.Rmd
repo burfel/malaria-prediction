@@ -11,6 +11,12 @@ This approach has a couple of advantages
 * The results are relatively easy to interpret.
 * Once the model is fit, we can easily back-transform the estimated regression coefficients off of a log scale so that we can interpret the effects of each independent variable.
 
+---
+**Note:**
+However, neither zeros nor ones can be included in a logit, since the logit transformation is not defined for those values. 
+A strategy for handling proportions data in which zeros and ones may appear as well as intermediate values was proposed by Papke and Wooldridge (1996). We did not face this problem in the given data set. 
+
+---
 <!--- Beta-Regression might be the model you are looking for. The following vignette shows how to apply beta regression in R using Cribari-Neto's and Zeileis's "betareg"-Package: ftp://cran.r-project.org/pub/R/web/packages/betareg/vignettes/betareg.pdf 
 --->
 Additionally, we used statistical methods as proposed in [INSERT REFERENCE HERE] to empirically identify an appropriate transformation. Box and Cox (1964) proposed a family of transformations that are indexed by a parameter. [INSERT REFERENCE HERE].

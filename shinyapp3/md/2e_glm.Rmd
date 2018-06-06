@@ -20,4 +20,4 @@ A strategy for handling proportions data in which zeros and ones may appear as w
 ---
 <!--- Beta-Regression might be the model you are looking for. The following vignette shows how to apply beta regression in R using Cribari-Neto's and Zeileis's "betareg"-Package: ftp://cran.r-project.org/pub/R/web/packages/betareg/vignettes/betareg.pdf 
 --->
-Additionally, we used statistical methods as proposed in [INSERT REFERENCE HERE] to empirically identify an appropriate transformation. Box and Cox (1964) proposed a family of transformations that are indexed by a parameter. [INSERT REFERENCE HERE].
+Additionally, we used statistical methods as proposed in [INSERT REFERENCE HERE] to empirically identify an appropriate transformation. Box and Cox (1964) proposed a family of transformations that are indexed by a parameter [INSERT REFERENCE HERE].

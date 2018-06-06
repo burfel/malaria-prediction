@@ -1,4 +1,4 @@
-## Cross validation / estimating performance of model(s)
+# Cross validation / estimating performance of model(s)
 
 As we only have one data set available to train and test our model, we use k-fold cross validation on the imputed original data set. We also tried different methods of imputing missing values.
 

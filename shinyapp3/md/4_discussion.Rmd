@@ -37,7 +37,3 @@ transformations for multiple predictors
 <!--
 If the model is very senstive to outliers (which is not the case here), we could use the __spaial sign__ transformation (Seernels et al. 2006 INSERT IN REFERENCE LIST) which projects the predictor values onto a multidimensional sphere and thus makes all the samples the same distance from the centre of the sphere. This is mathematically done by each sample divided by its squared norm INSERT FORMULA HERE. One should note that centering and scaling of the predictor data is necessary because the denominator is intended to measure the squared distance to the centre of thre predictor's distribution. Also, this method transforms the predictors as a group, so we should not remove predictor variables after it. 
 -->
-
-
- 
- 

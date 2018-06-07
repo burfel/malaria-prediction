@@ -3,11 +3,8 @@ library(doParallel)
 library(tidyverse)
 registerDoParallel(detectCores() - 1)
 
-setwd("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/src")
+setwd("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB")
 
-#===============================================================================
-#                               READ IN DATA                                   #
-#===============================================================================
 # read in files
 hg_pf <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/data/hg_pf_readcounts.csv")
 supp <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/data/Supplementary_Dataset.csv", header=TRUE)
@@ -22,21 +19,6 @@ dat$outcome <- dat$pf_count / (dat$hg_count + dat$pf_count)
 dat$outcome.logit <-  logit(dat$outcome, percents=TRUE)
 outcome_prop <- cbind(dat$pf_count, dat$hg_count)
 
-# most important non-categorical variables 
-#dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Red.blood.cell.count..x1012.L, outcome))
-dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Parasite.density...µl., Total.White.Cell.Count..x109.L., Percentage.lymphocytes, Percentage.monocytes, Percentage.neutrophils, outcome))
-dat.nc.logit <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Parasite.density...µl., Total.White.Cell.Count..x109.L., Percentage.lymphocytes, Percentage.monocytes, Percentage.neutrophils, outcome.logit))
-
-# drop the samples that have blanks
-dat.nona <- na.omit(dat) # 21x27 matrix
-dat.nc.nona <- na.omit(dat.nc) # 40x8 matrix
-dat.nc.nona.logit <- na.omit(dat.nc.logit) # 40x8 matrix
-outcome_prop.nona <- cbind(dat.nona$pf_count, dat.nona$hg_count) # 21x2 matrix
-
-
-#===============================================================================
-#                      PLOTS to explore relationships                          #
-#===============================================================================
 # PLOT PROPORTION OF PATHOGEN READS, BOTH AS NORMAL AND A LOG SCALE -- FOR WEBSITE
 #par(mfrow = c(1, 2))
 ##png("shinyapp2/img/total_reads_outcome.png")
@@ -50,29 +32,28 @@ ggplot(dat, aes(total_reads, log(outcome))) +
 #plot(dat$total_reads, dat$outcome, xlab = "Total number of reads", ylab = "Proportion reads that map to pathogen")
 #ggplot(log(dat$total_reads), dat$outcome, xlab = "Total number of reads", ylab = "Proportion reads that map to pathogen")
 
-# PLOTS: IS RESPONSE VARIABLE CLOSE TO NORMALITY?
-library("ggpubr")
-ggdensity(dat$outcome, 
-          main = "Density plot of pathogen reads",
-          xlab = "Percentage of reads that map to pathogen")
-# ggdensity(dat.nona$Percentage.parasitemia, 
-#           main = "Density plot of Percentage of parasitemia",
-#           xlab = "Percentage of parasitemia")
-# ggdensity(dat.nona$Total.White.Cell.Count..x109.L., 
-#           main = "Density plot of total white cell count",
-#           xlab = "total white cell count")
+# NOT MEANINGFUL
+# # add column "total.number.of.cells" 
+# dat$total.number.of.cells <- dat$Total.White.Cell.Count..x109.L. + (1000 * dat$Red.blood.cell.count..x1012.L)
 
+####---- do correlation first ------
 
-# PLOT --- FOR WEBSITE
-library(e1071)
-#png("shinyapp2/img/pathogen_read_density.png")
-plot(density(dat$outcome), main="Figure 1: Percentage of reads that map to pathogen", ylab="Density", sub=paste("Skewness:", round(e1071::skewness(dat$outcome), 2)))  # density plot for 'speed'
-# polygon(density(dat$outcome), col="red")
-#dev.off()
+# most important non-categorical variables 
+#dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Red.blood.cell.count..x1012.L, outcome))
+dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Parasite.density...µl., Total.White.Cell.Count..x109.L., Percentage.lymphocytes, Percentage.monocytes, Percentage.neutrophils, outcome))
+dat.nc.logit <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Parasite.density...µl., Total.White.Cell.Count..x109.L., Percentage.lymphocytes, Percentage.monocytes, Percentage.neutrophils, outcome.logit))
 
-#===============================================================================
-#                      CORRELATIONS                                            #
-#===============================================================================
+#reg.ctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 5, allowParallel = TRUE)
+
+#library(mice)
+#tempData <- mice(dat,m=5)
+
+# drop the samples that have blanks
+dat.nona <- na.omit(dat) # 21x27 matrix
+dat.nc.nona <- na.omit(dat.nc) # 40x8 matrix
+dat.nc.nona.logit <- na.omit(dat.nc.logit) # 40x8 matrix
+outcome_prop.nona <- cbind(dat.nona$pf_count, dat.nona$hg_count) # 21x2 matrix
+
 # CORRELATION MATRIX
 library(corrplot)
 ## corrplot 0.84 loaded
@@ -87,12 +68,15 @@ M <- cor(my_matrix, method="pearson")
 corrplot(M, order = "hclust", addrect = 2) # !!!!!!!!!
 #dev.off()
 
+#--------------------------------------------------------------
+#--------------------------------------------------------------
+#---see also: https://www.statmethods.net/stats/regression.html
+#---FITTING THE MODEL-----------------------------------------
+# Multiple Linear Regression Example
+# on complete data set (samples with missing values removed), 42 samples
 
-#===============================================================================
-#                      SIMPLE REGRESSION MODELS                                #
-#===============================================================================
 # (1) SIMPLEST MODEL (JUST PARASITEMIA), WITHOUT TRANSFORMATION, ON WHOLE DATASET
-#set.seed(1800)
+#seed(1800)
 fit.paras <- lm(dat$outcome ~ dat$Percentage.parasitemia, data=dat)
 summary(fit.paras) # # show results: R^2: 0.245, F-stats: 15.28, p-value: 0.0003238
 #summary(fit.paras)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
@@ -102,9 +86,10 @@ plot(fit.paras) # diagnostic plots: residuals do not have non-linear patterns, a
 #par(mfrow = c(1, 1)) 
 hist(fit.paras$res, main="Residuals") # residuals not really Gaussian
 
-# FOR WEBSITE --- ALSO PLOT
+
+# FOR WEBSITE --- ALSO PLOT!!!!!!!!
 # (1) SIMPLEST MODEL (JUST PARASITEMIA), WITHOUT TRANSFORMATION, ON COMPLETE SAMPLES
-#set.seed(1801)
+#seed(1801)
 fit.nona.paras <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, data=dat.nona)
 summary(fit.nona.paras) # # show results: R^2: 0.4078, F-stats: 13.09, p-value: 0.001834
 #summary(fit.nona.paras)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
@@ -117,9 +102,6 @@ hist(fit.nona.paras$res,main="Residuals") # residuals not really Gaussian
 # MODEL: 0.090267 + 0.013339*dat.nona$Percentage.parasitemia
 
 
-#===============================================================================
-#                      REGRESSION PLOTS                                        #
-#===============================================================================
 # DEFINE NICE REGRESSION PLOT FUNCTION FOR SIMPLE MODEL
 ggplotRegression <- function (fit) {  
   require(ggplot2)  
@@ -148,15 +130,19 @@ ggplotRegression2 <- function (fit) {
 #png("shinyapp2/img/fit_nona_paras_regression.png")
 ggplotRegression(fit.nona.paras)
 #dev.off()
+# # coef(fit.nona.paras)
+# # vcov(fit.nona.paras)
+# # predict(fit.nona.paras)
+# # fitted(fit.nona.paras)
+# # residuals(fit.nona.paras)
 
 # # not necessary for website
 # library(gvlma)
 # gvmodel <- gvlma(fit.nona.paras)
 # summary(gvmodel)
 
-#===============================================================================
-#                      PLOTS ON ONE EXEMPLARY MODEL to test assumptions        #
-#===============================================================================
+### PLOTS
+
 ## display first x entries of dataset
 #library(dplyr)
 #set.#seed(1234)
@@ -230,9 +216,6 @@ qqnorm(fit.nona.paras$residuals)
 qqline(fit.nona.paras$residuals)
 
 
-#===============================================================================
-#                      MORE PLOTS & STATISTICAL TESTS ON ASSUMPTIONS           #
-#===============================================================================
 ## PLOT -- FOR WEBSITE
 library(ggpubr)
 # ggqqplot(fit.nona.paras$residuals, main = "Normal Q-Q",
@@ -259,10 +242,17 @@ shapiro.test(fit.nona.paras$residuals) # not good! W = 0.8791, p-value = 0.01406
 # library(MASS)
 # vif(fit.nona.paras)
 
+# NOT NECESSARY
+# #...more normality tests
+# library(nortest)
+# ad.test(dat$Percentage.parasitemia)
+# cvm.test(dat$Percentage.parasitemia)
+# #pearson.test(dat$Percentage.parasitemia)
+# sf.test(dat$Percentage.parasitemia)
+
 # test whether parasitemia percentage is normally distributed
 # - visual inspection (q-q plot)
 # - statistical test 
-
 # SKEWNESS AND KURTOSIS response variable
 library(moments)
 skewness(dat.nona$outcome) # 1.071187
@@ -275,255 +265,334 @@ ggplot(datasim, aes(x = dat.nona$outcome), binwidth = 2) +
   geom_density(colour = 'blue') + xlab(expression(bold('Simulated Samples'))) + 
   ylab(expression(bold('Density')))
 
+# PLOTS: IS RESPONSE VARIABLE CLOSE TO NORMALITY?
+library("ggpubr")
+ggdensity(dat$outcome, 
+          main = "Density plot of pathogen reads",
+          xlab = "Percentage of reads that map to pathogen")
+# ggdensity(dat.nona$Percentage.parasitemia, 
+#           main = "Density plot of Percentage of parasitemia",
+#           xlab = "Percentage of parasitemia")
+# ggdensity(dat.nona$Total.White.Cell.Count..x109.L., 
+#           main = "Density plot of total white cell count",
+#           xlab = "total white cell count")
+
+
+# PLOT --- FOR WEBSITE
+library(e1071)
+#png("shinyapp2/img/pathogen_read_density.png")
+plot(density(dat$outcome), main="Figure 1: Percentage of reads that map to pathogen", ylab="Density", sub=paste("Skewness:", round(e1071::skewness(dat$outcome), 2)))  # density plot for 'speed'
+# polygon(density(dat$outcome), col="red")
+#dev.off()
+
+# NOT NECESSARY
+# # define kurtosis function
+# kurtosis.test <- function (x) {
+#   m4 <- sum((x-mean(x))^4)/length(x)
+#   s4 <- var(x)^2
+#   kurt <- (m4/s4) - 3
+#   sek <- sqrt(24/length(x))
+#   totest <- kurt/sek
+#   pvalue <- pt(totest,(length(x)-1))
+#   pvalue 
+# }
+# kurtosis.test(dat$Percentage.parasitemia)
 # 
-# #===============================================================================
-# #                      SIMPLE REGRESSION MODELS CONT'D                         #
-# #===============================================================================
-# # # (1) SIMPLEST MODEL (JUST PARASITEMIA), DENSITY, WITHOUT TRANSFORMATION, ON WHOLE DATASET
-# # fit.paras <- lm(dat$outcome ~ dat$Parasite.density...µl., data=dat)
-# # summary(fit.paras) # # show results: R^2: 0.367, F-stats: 25.38
-# # #summary(fit.paras)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
-# # # plot the statistics
-# # par(mfrow = c(2, 2))  
-# # plot(fit.paras) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
-# # #par(mfrow = c(1, 1)) 
-# # #hist(fit.paras$res, main="Residuals") # residuals not really Gaussian
-# #
-# # (1) SIMPLEST MODEL (JUST PARASITEMIA), DENSITY, WITHOUT TRANSFORMATION, ON COMPLETE SAMPLES
-# fit.nona.paras.dens <- lm(dat.nona$outcome ~ dat.nona$Parasite.density...µl., data=dat.nona)
-# summary(fit.nona.paras.dens) # # show results: R^2: 0.3812, F-stats: 13.32
-# #summary(fit.nona.paras)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
+# # define skewness function
+# skew.test <- function (x) {
+#   m3 <- sum((x-mean(x))^3)/length(x)
+#   s3 <- sqrt(var(x))^3
+#   skew <- m3/s3
+#   ses <- sqrt(6/length(x))
+#   totest <- skew/ses
+#   pt(totest,(length(x)-1))
+#   pval <- pt(totest,(length(x)-1))
+#   pval
+# }
+# 
+# skew.test(dat$Percentage.parasitemia)
+
+# # (1) SIMPLEST MODEL (JUST PARASITEMIA), WITHOUT TRANSFORMATION, ON WHOLE DATASET
+# fit.paras <- lm(dat$outcome ~ dat$Parasite.density...µl., data=dat)
+# summary(fit.paras) # # show results: R^2: 0.367, F-stats: 25.38
+# #summary(fit.paras)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
 # # plot the statistics
-# #png("shinyapp2/img/fit_nona_paras_dens.png")
-# par(mfrow = c(2, 2))
-# plot(fit.nona.paras.dens) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
-# #dev.off()
-# #par(mfrow = c(1, 1))
-# #hist(fit.nona.paras$res,main="Residuals") # residuals not really Gaussian
-# # MODEL: 8.037e-02 + 4.186e-07 * dat.nona$Parasite.density...µl
-# #png("shinyapp2/img/fit_nona_paras_dens_regression.png")
-# ggplotRegression(fit.nona.paras.dens)
-# #dev.off()
-# 
-# 
-# # # (1) SIMPLEST MODEL (JUST PARASITEMIA), WITH TRANSFORMATION, ON WHOLE DATASET
-# # fit.paras.log <- lm(dat$outcome.logit ~ dat$Percentage.parasitemia, data=dat)
-# # summary(fit.paras.log) # # show results: R^2: 0.1733, F-stats: 10.22, p-value: 0.0026
-# # #summary(fit.paras.log)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
-# # # plot the statistics
-# # par(mfrow = c(2, 2))  
-# # plot(fit.paras.log) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
-# # #par(mfrow = c(1, 1)) 
-# # #hist(fit.paras.log$res,main="Residuals") # residuals not really Gaussian
-# 
-# # FOR WEBSITE --- ALSO PLOT!!!!!!!! -- to compare to non-logit transformation
-# # (1) SIMPLEST MODEL (JUST PARASITEMIA), WITH TRANSFORMATION, ON COMPLETE SAMPLES
-# fit.nona.paras.log <- lm(dat.nona$outcome.logit ~ dat.nona$Percentage.parasitemia, data=dat.nona)
-# summary(fit.nona.paras.log) # # show results: R^2: 0.2065, F-stats: 6.205, p-value: 0.02215 
-# #summary(fit.nona.paras.log)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
-# # plot the statistics
-# #png("shinyapp2/img/fit_nona_paras_logit.png")
 # par(mfrow = c(2, 2))  
-# plot(fit.nona.paras.log) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
-# #dev.off()
+# plot(fit.paras) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
 # #par(mfrow = c(1, 1)) 
-# #hist(fit.nona.paras.log$res,main="Residuals") # residuals not really Gaussian
-# # MODEL: -7.50325 + 0.08221*dat.nona$Percentage.parasitemia
-# #png("shinyapp2/img/fit_nona_paras_log_regression.png")
-# ggplotRegression(fit.nona.paras.log)
-# #dev.off()
-# 
-# # # (1) SIMPLEST MODEL (JUST PARASITEMIA), DENSITY, WITH TRANSFORMATION, ON WHOLE DATASET
-# # fit.paras.log <- lm(dat$outcome.logit ~ dat$Parasite.density...µl., data=dat)
-# # summary(fit.paras.log) # # show results: R^2: 0.2671, F-stats: 16.31, p-value: 0.0026
-# # #summary(fit.paras.log)$sigma^2 # estimated variance of residuals around a fitted line: 0.0002301
-# # # plot the statistics
-# # par(mfrow = c(2, 2))  
-# # plot(fit.paras.log) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
-# # #par(mfrow = c(1, 1)) 
-# # #hist(fit.paras.log$res,main="Residuals") # residuals not really Gaussian
-# 
-# # FOR WEBSITE --- ALSO PLOT -- to compare to non-logit transformation
-# # (1) SIMPLEST MODEL (JUST PARASITEMIA), WITH TRANSFORMATION, ON COMPLETE SAMPLES
-# fit.nona.paras.log <- lm(dat.nona$outcome.logit ~ dat.nona$Percentage.parasitemia, data=dat.nona)
-# summary(fit.nona.paras.log) # # show results: R^2: 0.065, F-stats: 6.205, p-value: 0.02215
-# summary(fit.nona.paras.log)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
+# #hist(fit.paras$res, main="Residuals") # residuals not really Gaussian
+#
+# (1) SIMPLEST MODEL (JUST PARASITEMIA), DENSITY, WITHOUT TRANSFORMATION, ON COMPLETE SAMPLES
+fit.nona.paras.dens <- lm(dat.nona$outcome ~ dat.nona$Parasite.density...µl., data=dat.nona)
+summary(fit.nona.paras.dens) # # show results: R^2: 0.3812, F-stats: 13.32
+#summary(fit.nona.paras)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
+# plot the statistics
+#png("shinyapp2/img/fit_nona_paras_dens.png")
+par(mfrow = c(2, 2))
+plot(fit.nona.paras.dens) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
+#dev.off()
+#par(mfrow = c(1, 1))
+#hist(fit.nona.paras$res,main="Residuals") # residuals not really Gaussian
+# MODEL: 8.037e-02 + 4.186e-07 * dat.nona$Parasite.density...µl
+#png("shinyapp2/img/fit_nona_paras_dens_regression.png")
+ggplotRegression(fit.nona.paras.dens)
+#dev.off()
+
+
+# # (1) SIMPLEST MODEL (JUST PARASITEMIA), WITH TRANSFORMATION, ON WHOLE DATASET
+# fit.paras.log <- lm(dat$outcome.logit ~ dat$Percentage.parasitemia, data=dat)
+# summary(fit.paras.log) # # show results: R^2: 0.1733, F-stats: 10.22, p-value: 0.0026
+# #summary(fit.paras.log)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
 # # plot the statistics
-# #png("shinyapp2/img/fit_nona_paras_log.png")
-# par(mfrow = c(2, 2))
-# plot(fit.nona.paras.log) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
-# #dev.off()
-# #par(mfrow = c(1, 1))
-# #hist(fit.nona.paras.log$res,main="Residuals") # residuals not really Gaussian
-# 
-# # FOR WEBSITE --- ALSO PLOT -- to compare to non-logit transformation
-# # (1) SIMPLEST MODEL (JUST PARASITEMIA), DENSITY, WITH TRANSFORMATION, ON COMPLETE SAMPLES
-# fit.nona.paras.dens.log <- lm(dat.nona$outcome.logit ~ dat.nona$Parasite.density...µl., data=dat.nona)
-# summary(fit.nona.paras.dens.log) # # show results: R^2: 0.2509, F-stats: 7.7, p-value: 0.01207
-# summary(fit.nona.paras.dens.log)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
+# par(mfrow = c(2, 2))  
+# plot(fit.paras.log) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
+# #par(mfrow = c(1, 1)) 
+# #hist(fit.paras.log$res,main="Residuals") # residuals not really Gaussian
+
+# FOR WEBSITE --- ALSO PLOT!!!!!!!! -- to compare to non-logit transformation
+# (1) SIMPLEST MODEL (JUST PARASITEMIA), WITH TRANSFORMATION, ON COMPLETE SAMPLES
+fit.nona.paras.log <- lm(dat.nona$outcome.logit ~ dat.nona$Percentage.parasitemia, data=dat.nona)
+summary(fit.nona.paras.log) # # show results: R^2: 0.2065, F-stats: 6.205, p-value: 0.02215 
+#summary(fit.nona.paras.log)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
+# plot the statistics
+#png("shinyapp2/img/fit_nona_paras_logit.png")
+par(mfrow = c(2, 2))  
+plot(fit.nona.paras.log) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
+#dev.off()
+#par(mfrow = c(1, 1)) 
+#hist(fit.nona.paras.log$res,main="Residuals") # residuals not really Gaussian
+# MODEL: -7.50325 + 0.08221*dat.nona$Percentage.parasitemia
+#png("shinyapp2/img/fit_nona_paras_log_regression.png")
+ggplotRegression(fit.nona.paras.log)
+#dev.off()
+
+# # (1) SIMPLEST MODEL (JUST PARASITEMIA), WITH TRANSFORMATION, ON WHOLE DATASET
+# fit.paras.log <- lm(dat$outcome.logit ~ dat$Parasite.density...µl., data=dat)
+# summary(fit.paras.log) # # show results: R^2: 0.2671, F-stats: 16.31, p-value: 0.0026
+# #summary(fit.paras.log)$sigma^2 # estimated variance of residuals around a fitted line: 0.0002301
 # # plot the statistics
-# #png("shinyapp2/img/fit_nona_paras_dens_log.png")
-# par(mfrow = c(2, 2))
-# plot(fit.nona.paras.dens.log) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
-# #dev.off()
-# #par(mfrow = c(1, 1))
-# #hist(fit.nona.paras.log$res,main="Residuals") # residuals not really Gaussian
+# par(mfrow = c(2, 2))  
+# plot(fit.paras.log) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
+# #par(mfrow = c(1, 1)) 
+# #hist(fit.paras.log$res,main="Residuals") # residuals not really Gaussian
 # 
-# #===============================================================================
-# #                      COMPLEX REGRESSION MODELS                                #
-# #===============================================================================
-# 
-# # (2A) MORE COMPLEX MODEL ---- PLOT FOR WEBSITE
-# fit.nona.total <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
-# summary(fit.nona.total) # show results: R^2: 0.38, F-stats: 7.13, p-value: 0.005242
-# #summary(fit.nona.total)$sigma^2 # estimated variance of residuals around a fitted line: 0.02268394
-# # plot the statistics, OUTLIERS 35, 39 -- both in UM group? -- kept them -- BUT MIGHT BE WORTH TRYING WITHOUT THEM
-# #png("shinyapp2/img/fit_nona_total.png")
+# FOR WEBSITE --- ALSO PLOT!!!!!!!! -- to compare to non-logit transformation
+# (1) SIMPLEST MODEL (JUST PARASITEMIA), WITH TRANSFORMATION, ON COMPLETE SAMPLES
+fit.nona.paras.log <- lm(dat.nona$outcome.logit ~ dat.nona$Percentage.parasitemia, data=dat.nona)
+summary(fit.nona.paras.log) # # show results: R^2: 0.065, F-stats: 6.205, p-value: 0.02215
+summary(fit.nona.paras.log)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
+# plot the statistics
+#png("shinyapp2/img/fit_nona_paras_log.png")
+par(mfrow = c(2, 2))
+plot(fit.nona.paras.log) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
+#dev.off()
+#par(mfrow = c(1, 1))
+#hist(fit.nona.paras.log$res,main="Residuals") # residuals not really Gaussian
+
+# FOR WEBSITE --- ALSO PLOT!!!!!!!! -- to compare to non-logit transformation
+# (1) SIMPLEST MODEL (JUST PARASITEMIA), WITH TRANSFORMATION, ON COMPLETE SAMPLES
+fit.nona.paras.dens.log <- lm(dat.nona$outcome.logit ~ dat.nona$Parasite.density...µl., data=dat.nona)
+summary(fit.nona.paras.dens.log) # # show results: R^2: 0.2509, F-stats: 7.7, p-value: 0.01207
+summary(fit.nona.paras.dens.log)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
+# plot the statistics
+#png("shinyapp2/img/fit_nona_paras_dens_log.png")
+par(mfrow = c(2, 2))
+plot(fit.nona.paras.dens.log) # diagnostic plots: residuals do not have non-linear patterns, about Normally distributed (except for 35, 39)
+#dev.off()
+#par(mfrow = c(1, 1))
+#hist(fit.nona.paras.log$res,main="Residuals") # residuals not really Gaussian
+
+
+# (2A) MORE COMPLEX MODEL ---- PLOT FOR WEBSITE
+fit.nona.total <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
+summary(fit.nona.total) # show results: R^2: 0.38, F-stats: 7.13, p-value: 0.005242
+#summary(fit.nona.total)$sigma^2 # estimated variance of residuals around a fitted line: 0.02268394
+# plot the statistics, OUTLIERS 35, 39 -- both in UM group? -- kept them -- BUT MIGHT BE WORTH TRYING WITHOUT THEM
+#png("shinyapp2/img/fit_nona_total.png")
+par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+plot(fit.nona.total)  # Plot the model information
+#dev.off()
+# diagnostic plots to CHECK ASSUMPTIONS FOR LINEAR REGRESSION:
+# - residuals do not have non-linear patterns
+# - residuals about Normally distributed (except for 35, 39)
+# - residuals about homoscedastic
+# - residuals still within Cook distance (but you can see the dotted lines)
+#par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+#hist(fit.nona.total$res,main="Residuals") # residuals not really Gaussian
+# MODEL: 0.204181 + 0.011821*dat.nona$Percentage.parasitemia + (-0.010121)*dat.nona$Total.White.Cell.Count..x109.L.
+#png("shinyapp2/img/fit_nona_total_regression.png")
+ggplotRegression2(fit.nona.total) #---NEED 3-DIM PLOT
+#dev.off()
+
+# gvmodel_total <- gvlma(fit.nona.total)
+# summary(gvmodel_total) # STILL SKEWED, BUT KURTOSIS ACCEPTABLE
+
+# likelihood ratio test of nested models
+#lrtest(fit.nona.paras, fit.nona.total)
+
+# # (2) MORE COMPLEX MODEL, WITH LOGIT TRANSFORMATION --- NOT ANY GOOD
+# fit.nona.total.logit <- lm(dat.nona$outcome.logit ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
+# summary(fit.nona.total.logit) # show results: R^2: 0.33, F-stats: 5.976, p-value: 0.01022
 # par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-# plot(fit.nona.total)  # Plot the model information
-# #dev.off()
-# # diagnostic plots to CHECK ASSUMPTIONS FOR LINEAR REGRESSION:
-# # - residuals do not have non-linear patterns
-# # - residuals about Normally distributed (except for 35, 39)
-# # - residuals about homoscedastic
-# # - residuals still within Cook distance (but you can see the dotted lines)
-# #par(mfrow = c(1, 1))  # Return plotting panel to 1 section
-# #hist(fit.nona.total$res,main="Residuals") # residuals not really Gaussian
-# # MODEL: 0.204181 + 0.011821*dat.nona$Percentage.parasitemia + (-0.010121)*dat.nona$Total.White.Cell.Count..x109.L.
-# #png("shinyapp2/img/fit_nona_total_regression.png")
-# ggplotRegression2(fit.nona.total) #---NEED 3-DIM PLOT
-# #dev.off()
-# 
-# # gvmodel_total <- gvlma(fit.nona.total)
-# # summary(gvmodel_total) # STILL SKEWED, BUT KURTOSIS ACCEPTABLE
-# 
-# # likelihood ratio test of nested models
-# #lrtest(fit.nona.paras, fit.nona.total)
-# 
-# # # (2) MORE COMPLEX MODEL, WITH LOGIT TRANSFORMATION --- NOT ANY GOOD
-# # fit.nona.total.logit <- lm(dat.nona$outcome.logit ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
-# # summary(fit.nona.total.logit) # show results: R^2: 0.33, F-stats: 5.976, p-value: 0.01022
-# # par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-# # plot(fit.nona.total.logit)  # Plot the model information
-# # par(mfrow = c(1, 1))  # Return plotting panel to 1 section
-# # #hist(fit.nona.total.logit$res,main="Residuals") # residuals not really Gaussian
-# 
-# # (2) MORE COMPLEX MODEL, DENSITY, WITHOUT LOGIT TRANSFORMATION 
-# fit.nona.total.dens <- lm(dat.nona$outcome ~ dat.nona$Parasite.density...µl. + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
-# summary(fit.nona.total.dens) # show results: R^2: 0.3702, F-stats: 6.878, p-value: 0.006039
-# #png("shinyapp2/img/fit_nona_total_dens.png")
-# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-# plot(fit.nona.total.dens)  # Plot the model information
-# #dev.off()
+# plot(fit.nona.total.logit)  # Plot the model information
 # par(mfrow = c(1, 1))  # Return plotting panel to 1 section
 # #hist(fit.nona.total.logit$res,main="Residuals") # residuals not really Gaussian
-# 
-# # # (2) MORE COMPLEX MODEL, DENSITY, WITH LOGIT TRANSFORMATION --- NOT ANY GOOD
-# # fit.nona.total.dens.logit <- lm(dat.nona$outcome.logit ~ dat.nona$Parasite.density...µl. + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
-# # summary(fit.nona.total.dens.logit) # show results: R^2: 0.33, F-stats: 5.976, p-value: 0.01022
-# # par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-# # plot(fit.nona.total.dens.logit)  # Plot the model information
-# # par(mfrow = c(1, 1))  # Return plotting panel to 1 section
-# # #hist(fit.nona.total.logit$res,main="Residuals") # residuals not really Gaussian
-# 
-# # (2B) MORE COMPLEX MODEL --- just with lymphocytes ----FOR WEBSITE
-# fit.nona.L <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.lymphocytes, data=dat.nona)
-# summary(fit.nona.L) # show results: R^2: 0.3425, F-stats: 6.209, p-value: 0.008899
-# #png("shinyapp2/img/fit_nona_L.png")
-# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-# plot(fit.nona.L)  # Plot the model information
-# #dev.off()
-# par(mfrow = c(1, 1))  # Return plotting panel to 1 section
-# #hist(fit.nona.L$res,main="Residuals") # residuals not really Gaussian
-# # MODEL: 0.0829492 + 0.0130663*dat.nona$Percentage.parasitemia + 0.0003475*dat.nona$Percentage.lymphocytes
-# 
-# #png("shinyapp2/img/fit_nona_L_regression.png")
-# ggplotRegression2(fit.nona.L) #---NEED 3-DIM PLOT
-# #dev.off()
-# 
-# # (2B) MORE COMPLEX MODEL, DENSITY --- just with lymphocytes ----FOR WEBSITE
-# fit.nona.dens.L <- lm(dat.nona$outcome ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.lymphocytes, data=dat.nona)
-# summary(fit.nona.dens.L) # show results: R^2: 0.3425, F-stats: 6.209, p-value: 0.008899
-# #png("shinyapp2/img/fit_nona_dens_L.png")
-# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-# plot(fit.nona.dens.L)  # Plot the model information
-# #dev.off()
-# par(mfrow = c(1, 1))  # Return plotting panel to 1 section
-# #hist(fit.nona.dens.L$res,main="Residuals") # residuals not really Gaussian
-# # MODEL: 5.265e-02 + 3.924e-07*dat.nona$Parasite.density...µl. + 1.269e-03*dat.nona$Percentage.lymphocytes
-# 
-# 
-# # (2B) MORE COMPLEX MODEL --- just with monocytes ----FOR WEBSITE
-# fit.nona.M <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.monocytes, data=dat.nona)
-# summary(fit.nona.M) # show results: R^2: 0.3421, F-stats: 6.199, p-value: 0.00895
-# #png("shinyapp2/img/fit_nona_M.png")
-# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-# plot(fit.nona.M)  # Plot the model information
-# #dev.off()
-# par(mfrow = c(1, 1))  # Return plotting panel to 1 section
-# #hist(fit.nona.M$res,main="Residuals") # residuals not really Gaussian
-# # MODEL: 0.0867926 + 0.0132895*dat.nona$Percentage.parasitemia + 0.0006445*dat.nona$Percentage.monocytes
-# 
-# #png("shinyapp2/img/fit_nona_M_regression.png")
-# ggplotRegression2(fit.nona.M) #---NEED 3-DIM PLOT
-# #dev.off()
-# 
-# # (2B) MORE COMPLEX MODEL, DENSITY --- just with monocytes ----FOR WEBSITE
-# fit.nona.dens.M <- lm(dat.nona$outcome ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.monocytes, data=dat.nona)
-# summary(fit.nona.dens.M) # show results: R^2: 0.3421, F-stats: 6.199, p-value: 0.00895
-# #png("shinyapp2/img/fit_nona_dens_M.png")
-# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-# plot(fit.nona.dens.M)  # Plot the model information
-# #dev.off()
-# par(mfrow = c(1, 1))  # Return plotting panel to 1 section
-# #hist(fit.nona.dens.M$res,main="Residuals") # residuals not really Gaussian
-# # MODEL: 4.141e-02 + 4.051e-07*dat.nona$Parasite.density...µl. + 7.085e-03*dat.nona$Percentage.monocytes
-# 
-# 
-# # (2B) MORE COMPLEX MODEL --- just with neutrophils ----FOR WEBSITE
-# fit.nona.N <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils, data=dat.nona)
-# summary(fit.nona.N) # show results: R^2: 0.3423, F-stats: 6.204, p-value: 0.008925
-# #png("shinyapp2/img/fit_nona_N.png")
-# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-# plot(fit.nona.N)  # Plot the model information
-# #dev.off()
-# par(mfrow = c(1, 1))  # Return plotting panel to 1 section
-# #hist(fit.nona.N$res,main="Residuals") # residuals not really Gaussian
-# # MODEL: 0.1053476 + 0.0131751*dat.nona$Percentage.parasitemia + (-0.0002101)*dat.nona$Percentage.neutrophils
-# 
-# #png("shinyapp2/img/fit_nona_N_regression.png")
-# ggplotRegression2(fit.nona.N) #---NEED 3-DIM PLOT
-# #dev.off()
-# 
-# 
-# # (2B) MORE COMPLEX MODEL, DENSITY --- just with neutrophils ----FOR WEBSITE
-# fit.nona.dens.N <- lm(dat.nona$outcome ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.neutrophils, data=dat.nona)
-# summary(fit.nona.dens.N) # show results: R^2: 0.3423, F-stats: 6.204, p-value: 0.008925
-# #png("shinyapp2/img/fit_nona_dens.N.png")
-# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-# plot(fit.nona.dens.N)  # Plot the model information
-# #dev.off()
-# par(mfrow = c(1, 1))  # Return plotting panel to 1 section
-# #hist(fit.nona.dens.N$res,main="Residuals") # residuals not really Gaussian
-# # MODEL: 1.485e-01 + 3.993e-07*dat.nona$Parasite.density...µl. + (-9.623e-04)*dat.nona$Percentage.neutrophils
-# 
-# 
-# 
-# # (2B) MORE COMPLEX MODEL --- just with neutrophils ----FOR WEBSITE
-# fit.nona.N <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils, data=dat.nona)
-# summary(fit.nona.N) # show results: R^2: 0.3423, F-stats: 6.204, p-value: 0.008925
-# #png("shinyapp2/img/fit_nona_N.png")
-# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
-# plot(fit.nona.N)  # Plot the model information
-# #dev.off()
-# par(mfrow = c(1, 1))  # Return plotting panel to 1 section
-# #hist(fit.nona.N$res,main="Residuals") # residuals not really Gaussian
-# # MODEL: 0.1053476 + 0.0131751*dat.nona$Percentage.parasitemia + (-0.0002101)*dat.nona$Percentage.neutrophils
-# 
 
-#===============================================================================
-#                      GENERALIZED LINEAR REGRESSION MODELS                    #
-#===============================================================================
+# (2) MORE COMPLEX MODEL, DENSITY, WITHOUT LOGIT TRANSFORMATION 
+fit.nona.total.dens <- lm(dat.nona$outcome ~ dat.nona$Parasite.density...µl. + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
+summary(fit.nona.total.dens) # show results: R^2: 0.3702, F-stats: 6.878, p-value: 0.006039
+#png("shinyapp2/img/fit_nona_total_dens.png")
+par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+plot(fit.nona.total.dens)  # Plot the model information
+#dev.off()
+par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+#hist(fit.nona.total.logit$res,main="Residuals") # residuals not really Gaussian
+
+
+# # (2) MORE COMPLEX MODEL, DENSITY, WITH LOGIT TRANSFORMATION --- NOT ANY GOOD
+# fit.nona.total.dens.logit <- lm(dat.nona$outcome.logit ~ dat.nona$Parasite.density...µl. + dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
+# summary(fit.nona.total.dens.logit) # show results: R^2: 0.33, F-stats: 5.976, p-value: 0.01022
+# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+# plot(fit.nona.total.dens.logit)  # Plot the model information
+# par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+# #hist(fit.nona.total.logit$res,main="Residuals") # residuals not really Gaussian
+
+
+# (2B) MORE COMPLEX MODEL --- just with lymphocytes ----FOR WEBSITE
+fit.nona.L <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.lymphocytes, data=dat.nona)
+summary(fit.nona.L) # show results: R^2: 0.3425, F-stats: 6.209, p-value: 0.008899
+#png("shinyapp2/img/fit_nona_L.png")
+par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+plot(fit.nona.L)  # Plot the model information
+#dev.off()
+par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+#hist(fit.nona.L$res,main="Residuals") # residuals not really Gaussian
+# MODEL: 0.0829492 + 0.0130663*dat.nona$Percentage.parasitemia + 0.0003475*dat.nona$Percentage.lymphocytes
+
+#png("shinyapp2/img/fit_nona_L_regression.png")
+ggplotRegression2(fit.nona.L) #---NEED 3-DIM PLOT
+#dev.off()
+
+# (2B) MORE COMPLEX MODEL, DENSITY --- just with lymphocytes ----FOR WEBSITE
+fit.nona.dens.L <- lm(dat.nona$outcome ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.lymphocytes, data=dat.nona)
+summary(fit.nona.dens.L) # show results: R^2: 0.3425, F-stats: 6.209, p-value: 0.008899
+#png("shinyapp2/img/fit_nona_dens_L.png")
+par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+plot(fit.nona.dens.L)  # Plot the model information
+#dev.off()
+par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+#hist(fit.nona.dens.L$res,main="Residuals") # residuals not really Gaussian
+# MODEL: 5.265e-02 + 3.924e-07*dat.nona$Parasite.density...µl. + 1.269e-03*dat.nona$Percentage.lymphocytes
+
+
+# (2B) MORE COMPLEX MODEL --- just with monocytes ----FOR WEBSITE
+fit.nona.M <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.monocytes, data=dat.nona)
+summary(fit.nona.M) # show results: R^2: 0.3421, F-stats: 6.199, p-value: 0.00895
+#png("shinyapp2/img/fit_nona_M.png")
+par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+plot(fit.nona.M)  # Plot the model information
+#dev.off()
+par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+#hist(fit.nona.M$res,main="Residuals") # residuals not really Gaussian
+# MODEL: 0.0867926 + 0.0132895*dat.nona$Percentage.parasitemia + 0.0006445*dat.nona$Percentage.monocytes
+
+#png("shinyapp2/img/fit_nona_M_regression.png")
+ggplotRegression2(fit.nona.M) #---NEED 3-DIM PLOT
+#dev.off()
+
+# (2B) MORE COMPLEX MODEL, DENSITY --- just with monocytes ----FOR WEBSITE
+fit.nona.dens.M <- lm(dat.nona$outcome ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.monocytes, data=dat.nona)
+summary(fit.nona.dens.M) # show results: R^2: 0.3421, F-stats: 6.199, p-value: 0.00895
+#png("shinyapp2/img/fit_nona_dens_M.png")
+par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+plot(fit.nona.dens.M)  # Plot the model information
+#dev.off()
+par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+#hist(fit.nona.dens.M$res,main="Residuals") # residuals not really Gaussian
+# MODEL: 4.141e-02 + 4.051e-07*dat.nona$Parasite.density...µl. + 7.085e-03*dat.nona$Percentage.monocytes
+
+
+# (2B) MORE COMPLEX MODEL --- just with neutrophils ----FOR WEBSITE
+fit.nona.N <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils, data=dat.nona)
+summary(fit.nona.N) # show results: R^2: 0.3423, F-stats: 6.204, p-value: 0.008925
+#png("shinyapp2/img/fit_nona_N.png")
+par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+plot(fit.nona.N)  # Plot the model information
+#dev.off()
+par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+#hist(fit.nona.N$res,main="Residuals") # residuals not really Gaussian
+# MODEL: 0.1053476 + 0.0131751*dat.nona$Percentage.parasitemia + (-0.0002101)*dat.nona$Percentage.neutrophils
+
+#png("shinyapp2/img/fit_nona_N_regression.png")
+ggplotRegression2(fit.nona.N) #---NEED 3-DIM PLOT
+#dev.off()
+
+# (2B) MORE COMPLEX MODEL --- just with neutrophils ----FOR WEBSITE
+fit.nona.dens.N <- lm(dat.nona$outcome ~ dat.nona$Parasite.density...µl. + dat.nona$Percentage.neutrophils, data=dat.nona)
+summary(fit.nona.dens.N) # show results: R^2: 0.3423, F-stats: 6.204, p-value: 0.008925
+#png("shinyapp2/img/fit_nona_dens.N.png")
+par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+plot(fit.nona.dens.N)  # Plot the model information
+#dev.off()
+par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+#hist(fit.nona.dens.N$res,main="Residuals") # residuals not really Gaussian
+# MODEL: 1.485e-01 + 3.993e-07*dat.nona$Parasite.density...µl. + (-9.623e-04)*dat.nona$Percentage.neutrophils
+
+
+
+########################
+# (2B) MORE COMPLEX MODEL --- just with neutrophils ----FOR WEBSITE
+fit.nona.N <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils, data=dat.nona)
+summary(fit.nona.N) # show results: R^2: 0.3423, F-stats: 6.204, p-value: 0.008925
+#png("shinyapp2/img/fit_nona_N.png")
+par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+plot(fit.nona.N)  # Plot the model information
+#dev.off()
+par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+#hist(fit.nona.N$res,main="Residuals") # residuals not really Gaussian
+# MODEL: 0.1053476 + 0.0131751*dat.nona$Percentage.parasitemia + (-0.0002101)*dat.nona$Percentage.neutrophils
+
+
+# # (2B) MORE COMPLEX MODEL -- with Neutrophil and monocyte percentages ---- BEST --- FOR WEBSITE
+# fit.nona.NM <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils + dat.nona$Percentage.monocytes, data=dat.nona)
+# summary(fit.nona.NM) # show results: R^2: 0.3037, F-stats: 3.908, p-value: 0.02723
+# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+# plot(fit.nona.NM)  # Plot the model information
+# par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+# #hist(fit.nona.NM$res,main="Residuals") # residuals not really Gaussian
+# 
+# 
+# # (2) MORE COMPLEX MODEL -- WHY SO INCREDIBLY GOOD???? -- only a few samples
+# fit.nona.LM <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.lymphocytes, + dat.nona$Percentage.monocytes, data=dat.nona)
+# summary(fit.nona.LM) # show results: R^2: 0.8912 , F-stats: 82.88, p-value: 8.299e-10
+# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+# plot(fit.nona.LM)  # Plot the model information
+# par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+# #hist(fit.nona.LM$res,main="Residuals") # residuals not really Gaussian
+# 
+# # (2) MORE COMPLEX MODEL
+# fit.nona.LN <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.lymphocytes, + dat.nona$Percentage.neutrophils, data=dat.nona)
+# summary(fit.nona.LN) # show results: R^2: 0.8772, F-stats: 72.44, p-value: 2.458e-09
+# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+# plot(fit.nona.LN)  # Plot the model information
+# par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+# #hist(fit.nona.LN$res,main="Residuals") # residuals not really Gaussian
+# 
+# 
+# # (2B) MORE COMPLEX MODEL, LOGIT TRANSFORMATION -- with Neutrophil and monocyte percentages ---- BEST --- FOR WEBSITE
+# fit.nona.NM.logit <- lm(dat.nona$outcome.logit ~ dat.nona$Percentage.parasitemia + dat.nona$Percentage.neutrophils + dat.nona$Percentage.monocytes, data=dat.nona)
+# summary(fit.nona.NM.logit) # show results: R^2:0.1133, F-stats: 1.852, p-value: 0.1761
+# par(mfrow = c(2, 2))  # Split the plotting panel into a 2 x 2 grid
+# plot(fit.nona.NM.logit)  # Plot the model information
+# par(mfrow = c(1, 1))  # Return plotting panel to 1 section
+# #hist(fit.nona.NM.logit$res,main="Residuals") # residuals not really Gaussian
+
+
+#plot(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, data = dat.nona)
+#abline(fit.nona.total)
+
+
+####----- GLM
 # https://stats.stackexchange.com/questions/38201/problems-plotting-glm-data-of-binomial-proportional-data?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 # GLM
 #GM1<-glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=binomial (logit), data=dat.nona)
@@ -767,10 +836,8 @@ plot(glm.total.counts.dens.logit)
 # plot(glm.neutro.dens.logit)
 # # MODEL.log: -2.238e+00 + 2.106e-06*dat.nona$Parasite.density...µl. + 3.036e-03*dat.nona$Percentage.neutrophils
 
-# 
-# #===============================================================================
-# #                      MODEL COMPARISON                                        #
-# #===============================================================================
+
+# ######################
 # # MODEL COMPARISON
 # # We now can compare the two models as before using ANOVA. In the case of binary data, we need to do a Chi-squared test.
 # anova(glm_paras2, glm_total2, test = "Chi")

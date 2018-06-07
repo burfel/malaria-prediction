@@ -9,16 +9,23 @@
 
 ### Title:
 
-header <- dashboardHeader(title = "Sums of Squares")
+header <- dashboardHeader(title = "Read map prediction", titleWidth = 250)
 
 ### SideBar:
 sidebar <- dashboardSidebar(
   sidebarMenu(
-    menuItem("Graphs", tabName = "graphs", icon = icon("fa fa-circle")),
-    menuItem("Raw Data", tabName = "data", icon = icon("fa fa-circle")),
-    menuItem("About", tabName = "about", icon = icon("fa fa-info-circle"))
-  )
-)
+    menuItem("Lay-summary", tabName = "graphs", icon = icon("fa fa-circle"), badgeLabel = "for user", badgeColor = "green"),
+    menuItem("Introduction", tabName = "data", icon = icon("fa fa-circle")),
+    menuItem("Methods", tabName = "graphs", icon = icon("fa fa-circle")),
+    menuItem("Results", tabName = "about", icon = icon("fa fa-info-circle"), badgeLabel = "for user", badgeColor = "green"),
+    menuItem("Discussion", tabName = "graphs", icon = icon("fa fa-circle")),
+    menuItem("Conclusion", tabName = "graphs", icon = icon("fa fa-circle")),
+    menuItem("Data", tabName = "graphs", icon = icon("fa fa-circle")),
+    menuItem("References", tabName = "graphs", icon = icon("fa fa-circle")),
+    menuItem("Glossary", tabName = "graphs", icon = icon("fa fa-circle")),
+    menuItem("About", tabName = "graphs", icon = icon("file-code-o"))
+  ) # end sidebarMenue
+) # end sidebar
 
 
 ### Dashboard:
@@ -26,87 +33,103 @@ body <- dashboardBody(
   
   
   
-  ### Tabintes:
+  ### Tabintems:
   
   tabItems(
     
     ### TAB 1 = dashboard:
-    tabItem(tabName = "graphs",
+    tabItem(tabName = "Results",
             
             fluidRow(
               
               # Sample size slider
-              box(width = 4, title = "Parameters",
+              box(width = 60, title = "Parameters",
                   solidHeader = TRUE, status = "primary",
                   
-                  sliderInput(inputId = "sample",
-                              label = "Sample size",
-                              value = 50, min = 10, max = 100),
-                  sliderInput(inputId = "slope",
-                              label = "Regression slope",
-                              value = .25, min = -2, max = 2,step = .25),
-                  # Sd slider:
-                  sliderInput(inputId = "SD",
-                              label = "Standard deviation",
-                              value = 3, min = 0, max = 50),
-                  actionButton(inputId = "refresh", label = "Simulate New Data" , 
-                               icon = icon("fa fa-refresh"))
-              ),
+                sidebarPanel(
+                  
+                  tabsetPanel(id = "tabset",
+                      
+                      # THE SIMPLE MODEL ----        
+                      tabPanel("Simple model", id = "simple",
+                              
+                              # Input: Select the parasitemia type ----
+                              radioButtons("ptype", "Which type of parasitemia data do you have?",
+                                           choices = c("Percentage of parasitemia" = "ppercentage",
+                                                      "Parasitemia density (/µl)" = "pdensity"),
+                                           selected = character(0)
+                                           )
+                              # conditionalPanel(condition = "input.type == 'ppercentage'",
+                              #                  sliderInput(inputId = "parasitemia_percentage",
+                              #                              label = "Percentage of parasitemia",
+                              #                              value = 8, min = 1, max = 99, step = 1.
+                              #                              )
+                              #                  ),
+                              # conditionalPanel(condition = "input.type == 'pdensity'",
+                              #                 sliderInput(inputId = "parasitemia_density",
+                              #                 label = "Parasitemia density (/µl)"),
+                              #                 value = 800000, min = 0, max = 1500000, step = 100
+                              #                 )
+                        ), # end tabpanel
+                      
+                        # THE COMPLEX MODEL ----
+                        tabPanel("Complex model", id = "complex",
+                                 
+                                radioButtons("ptype2", "Which type of parasitemia data do you have?",
+                                              choices = c("Percentage of parasitemia" = "ppercentage2",
+                                                          "Parasitemia density (/µl)" = "pdensity2"),
+                                              selected = character(0)
+                                            )
+                                # conditionalPanel(condition = "input.type2 == 'ppercentage2'",
+                                #                   sliderInput(inputId = "parasitemia_percentage2",
+                                #                               label = "Percentage of parasitemia",
+                                #                               value = 8, min = 1, max = 99, step = 1.
+                                #                               )
+                                #                   ),
+                                # conditionalPanel(condition = "input.type2 == 'pdensity2'",
+                                #                  slideInput(inputId = "parasitemia_density2",
+                                #                             label = "Parasitemia density (/µl)",
+                                #                             value = 800000, min = 0, max = 1500000, step = 100
+                                #                             )
+                                #                  )
+
+                        ) # end tabPanel
+                    ) # end tabsetPanel
+                ), # close sidebarPanel
               
+                
+                
+              # Main panel for displaying outputs ----
               mainPanel(
                 
-                box(width = 6,
-                    title = "Regression",
-                    solidHeader = TRUE, status = "primary",
-                    plotOutput(outputId = "reg")),
                 
-                
-                box(width = 6,title = "Sums of Squares Graphs",
-                    solidHeader = F, status = "primary",
-                    tabsetPanel(type = "tabs",
-                                tabPanel("Total", plotOutput("total")),
-                                tabPanel("Regression", plotOutput("regression")),
-                                tabPanel("Error", plotOutput("error")),
-                                tabPanel("Variance Partition", plotOutput(("variance")))
-                                
-                    )
-                )
-              ),
-              fluidRow(
-                box(width = 6,title = "Anova Table",
-                    solidHeader = FALSE, status = "warning",
-                    tableOutput(outputId = "anova")),
-                
-                box(width = 6,title = "Summary",
-                    solidHeader = FALSE, status = "warning",
-                    tableOutput(outputId = "summary")))
-            )),
+
+              ) # end mainpanel
+
+            ) # end box
+          ) # end fluidrow
+        ), # end tabitem
     
-    # TAB 2 = dashboard:
     
-    tabItem(tabName = "data",
-            fluidRow(
-              box(width = 4, solidHeader = TRUE, status = "primary",
-                  title = "Raw Data",
-                  dataTableOutput(outputId = "data")),
-              box(width = 6, solidHeader = TRUE, status = "primary",
-                  title = "Data distribution",
-                  plotOutput(outputId = "histogram"),
-                  actionButton(inputId = "refresh2", label = "Simulate New Data" , 
-                               icon = icon("fa fa-refresh")))
-              
+    # TAB 4 = Discussion
+    tabItem(tabName = "Discussion",
+            fluidPage(
+              box(width = 10,status = "success",
+                  shiny::includeMarkdown("md/4_discussion.Rmd"))
             )
-    ),
+    ), # end tabitem
     
     # TAB 3 = About
-    tabItem(tabName = "about",
+    tabItem(tabName = "About",
             fluidPage(
               box(width = 10,status = "success",
                   shiny::includeMarkdown("README.md"))
             )
-    )
-  )
-)
+    ) # end tabitem
+  ) # end tabitems
+ ) # end dashboardbody
+
+
 
 ui <- dashboardPage(header, sidebar, body)
 

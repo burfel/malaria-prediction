@@ -14,6 +14,9 @@ library(shinydashboard)
 library(grid)
 library(markdown)
 library(ggExtra)
+library(shinyBS)
+library(qtl)
+library(rmarkdown)
 
 # ################################################################################
 # #                             GLOBAL VARIABLES                                 #

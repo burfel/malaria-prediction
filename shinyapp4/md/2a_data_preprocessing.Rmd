@@ -1,0 +1,30 @@
+## Data pre-processing
+
+### Centering and scaling
+Often, individual predictors are transformed in the pre-processing of the data when they differ a lot in their magnitude of order. This includes **centering**, ie the average predictor value is substracted from all the values and thus the predictor has a zero mean, and **scaling**, ie make the values have a common standard deviation of one.
+
+As **standardising**, ie centering and scaling, predictor variables brings all the coefficients on the same scale, the size of the point estimates can give a rough idea of which predictor variables have the largest effect on the outcome variable. It also avoids regression coefficients that are on a very tiny scale. Also, these methods are often used to used to improve the numerical stability of some calculations [4][INSERT REFERENCE LINK HERE]. 
+
+---
+**Note:**
+Shifting or scaling the variables does not change the model in terms of model fit, since the coefficients in a linear regression are linked to the correlation between variables. 
+However, we can no longer interpret the individual values since the data are no longer in the original units as we changed the scale of the regression coefficients.
+
+---
+In the model presented in tab "Results" (INSERT LINK HERE), we did scale some variables (parasite density). However, most of the data was already on a common scale. 
+
+### Skewness transformation
+<!---..to remove distributional skewness.--->
+As the data was found to be skewed, ie not symmetric, (see figure X) [INSERT LINK HERE], we applied different transformations (log, square root, inverse) to remove the skew, ie so that the probability of falling on either side of the distribution's mean is roughly equal. 
+
+We found the log transformation the most suitable to the given data set. The distribution is not entirely symmetric but the transformed data are better behaved than when they are in the original units.
+
+INSERT PLOTS HISTOGRAM PLOTS HERE 
+<!---(p32)
+
+[! alt text!] [fit_nona_paras]
+[! alt text!] [fit_nona_paras_log]
+--->
+
+### Imputing missing values
+Also, the data set contained various missing values (see chapter _Data_ [INSERT LINK HERE]). As a training data set we only used the samples that were complete on the respective variables, for a test data set we imputed the values.

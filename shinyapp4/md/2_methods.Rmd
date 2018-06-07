@@ -1,0 +1,169 @@
+# Methods
+
+## Data pre-processing [INSERT LINK HERE]
+First and foremeost, we have to pre-process the raw data. This includes centering, scaling, skewness transformation and possibly imputing missing values.
+
+## Variable selection [INSERT LINK HERE]
+Having a tiny sample with lots of variables, we need to choose the most explaining variable(s) for a simple model. 
+
+## Model selection [INSERT LINK HERE]
+We need to choose an appropriate model that explains the data well but is simple enough to not overfit the data.
+
+## Checking assumptions of linear regression model [INSERT LINK HERE]
+For a linear regression model, we need to check the model assumptions.
+
+## The generalized linear model (GLM) [INSERT LINK HERE]
+In cases where for certain response variables the just tested assumptions do not hold, generalized linear models (GLM) are excellent at dealing with them. 
+
+## Cross validation / estimating performance of model(s) [INSERT LINK HERE]
+As we only have one data set available to train and test our model, we use k-fold cross validation on the imputed original data set. 
+
+<!---
+1. Data Splitting
+
+2. Predictor Data
+
+3. Estimating Performance
+
+4. Evaluating Several Models
+
+5. Model Selection
+
+
+## Data pre-processing
+
+
+
+0.2 Data transformations for Multiple Predictors
+
+* Transformations To Resolve Outliers
+
+We can apply transformations on groups of predictors (or the entire data set) to resolve outliers and reduce the dimension of the data.
+
+Outliers, ie samples that are exceptionally far from the mainstream of the data INSERT EXAMPLE SCATTERPLOT PARASITEMIA, INSERT ILLUSTRATIVE EXAMPLE WITH GROUP OF OUTLYING DATA POINTS (PRDICTOR VARIABLE 1 AGAINST VARIABLE 2); here we do not use formal statistical definitions to identify outliers but only by looking at the scatterplots of the individual predictors. However, even with thorough understanding of the data they can sometimes be hard to define.  
+The outliers identified might represent data recording errors. Or, as we have a small sample size, they might be a result of a skewed distribution where there are not yet enough data to dee the skewness. 
+We also investigated whether the outliers might belong to a different population than the other samples; however, we could not find any significant similarities of the outliers that would distinguish them from the other samples. Also, as the sample size here was very small (n_1=47 or n_2=42 for the complete samples), we did not remove or change these values, we kept the outliers in our training data set. 
+
+We might want to consider models that are resistant to outliers (see tab "Discussion" INSERT HYPERLINK TO TAB).
+
+TODO: BETTER PERFORMANCE WITHOUT OUTLIERS?
+
+
+* Data Reduction and Feature Extraction
+
+We can also use predictor transformation to reduce the data by generating a smaller set of predictors that explain most of the information in the original variables. In most widely used DR (dimensionality reduction)  techniques, the new predictors are functions of the original predictor; therefore, all the original predictors are still needed to create the surrogate variables.
+PCA (Pincipal component analysis) is the standard DR method. It tries to find linear combinations of the predictors, the so-called PCs (principal components), which capture the most possible variance.
+MAYBE INSERT FORMULA HERE.
+
+[However, it seeks predictor-set variation without regard to any further understanding of the predictors. Without proper guidance, PCA might summarise characteristics of the data that are irrelevant to the underlying structure of the data and also to the ultimate modeling objective. PCA will be identifying the data structure based on measurement scales rather than based on the important relationships within the data for the current problem or response variable, ie it is an __unsupervised technique__.
+As in our data set, predictors are usually on different scales; also, the distribution of the predictors might be skewed. It is, therefore, necessary to center and scale the predictors before performing PCA.]
+
+IMPORTANT: If the predictive relationship between the response is not linked to the predictors' variability, then the derived PCs will not provide a suitable relationship with the response.
+
+INSERT EXAMPLE OF PC TRANSFORMATION FOR DATA SET (p36)
+
+However, in our case, we do not have a classification problem where PCA would be suitable for. We found a covariance matrix of the possible predictors sufficient to identify the most important, non-redundant predictors. In the end, PCA is based on this covariance (or correlation) matrix.
+
+INSERT COVARIANCE PLOTS HERE.
+
+Since there is a high correlation between the predictors ....... and ...... 
+
+0.3 Dealing with Missing Values
+
+In ...5... samples of the given data set, some predictors have no values. The data could be either structurally missing, or it was not determined at the time of model building which is the most probable case in the given data set. Moreover, some zero-values might be wrong and only represent error measures (REFER TO MOUSE DATA SET).
+It would be advantageous to know __why__ the values are missing; the pattern of missing data might be related to the outcome, ie the missingness is informative on its own which might induce significant bias in the model.
+
+
+* Imputation 
+
+K-nearest neighbour (KNN) model, ie the sample is imputed by finding the samples in the training set "closest" to it and averages these nearby points to fill in the values (Troyanskaya et al. 2001). On one hand, this ensures that the imputed data are confined to be within the range of the training set vlaues. On the other hand, the entire training set is required evert time a missing value needs to be imputed. WE COULD SAVE COMPUTATIONAL TIME HERE. In general, Troyanskata et al. (2001) found this approach to be fairly robust to the tuning parameter, ie the parameter determining the "closeness" of two points, as well as the amoung of missing data.
+Also for our data set, we found a higher correlation between the real and imputed values (of randomly removed values) for the KNN method than for a simpler approach such as a linear regression model.
+
+0.4 Removing Predictors
+
+We removed predictors prior to modeling, ie we selected the most informative predictors, to save computational time and reduce complexity. 
+Also, if two predictors that are highly correlated capture the same information. According to __Occam's razor__ we do not want to add more complexity than necessary to the model; redundant predictors often make the model more complex and less interpretable than information they provide to the model.
+Also, as obtaining predictor data especially in our case is costly and time-consuming, fewer variables -- and the most informative ones -- is desired.
+From a mathematical viewpoint, correlated predictors in methods like linear regression can result in highly unstable models, numerical errors, and degraded predictive performance.
+
+* Between-Predictor Correlations
+
+We remove these __collinear__ predictor variables, ie variables that have a substantial correlation with each other (here: subgroups of white cell types, parasite density and percentage of parasetemia).
+
+Figure ... shows the covariance matrix of the given data set.
+
+![alt text][correlation]
+INSERT CORRELATION MATRIX NON-CLUSTERED
+
+Each pairwise correlation is computed from the data set and coloured according to its magnitude.
+This matrix is symmetric: the top and bottom diagonals show identical information. Dark blue colours indicate string positive correlations, dark red is used for strong negative correlations; white implies no empirical relationship between the predictors.
+
+![alt text][correlation]
+INSERT CORRELATION MATRIX CLUSTERED
+In this figure, the predictor variables have been grouped using a clustering technique (Everitt et al. 2011) so that that collinear groups of predictors are adjacent to one another. CHANGE THAT. Looking along the diagonal, there are blocks of strong positive correlations that indicate "clusters" of collinearity. .....
+
+Instead of using VIF (variance inflation factor) (Myers, 1994), we use a less theoretical, more heuristic approach to dealing with this issue: We remove the minimum number of predictors to ensure that all pairwise correlations are below a certain threshold (INSERT REFERENCE p47). Here we apply a threshold of 60%. 
+
+[Applying PCA to our data set, we can see that the first PC accounts for a large percentage of the variance (...). This implies that there is at least one group of predictors that repsrent the same information.
+However, techniques like PCA make the prediction between the predictors and the outcome more complex. Also, as PCA is unsupervised, there is no guarantee that the resulting surrogate predictors have any relationship with the outcome.]
+
+
+0.5 Adding Predictors
+
+For the categorical predictors, such as gender and ethnicity, we re-encoded the categories in smaller bits of information, so-called __"dummy variables"__ to use the data in models.
+
+[Models like simple linear regression that incluse an intercept term would have numerical issues if each dummy variable was included in the model. This is because for each sample, these variables all add up to one and this would provide the same information as the intercept.]
+
+- data not segmented in test and training data set, since data set so small.
+
+---
+**NOTE**
+
+It works with almost all markdown flavours (the below blank line matters).
+
+---
+
+
+A lot of combinations have been tried out.
+
+[INSERT NORMALITY PROOF]
+[INSERT LINEAR RELATIONSHIP]
+
+![alt text][correlation]
+
+As an example:
+![alt text][fit_nona_paras]
+![alt text][test6_qq_residuals]
+
+Compare them:
+![alt text][fit_nona_paras_dens]
+![alt text][fit_nona_paras_dens_log]
+
+Outliers even more apparent in [fit_nona_total], no matter whether we use percentage or density of parasetemia 
+
+![alt text][glm_paras_dens]
+![alt text][glm_paras_dens_logit]
+
+![alt text][glm_paras_logit_regression]
+
+![alt text][simple_perc_regression]
+
+![alt text][lm_paras_dens]
+![alt text][lm_paras_log]
+
+
+
+[correlation]: ../img/correlation.png "Correlations martix of all 23 variables"
+
+[fit_nona_paras]: ../img/fit_nona_paras.png "Checking the linear model assumptions"
+
+[fit_nona_paras_dens]: ../img/fit_nona_paras_dens.png "Linear model with parasitemia density without transformation of the response variable"
+[fit_nona_paras_dens_log]: ../img/fit_nona_paras_dens_log.png "Linear model with parasitemia density with transformation of the response variable"
+
+[lm_paras_dens]: ../img/fit_nona_paras_dens_regression.png
+[lm_paras_log]: ../img/fit_nona_paras_log_regression.png
+
+[glm_paras_dens]: ../img/glm_paras_dens_regression.png
+[glm_paras_dens_logit]: ../img/glm_paras_dens_logit_regression.png
+
+--->

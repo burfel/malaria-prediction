@@ -1,0 +1,20 @@
+# References
+
+[1] Lee HJ et al. _Integrated pathogen load and dual transcriptome analysis of systemic host-pathogen interactions in severe malaria._ 25 September 2017. [Link to preprint](https://www.biorxiv.org/content/early/2017/09/25/193631](https://www.biorxiv.org/content/early/2017/09/25/193631)
+
+[2] Hyun Jae Lee, Michael Walther, Athina Georgiadou, Davis Nwakanma, Lindsay B. Stewart, Michael Levin, Thomas D. Otto, David J. Conway, Lachlan J. Coin,  View ORCID ProfileAubrey J. Cunnington
+
+[3] Lee HJ et al. _Transcriptomic Studies of Malaria: a Paradigm for Investigation of Systemic Host-Pathogen Interactions_. American Society for Microbiology, volume 82, issue 2. 1 June 2018.
+[Link to article](https://doi.org/10.1128/MMBR.00071-17)
+
+[4] Kuhn M and Johnson K. Applied Predictive Modeling. Springer. 2013. 
+
+[5] https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html
+
+[6] https://www.gla.ac.uk/myglasgow/library/collections/virtualdisplays/worldmalariaday/whatismalaria/
+
+[7] http://www.who.int/malaria/publications/world-malaria-report-2017/en/
+
+ 
+
+

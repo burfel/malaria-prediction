@@ -1,0 +1,44 @@
+# Abstract
+
+[Dual RNA-seq](http://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1006033 "Why dual RNA-Seq data?") is an increasing popular approach to investigate [host-pathogen interaction](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC96643/ "how microbes sustain themselves within host organisms"). Malaria is an excellent paradigm for its application in humans, because both human [leukocytes](https://www.cancer.gov/publications/dictionaries/cancer-terms/def/leukocyte "ie white blood cells. They are part of the body's immune system and help the body to fight infection and other diseases.") and malaria parasites are present in circulating blood. However, application of this approach has been limited by variability in the [depth of reads](https://emea.illumina.com/science/education/sequencing-coverage.html "average number of reads that align to, ie cover, known reference bases") mapped to parasites, with some studies finding insufficient parasite reads for analysis. It has been found that parasite reads constitute between 1% and 70% of the total reads obtained from patient blood samples (see figure 1 below), and this appears to be dependent on three main factors:
+
+1) the number of parasites in the blood sample, 
+2) the number of human white blood cells in the sample, and 
+3) the developmental stage of the parasites. 
+
+For physicians and biologists in the malaria community it is of substantial use to know how many of the dual RNA-seq reads will map to the host, and how many will map to the pathogen in order to compute the read depth. This way, they will know how many reads are necessary in the first place for the study of interest. 
+The purpose of this project is to develop a __simple prediction tool__ that will enable a user to __estimate the likely proportion of reads__ that will map to parasite and host, given basic information on the sample. This will be of substantial use to the __malaria__ research community.
+
+![alt text][total_reads_outcome] |
+![alt text][density]            |
+|:-----:|:--------------:|
+Figure 1: Number of total reads in sample against percentage that map to pathogen | Figure 2: Density plot of reads that map to the pathogen | 
+<!--
+<img src="https://github.com/burfel/malaria-prediction/blob/master/shinyapp2/img/pathogen-read-density.png"
+     alt="Markdown Monster icon"
+     style="float: left; margin-right: 10px;" />
+-->
+
+The web tool can be found in chapter _Results_ [INSERT LINK HERE]. 
+For more information on what data set the model was built, see chapter _Data Preparation_ [INSERT LINK HERE] as well as CHAPTER _Methods_ [INSERT LINK HERE].
+
+
+## Table of Contents
+  * [Chapter 1: Introduction](#chapter-1)
+  * [Chapter 2: Methods](#chapter-2)
+  * [Chapter 3: Results](#chapter-3) 
+  * [Chapter 4: Discussion](#chapter-4) 
+  * [Chapter 5: Conclusion](#chapter-5) 
+  * [Chapter 6: Data](#chapter-6) 
+  * [Chapter 7: References](#chapter-7) 
+  * [Chapter 8: Glossary](#chapter-8) 
+  * [Chapter 9: About](#chapter-9) 
+
+[density]: ../img/pathogen_read_density.png "Density plot visualising the variation of reads that map to the pathogen"
+[total_reads_outcome]: ../img/total_reads_outcome.png "Total number of reads plotted against the percentage of these reads that map to the pathogen"
+
+<!---
+<div>
+###A title using myStyle.css {.bigbaseline}
+</div>
+--->

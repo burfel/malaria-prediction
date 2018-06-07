@@ -1,0 +1,9 @@
+## Model selection (3 different models)
+
+By plotting the outcome variable against different variables, we could identify a linear relationship, especially between parasitemia percentage and the outcome variable (see figure X) which suggested to use a linear model. 
+After checking the model assumptions for that, see subchapter _Checking assumptions of linear regression model_ [INSERT LINK HERE], we also built generalized linear models as well as performed beta regression.
+
+We tried multiple combinations of different equally suitable and non-collinear variables, the best yet simple general lineararized models are implemented in chapter _Results_ [INSERT LINK HERE].
+
+[INSERT PLOT HERE]
+

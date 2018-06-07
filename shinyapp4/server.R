@@ -10,12 +10,10 @@
 #===============================================================================
 
 server = function(input, output) {
-    output$txtout <- renderText({
-      paste(input$txt, input$slider, format(input$date), sep = ", ")
-    })
-    output$table <- renderTable({
-      head(cars, 4)
-    })
+  
+    # output$table <- renderTable({
+    #   head(cars, 4)
+    # })
     
     #===============================================================================
     #                               LOAD MARKDOWN FILES                            #
@@ -136,19 +134,28 @@ server = function(input, output) {
     #===============================================================================
     #                               OUTPUT TEXT                                    #
     #===============================================================================
+      ######## ONLY UPON CLICKING ACTION BUTTON....
+      output$task <- renderText({
+        paste(input$date, input$user_name, sep = ", \n")
+      })
     #===============================================================================
     #                               SIMPLE MODEL                                   #
     #===============================================================================
         #------- UPON CLICKING 'SIMPLE MODEL'...
-        # observeEvent(input$go_simple, {
+        observeEvent(input$go_simple, {
 
         # COMPUTE PREDICTION SIMPLE MODEL ----
         output$comp_simple <- renderText({
-          paste("Prediction:", br(), "Percentage of reads that will map to pathogen: ", 100*glm_simple(), br(), "Percentage of reads that will map to host: ", 100*(1 - glm_simple()))
+          paste("Simple model with percentage of parasitemia: \n",
+                "Reads that will map to pathogen: ", round(100*glm_simple(), digits=2), "%", "\n",
+                "Reads that will map to host:     ", round(100*(1 - glm_simple()), digits=2), "%")
         })
 
         output$comp_simple_dens <- renderText({
-          paste("Prediction:", br(), "Percentage of reads that will map to pathogen: ", 100*glm_simple_dens(), br(), "Percentage of reads that will map to host: ", 100*(1 - glm_simple_dens()))
+          paste("Simple model with parasitemia density: \n",
+                "Reads that will map to pathogen: ", round(100*glm_simple_dens(), digits=2), "%", "\n",
+                "Reads that will map to host:      ", round(100*(1 - glm_simple_dens()), digits=2), "%")
+        })
         })
 
         # PLOT SIMPLE MODEL SUMMARY ----
@@ -173,29 +180,35 @@ server = function(input, output) {
     #                               COMPLEX MODEL                                  #
     #===============================================================================
           #------- UPON CLICKING 'COMPLEX MODEL'...
-          #observeEvent(input$go_complex, {
+          observeEvent(input$go_complex, {
 
           # COMPUTE PREDICTION COMPLEX MODEL ----
           output$comp_complex <- renderText({
-            paste("Prediction:", br(), "Percentage of reads that will map to pathogen: ", 100*glm_complex(), br(), "Percentage of reads that will map to host: ", 100*(1 - glm_complex()))
+            paste("Complex model with percentage of parasitemia: \n",
+                  "Reads that will map to pathogen: ", round(100*glm_complex(), digits=2), "%", "\n",
+                  "Reads that will map to host:    ", round(100*(1 - glm_complex()), digits=2), "%")
           })
-
           output$comp_complex_dens <- renderText({
-            paste("Prediction:", br(), "Percentage of reads that will map to pathogen: ", 100*glm_complex_dens(), br(), "Percentage of reads that will map to host: ", 100*(1 - glm_complex_dens()))
+            paste("Reads that will map to pathogen: ", round(100*glm_complex_dens(), digits=2), "%", "\n",
+                  "Reads that will map to host:    ", round(100*(1 - glm_complex_dens()), digits=2), "%")
           })
-
           output$comp_complex_counts <- renderText({
-            paste("Prediction:", br(), "Percentage of reads that will map to pathogen: ", 100*glm_complex_counts(), br(), "Percentage of reads that will map to host: ", 100*(1 - glm_complex_counts()))
+            paste("Reads that will map to pathogen: ", round(100*glm_complex_counts(), digits=2), "%", "\n",
+                  "Reads that will map to host:    ", round(100*(1 - glm_complex_counts()), digits=2), "%")
           })
-
           output$comp_complex_counts_dens <- renderText({
-            paste("Prediction:", br(), "Percentage of reads that will map to pathogen: ", 100*glm_complex_counts_dens(), br(), "Percentage of reads that will map to host: ", 100*(1 - glm_complex_counts_dens()))
+            paste("Reads that will map to pathogen: ", round(100*glm_complex_counts_dens(), digits=2), "%", "\n",
+                  "Reads that will map to host:    ", round(100*(1 - glm_complex_counts_dens()), digits=2), "%")
           })
-        
+          })
       
     #===============================================================================
     #                               OUTPUT GRAPHS                                  #
     #===============================================================================
+          
+  output$residuals <- renderPlot({
+    hist(rnorm(200))
+  })
   
   ### Saving data:
   Rawdata <- reactive({

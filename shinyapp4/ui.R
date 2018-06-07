@@ -11,8 +11,8 @@
 #ui = bootstrapPage(
 ui = tagList(
     #tags$style(type='text/css', ".selectize-input { font-size: 64px; line-height: 64px;} .selectize-dropdown { font-size: 28px; line-height: 28px; }"),
-    tags$head(tags$style("#text1{color: red;
-                         font-size: 60px;
+    tags$head(tags$style("#text1{color: blue;
+                         font-size: 120px;
                          font-style: italic;
                          }")
               ),
@@ -41,9 +41,14 @@ ui = tagList(
       #                               TAB PANEL: RESULTS                             #
       #===============================================================================
       tabPanel("Results",
-               sidebarPanel(
+               sidebarPanel(width=4,
                    
                  #fileInput("file", "File input:"),
+                 
+                 dateInput('date',
+                            label = "Date input: yyyy-mm-dd",
+                            value = Sys.Date()
+                            ),
                  textInput("user_name", "User name:", "Enter your name here!"),
                  
                  # helpText("Choose between the simple and a more complex model."),
@@ -75,10 +80,8 @@ ui = tagList(
                                value = 800000, min = 0, max = 1500000, step = 1000)
                  ),
                  
-                 
-                 # sliderInput("slider", "Slider input:", 1, 100, 30),
-                 # tags$h5("Deafult actionButton:"),
-                 actionButton("go_simple", "Compute")
+                 actionButton(inputId = "go_simple", label = "Submit")
+                 # p("Click the button to update the plot displayed in the main panel.")
                  
                  # tags$h5("actionButton with CSS class:"),
                  # actionButton("action2", "Action button", class = "btn-primary")
@@ -140,7 +143,8 @@ ui = tagList(
                             sliderInput(inputId = "neutro",
                                         label = "Total number of neutrophils (* 10^9/ L)",
                                         value = 5.4, min = 0, max = 100, step = .1)
-                          )
+                          ),
+                          actionButton(inputId = "go_complex", label = "Submit")
                     ) # wnd tabPanel
                   ) # end tabsetPanel
                ), # end sidebarPanel
@@ -148,26 +152,91 @@ ui = tagList(
                #===============================================================================
                #                               RESULTS: MAIN PANEL                            #
                #===============================================================================
+               #===============================================================================
+               #                               MAIN PANEL FOR SIMPLE MODEL                    #
+               #===============================================================================
                
                mainPanel(
                  tabsetPanel(
-                   tabPanel("Output",
-                            h4("Input values: "),
+                    tabPanel("Output",
+                            #h4("Task: "),
                             # tableOutput("table"), # output input values
-                            h4("Prediction:"),
-                            verbatimTextOutput("txtout"),
-                            h1("Header 1"),
-                            h2("Header 2"),
-                            h3("Header 3"),
-                            h4("Header 4"),
-                            h5("Header 5")
-                   ),
+                            h2("Task: ", textOutput("task")),
+                            h3("Prediction:"),
+                            verbatimTextOutput("comp_simple"),
+                            verbatimTextOutput("comp_simple_dens"),
+                            #### ADD RIGHT CONDITIONS HERE
+                            # conditionalPanel(condition = "input.pytype == 'ppercentage'",
+                            #                  verbatimTextOutput("comp_simple")
+                            #                  ),
+                            # conditionalPanel(condition = "input.pytype == 'pdensity'",
+                            #                  verbatimTextOutput("comp_simple_dens")
+                            #                 )
+                            plotOutput("residuals", width=600, height=500)
+                      ),
                    tabPanel("Summary"),
                    tabPanel("Plot")
                    
-                 )
-               )
-      ),
+                 ) # end tabsetPanel
+               ) # end mainPanel
+            ), # end tabpanel
+      
+              #===============================================================================
+              #                               MAIN PANEL FOR COMPLEX MODEL                   #
+              #===============================================================================
+              
+              # mainPanel()
+      
+      # ### TAB 1 = dashboard:
+      # tabPanel(tabName = "graphs",
+      #         
+      #         sidebarPanel(
+      #               solidHeader = TRUE, status = "primary",
+      #               
+      #               sliderInput(inputId = "sample",
+      #                           label = "Sample size",
+      #                           value = 50, min = 10, max = 100),
+      #               sliderInput(inputId = "slope",
+      #                           label = "Regression slope",
+      #                           value = .25, min = -2, max = 2,step = .25),
+      #               # Sd slider:
+      #               sliderInput(inputId = "SD",
+      #                           label = "Standard deviation",
+      #                           value = 3, min = 0, max = 50),
+      #               actionButton(inputId = "refresh", label = "Simulate New Data" , 
+      #                            icon = icon("fa fa-refresh"))
+      #           ),
+      #           
+      #           mainPanel(
+      #             
+      #             box(width = 6,
+      #                 title = "Regression",
+      #                 solidHeader = TRUE, status = "primary",
+      #                 plotOutput(outputId = "reg")),
+      #             
+      #             
+      #             box(width = 6,title = "Sums of Squares Graphs",
+      #                 solidHeader = F, status = "primary",
+      #                 tabsetPanel(type = "tabs",
+      #                             tabPanel("Total", plotOutput("total")),
+      #                             tabPanel("Regression", plotOutput("regression")),
+      #                             tabPanel("Error", plotOutput("error")),
+      #                             tabPanel("Variance Partition", plotOutput(("variance")))
+      #                             
+      #                 )
+      #             )
+      #           ),
+      #           fluidRow(
+      #             box(width = 6,title = "Anova Table",
+      #                 solidHeader = FALSE, status = "warning",
+      #                 tableOutput(outputId = "anova")),
+      #             
+      #             box(width = 6,title = "Summary",
+      #                 solidHeader = FALSE, status = "warning",
+      #                 tableOutput(outputId = "summary")))
+      #         ),
+      # 
+      # # TAB 2 = dashboard:
 
       #===============================================================================
       #                               TAB PANELS CONT'D                              #

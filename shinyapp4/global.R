@@ -17,6 +17,8 @@ library(ggExtra)
 library(shinyBS)
 library(qtl)
 library(rmarkdown)
+library(plotly)
+#library(Cairo)
 
 # ################################################################################
 # #                             GLOBAL VARIABLES                                 #
@@ -28,6 +30,10 @@ library(rmarkdown)
 # ###############################################################################
 # #                               LOAD DATA                                     #
 # ###############################################################################
+
+#source('../src/databuilder.R', local = TRUE)
+load(file = "Rdata/fit_nona_paras.rda")
+
 # #Delete the following line before deploying this to shiny.io
 # home <- getwd()
 # 
@@ -50,3 +56,19 @@ library(rmarkdown)
 # 
 # #Set directory back to project home directory
 # setwd(home)
+
+# ################################################################################
+# #                             FUNCTIONS                                       #
+# ################################################################################
+
+ggplotRegression <- function (fit, constant) {  
+  require(ggplot2)  
+  ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
+    geom_point() +
+    stat_smooth(method = "lm", col = "blue") +
+    labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
+                       "; Intercept =",signif(fit$coef[[1]],5 ),
+                       "; Slope =",signif(fit$coef[[2]], 5),
+                       "; P-value =",signif(summary(fit)$coef[2,4], 5))) + 
+    geom_abline(intercept = constant, slope = 0)
+}

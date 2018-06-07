@@ -80,8 +80,9 @@ ui = tagList(
                                value = 800000, min = 0, max = 1500000, step = 1000)
                  ),
                  
-                 actionButton(inputId = "go_simple", label = "Submit")
-                 # p("Click the button to update the plot displayed in the main panel.")
+                 actionButton(inputId = "go_simple", label = "Submit"),
+                 #actionButton(inputId = "reset", label = "Reset"),
+                 p("Click the button only once to make a prediction displayed in the main panel. Then use the slider to adjust the input with a direct prediction output.")
                  
                  # tags$h5("actionButton with CSS class:"),
                  # actionButton("action2", "Action button", class = "btn-primary")
@@ -106,7 +107,6 @@ ui = tagList(
                                         value = 8, min = 1, max = 99, step =1.)
                             
                           ),
-                          
                           conditionalPanel(
                             condition = "input.ptype2 == 'pdensity2'",
                             sliderInput(inputId = "parasitemia_density2",
@@ -163,19 +163,40 @@ ui = tagList(
                             # tableOutput("table"), # output input values
                             h2("Task: ", textOutput("task")),
                             h3("Prediction:"),
+                            # uiOutput("comp_simple"),
+                            # verbatimTextOutput("test0"),
                             verbatimTextOutput("comp_simple"),
                             verbatimTextOutput("comp_simple_dens"),
+                            verbatimTextOutput("comp_complex"),
+                            verbatimTextOutput("comp_complex_dens"),
+                            verbatimTextOutput("comp_complex_counts"),
+                            verbatimTextOutput("comp_complex_counts_dens"),
                             #### ADD RIGHT CONDITIONS HERE
                             # conditionalPanel(condition = "input.pytype == 'ppercentage'",
                             #                  verbatimTextOutput("comp_simple")
                             #                  ),
                             # conditionalPanel(condition = "input.pytype == 'pdensity'",
                             #                  verbatimTextOutput("comp_simple_dens")
-                            #                 )
-                            plotOutput("residuals", width=600, height=500)
+                            #                 ),
+                            # plotOutput("residuals", width=600, height=500)
+                            plotlyOutput("residuals", width=600, height=500)
+                            # ###########################################################
+                            # fluidRow(
+                            #   column(width = 6,
+                            #          plotOutput("plot2", height = 300,
+                            #                     brush = brushOpts(
+                            #                       id = "plot2_brush",
+                            #                       resetOnNew = TRUE
+                            #                     )
+                            #          )
+                            #   ),
+                            #   column(width = 6,
+                            #          plotOutput("plot3", height = 300)
+                            #   )
+                            # )
+                            # ############################################################
                       ),
-                   tabPanel("Summary"),
-                   tabPanel("Plot")
+                   tabPanel("Summary")
                    
                  ) # end tabsetPanel
                ) # end mainPanel

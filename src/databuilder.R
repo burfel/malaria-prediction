@@ -3,7 +3,8 @@ library(doParallel)
 library(tidyverse)
 registerDoParallel(detectCores() - 1)
 
-setwd("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/src")
+#setwd("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/src")
+
 
 #===============================================================================
 #                               READ IN DATA                                   #
@@ -115,6 +116,12 @@ plot(fit.nona.paras) # diagnostic plots: residuals do not have non-linear patter
 #dev.off()
 hist(fit.nona.paras$res,main="Residuals") # residuals not really Gaussian
 # MODEL: 0.090267 + 0.013339*dat.nona$Percentage.parasitemia
+
+
+#===============================================================================
+#                      SAVE MODELS                                             #
+#===============================================================================
+save(fit.nona.paras, file = "../shinyapp4/Rdata/fit_nona_paras.rda")
 
 
 #===============================================================================
@@ -689,6 +696,26 @@ summary(glm.total.counts.dens.logit)
 par(mfrow = c(2, 2))
 plot(glm.total.counts.dens.logit)
 # MODEL.log: -1.129e+00 + 1.744e-06*dat.nona$Parasite.density...µl. + (-4.876e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.639e+00)*dat.nona$Monocyte.count...x109.L. + (-1.666e-01)*dat.nona$Neutrophil.count...x109.L.
+
+
+#===============================================================================
+#                      PLOTS GLMs                                              #
+#===============================================================================
+
+par(mfrow = c(2, 2))
+plot(glm.paras)
+
+plot(dat.nona$outcome, dat.nona$Percentage.parasitemia)
+lines(log(dat.nona$outcome),glm.paras$fitted.values)
+
+## regression plots l.130
+
+# GLM REGRESSION LINE
+ggplot(dat.nona,aes(Percentage.parasitemia,outcome))+xlab("Parasitemia percentage")+ylab("Pathogen reads")+geom_point()+geom_line(aes(y=fitted(glm.paras.logit)))
+#ggplot(dat.nona,aes(dat$Parasite.density...µl.,outcome))+geom_point()+geom_line(aes(y=fitted(glm.paras.dens)))
+abline(h=0.6)
+#points(10,0.6)
+#lines(10,0.6, type=o)
 
 
 # #### NOT NEEDED ANYMORE

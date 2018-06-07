@@ -9,7 +9,8 @@
 #                               SHINYSERVER                                    #
 #===============================================================================
 
-server = function(input, output) {
+# server = function(input, output) {
+server = function(input, output, session) {
   
     # output$table <- renderTable({
     #   head(cars, 4)
@@ -69,7 +70,6 @@ server = function(input, output) {
       glm_simple <- function(){
         I <- -1.964e+00
         P <- input$parasitemia_percentage
-        #W <- input$white_blood
         logit <- I + 6.550e-02*P
         exp(logit)/(1+exp(logit))
       }
@@ -93,7 +93,7 @@ server = function(input, output) {
         I <- -1.112e+00
         P <- input$parasitemia_percentage2
         W <- input$white_blood
-        I + 5.324e-02*P + (-7.415e-02)*W
+        logit <- I + 5.324e-02*P + (-7.415e-02)*W
         exp(logit)/(1+exp(logit))
       }
 
@@ -103,7 +103,7 @@ server = function(input, output) {
         I <- -1.238e+00
         P <- input$parasitemia_density2
         W <- input$white_blood
-        I + 1.676e-06*P + (-6.638e-02)*W
+        logit <- I + 1.676e-06*P + (-6.638e-02)*W
         exp(logit)/(1+exp(logit))
       }
 
@@ -115,7 +115,7 @@ server = function(input, output) {
         L <- input$lympho
         M <- input$mono
         N <- input$neutro
-        I + 6.155e-02*P + (-5.826e-01)*L + 2.898e+00*M + (-1.634e-01)*N
+        logit <- I + 6.155e-02*P + (-5.826e-01)*L + 2.898e+00*M + (-1.634e-01)*N
         exp(logit)/(1+exp(logit))
       }
 
@@ -127,7 +127,7 @@ server = function(input, output) {
         L <- input$lympho
         M <- input$mono
         N <- input$neutro
-        I + 1.744e-06*P + (-4.876e-01)*L + 2.639e+00*M + (-1.666e-01)*N
+        logit <- I + 1.744e-06*P + (-4.876e-01)*L + 2.639e+00*M + (-1.666e-01)*N
         exp(logit)/(1+exp(logit))
       }
     
@@ -145,11 +145,23 @@ server = function(input, output) {
         observeEvent(input$go_simple, {
 
         # COMPUTE PREDICTION SIMPLE MODEL ----
+        
         output$comp_simple <- renderText({
           paste("Simple model with percentage of parasitemia: \n",
                 "Reads that will map to pathogen: ", round(100*glm_simple(), digits=2), "%", "\n",
                 "Reads that will map to host:     ", round(100*(1 - glm_simple()), digits=2), "%")
         })
+        
+        # output$comp_simple <- renderText("Simple model with percentage of parasitemia:")
+        # 
+        # output$test0 <- renderUI({
+        # conditionalPanel(condition = "input.pytype == 'ppercentage'",
+        #                  verbatimTextOutput("comp_simple"))
+        # 
+        # })
+        # conditionalPanel(condition = "input.pytype == 'pdensity'",
+        #                  verbatimTextOutput("comp_simple_dens")
+        #                 ),
 
         output$comp_simple_dens <- renderText({
           paste("Simple model with parasitemia density: \n",
@@ -181,24 +193,29 @@ server = function(input, output) {
     #===============================================================================
           #------- UPON CLICKING 'COMPLEX MODEL'...
           observeEvent(input$go_complex, {
+            
+          
 
           # COMPUTE PREDICTION COMPLEX MODEL ----
           output$comp_complex <- renderText({
-            paste("Complex model with percentage of parasitemia: \n",
+            paste("Complex model with percentage of parasitemia and total number of white cells: \n",
                   "Reads that will map to pathogen: ", round(100*glm_complex(), digits=2), "%", "\n",
-                  "Reads that will map to host:    ", round(100*(1 - glm_complex()), digits=2), "%")
+                  "Reads that will map to host:      ", round(100*(1 - glm_complex()), digits=2), "%")
           })
           output$comp_complex_dens <- renderText({
-            paste("Reads that will map to pathogen: ", round(100*glm_complex_dens(), digits=2), "%", "\n",
-                  "Reads that will map to host:    ", round(100*(1 - glm_complex_dens()), digits=2), "%")
+            paste("Complex model with parasitemia density and total number of white cells: \n",
+                  "Reads that will map to pathogen: ", round(100*glm_complex_dens(), digits=2), "%", "\n",
+                  "Reads that will map to host:      ", round(100*(1 - glm_complex_dens()), digits=2), "%")
           })
           output$comp_complex_counts <- renderText({
-            paste("Reads that will map to pathogen: ", round(100*glm_complex_counts(), digits=2), "%", "\n",
-                  "Reads that will map to host:    ", round(100*(1 - glm_complex_counts()), digits=2), "%")
+            paste("Complex model with percentage of parasitemia and white cell type counts: \n",
+                  "Reads that will map to pathogen: ", round(100*glm_complex_counts(), digits=2), "%", "\n",
+                  "Reads that will map to host:      ", round(100*(1 - glm_complex_counts()), digits=2), "%")
           })
           output$comp_complex_counts_dens <- renderText({
-            paste("Reads that will map to pathogen: ", round(100*glm_complex_counts_dens(), digits=2), "%", "\n",
-                  "Reads that will map to host:    ", round(100*(1 - glm_complex_counts_dens()), digits=2), "%")
+            paste("Complex model with parasitemia density and white cell type counts: \n",
+                  "Reads that will map to pathogen: ", round(100*glm_complex_counts_dens(), digits=2), "%", "\n",
+                  "Reads that will map to host:      ", round(100*(1 - glm_complex_counts_dens()), digits=2), "%")
           })
           })
       
@@ -206,9 +223,44 @@ server = function(input, output) {
     #                               OUTPUT GRAPHS                                  #
     #===============================================================================
           
-  output$residuals <- renderPlot({
-    hist(rnorm(200))
+  # output$residuals <- renderPlot({
+  #   hist(rnorm(200))
+  # })
+  # 
+  output$residuals <- renderPlotly({
+    ggplotRegression(fit.nona.paras, glm_simple())
   })
+        
+  ###########################################
+  #       # -------------------------------------------------------------------
+  #       # Linked plots (middle and right)
+  #       ranges2 <- reactiveValues(x = NULL, y = NULL)
+  #       
+  #       output$plot2 <- renderPlot({
+  #         ggplot(mtcars, aes(wt, mpg)) +
+  #           geom_point()
+  #       })
+  #       
+  #       output$plot3 <- renderPlot({
+  #         ggplot(mtcars, aes(wt, mpg)) +
+  #           geom_point() +
+  #           coord_cartesian(xlim = ranges2$x, ylim = ranges2$y, expand = FALSE)
+  #       })
+  #       
+  #       # When a double-click happens, check if there's a brush on the plot.
+  #       # If so, zoom to the brush bounds; if not, reset the zoom.
+  #       observe({
+  #         brush <- input$plot2_brush
+  #         if (!is.null(brush)) {
+  #           ranges2$x <- c(brush$xmin, brush$xmax)
+  #           ranges2$y <- c(brush$ymin, brush$ymax)
+  #           
+  #         } else {
+  #           ranges2$x <- NULL
+  #           ranges2$y <- NULL
+  #         }
+  #       })
+  # ###########################################
   
   ### Saving data:
   Rawdata <- reactive({
@@ -345,6 +397,12 @@ server = function(input, output) {
       d1,
       type = 'histogram')
   })
+  
+  #===============================================================================
+  #                               HOVERING OVER BUTTONS                          #
+  #===============================================================================
+  # addTooltip(session, id = "go_simple", title = "Click here to compute a prediction!",
+  #            placement = "left", trigger = "hover")
 }
 
 

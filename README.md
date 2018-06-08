@@ -4,15 +4,25 @@ We developed a simple prediction tool that enables the user to estimate the like
 
 The web tool can be found in the directory _shinyapp3_.
 To run the app from ```R Studio```, copy and paste the following code from the folder:
-   ```{r} 
+ <!---
  # First install the following packages:
  library(shiny)
+ library(shinythemes)
+ libary(shinyalert)
  library(ggExtra)
  library(ggplot2)
- library(shinythemes)
  library(rmarkdown)
  library(plotly)
+ --->
+ ```{r}
  ### run the application:
+ install.packages("shiny", 
+                  "shinythemes", 
+                  "shinyalert", 
+                  "ggExtra",
+                  "ggplot2",
+                  "rmarkdown",
+                  "plotly")
  shiny::runGitHub("malaria-prediction", "burfel", subdir="shinyapp4")
  ```
 

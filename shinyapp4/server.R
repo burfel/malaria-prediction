@@ -318,6 +318,10 @@ server = function(input, output, session) {
     ggplotRegression(plot_data, glm_both_simple(ptype))
   })
   
+  # output$help <- helpPopup("How to use", "blabla",
+  #                                                placement=c('right'),
+  #                                                trigger=c('hover'))
+  
   ###########################################
   #       # -------------------------------------------------------------------
   #       # Linked plots (middle and right)
@@ -490,6 +494,30 @@ server = function(input, output, session) {
   #===============================================================================
   # addTooltip(session, id = "go_simple", title = "Click here to compute a prediction!",
   #            placement = "left", trigger = "hover")
+  
+  observeEvent(input$help_icon, {
+    # Show a modal when the button is pressed
+    shinyalert("How to use this web tool?", "You can either choose between the simple or the complex model to make a prediction depending on the type of your data. 
+                \n Then enter your data via the slider(s). 
+                \n You can bookmark the state which automatically saves the values of all inputs.
+               ")
+  })
+  
+  #===============================================================================
+  #                               BOOKMARKS                                      #
+  #===============================================================================
+  
+  # Need to exclude the buttons from themselves being bookmarked
+  setBookmarkExclude(c("bookmark1", "bookmark2"))
+  
+  # Trigger bookmarking with either button
+  observeEvent(input$bookmark1, {
+    session$doBookmark()
+  })
+  observeEvent(input$bookmark2, {
+    session$doBookmark()
+  })
+  
 }
 
 

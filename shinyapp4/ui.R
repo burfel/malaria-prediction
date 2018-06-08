@@ -85,14 +85,18 @@ ui = tagList(
       #                               TAB PANEL: RESULTS                             #
       #===============================================================================
       tabPanel("Results",
+               
          sidebarPanel(width=4,
                    
          #fileInput("file", "File input:"),
-                 
-        # dateInput('date',
-        #           label = "Date input: yyyy-mm-dd",
-        #           value = Sys.Date()
-        # ),
+        
+        useShinyalert(),
+        actionButton("help_icon", "Help"), 
+        br(), br(),
+        dateInput('date',
+                  label = "Date input: yyyy-mm-dd",
+                  value = Sys.Date()
+        ),
         # textInput("user_name", "User name:", "Enter your name here!"),
                  
         # helpText("Choose between the simple and a more complex model."),
@@ -123,7 +127,7 @@ ui = tagList(
                                label = "Parasitemia density [1/µl]",
                                value = 800000, min = 0, max = 1500000, step = 1000)
                  ),
-                 bookmarkButton()
+                 bookmarkButton(id = "bookmark1")
                  
                  # actionButton(inputId = "go_simple", label = "Submit"),
                  # p("Click the button only once to make a prediction displayed in the main panel. Then use the slider to adjust the input with a direct prediction output.")
@@ -189,7 +193,7 @@ ui = tagList(
                                         value = 5.4, min = 0, max = 100, step = .1)
                           ),
                           # actionButton(inputId = "go_complex", label = "Submit")
-                          bookmarkButton()
+                          bookmarkButton(id = "bookmark2")
                     ) # end tabPanel
                   ) # end tabsetPanel
                ), # end sidebarPanel
@@ -197,6 +201,8 @@ ui = tagList(
                #===============================================================================
                #                               RESULTS: MAIN PANEL                            #
                #===============================================================================
+        
+        
                #===============================================================================
                #                               MAIN PANEL FOR SIMPLE MODEL                    #
                #===============================================================================

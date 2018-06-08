@@ -9,10 +9,11 @@
 #                         LOAD PACKAGES AND MODULES                          #
 ###############################################################################
 library(shiny)
-library(ggplot2)
 library(shinythemes)
+library(shinyalert)
 # library(grid)
-library(markdown)
+# library(markdown)
+library(ggplot2)
 library(ggExtra)
 # library(shinyBS)
 # library(qtl)
@@ -52,6 +53,8 @@ load(file = "Rdata/dummy.rda")
 # #                             FUNCTIONS                                       #
 # ################################################################################
 
+enableBookmarking(store = "url")
+
 ggplotRegression <- function (fit, constant) {  
   require(ggplot2)  
   ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
@@ -64,4 +67,22 @@ ggplotRegression <- function (fit, constant) {
     geom_abline(intercept = constant, slope = 0)
 }
 
-enableBookmarking(store = "url")
+helpPopup <- function(title, content,
+                      placement=c('right', 'top', 'left', 'bottom'),
+                      trigger=c('click', 'hover', 'focus', 'manual')) {
+  tagList(
+    singleton(
+      tags$head(
+        tags$script("$(function() { $(\"[data-toggle='popover']\").popover(); })")
+      )
+    ),
+    tags$a(
+      href = "#", class = "btn btn-mini", `data-toggle` = "popover",
+      title = title, `data-content` = content, `data-animation` = TRUE,
+      `data-placement` = match.arg(placement, several.ok=TRUE)[1],
+      `data-trigger` = match.arg(trigger, several.ok=TRUE)[1],
+      
+      tags$i(class="icon-question-sign")
+    )
+  )
+}

@@ -9,6 +9,7 @@ To run this application localy, simple paste the following code on `R` console:
    ```{r} 
  # First install the following packages:
  library(shiny)
+ library(shinyalert)
  library(ggExtra)
  library(ggplot2)
  library(shinythemes)

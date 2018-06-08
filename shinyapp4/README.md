@@ -26,6 +26,5 @@ Felicia Burtscher | [felicia.burtscher17@imperial.ac.uk](mailto:felicia.burtsche
 This application was developed with [shiny](http://shiny.rstudio.com/) in [R studio](https://www.rstudio.com/). Special thanks go to Dr Aubrey Cunnington and Dr Clive Hoggart for support and advice and the rest of the Pediatrics group at St Mary's Hospital, Imperial College London.
 
 <img src="img/logo.png" alt="logo" width="200px"/>
-<!---
-![Imperial Logo](img/logo.png =100x20)
---->
+
+| | ![Imperial Logo](img/logo.png =100x20)|

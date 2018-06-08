@@ -17,6 +17,7 @@ library(ggExtra)
 library(shinyBS)
 library(qtl)
 library(rmarkdown)
+library(markdown)
 library(plotly)
 #library(Cairo)
 
@@ -66,9 +67,9 @@ ggplotRegression <- function (fit, constant) {
   ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
     geom_point() +
     stat_smooth(method = "lm", col = "blue") +
-    labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
-                       "; Intercept =",signif(fit$coef[[1]],5 ),
-                       "; Slope =",signif(fit$coef[[2]], 5),
-                       "; P-value =",signif(summary(fit)$coef[2,4], 5))) + 
+    # labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
+    #                    "; Intercept =",signif(fit$coef[[1]],5 ),
+    #                    "; Slope =",signif(fit$coef[[2]], 5),
+    #                    "; P-value =",signif(summary(fit)$coef[2,4], 5))) + 
     geom_abline(intercept = constant, slope = 0)
 }

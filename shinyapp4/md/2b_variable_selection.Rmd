@@ -5,6 +5,6 @@ The categorical variables (includin sex and ethnicity) were encoded as dummy var
 
 Moreover, we looked at the correlation matrix to choose "good" variables to include in our model, ie the ones that do not correlate much with the first independent variable so that a small model can caputure much variance and results in a better performance. 
 [EXPLAIN "ALGORITHM" TO IDENTIFY THESE]
-Here, domain knowledge was important too. 
+Here, domain knowledge was important too. Also, we chose the variable(s) based on the utility for the user. Most often people will just have parasitemia or parasite density data. In some cases they may have white cell count data, too.
 
 [INSERT CORRELATION MATRIX HERE]

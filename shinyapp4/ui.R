@@ -33,9 +33,50 @@ ui = tagList(
       tabPanel("Introduction", 
                uiOutput("introduction")
       ),
-      tabPanel("Methods", 
-               uiOutput("methods")
-      ),
+      navbarMenu("Methods", 
+                  uiOutput("methods"),
+        # tabPanel("Table"
+        # #DT::dataTableOutput("table")
+        #         ),
+        tabPanel("Data pre-processing",
+                 includeMarkdown("md/2a_data_preprocessing.Rmd")
+                  ),
+          # fluidRow(
+          # column(6,
+          #   includeMarkdown("README.md"),
+          #   column(6,
+          #          img(class="img-polaroid",
+          #              src=paste0("http://upload.wikimedia.org/",
+          #                         "wikipedia/commons/9/92/",
+          #                         "1919_Ford_Model_T_Highboy_Coupe.jpg")),
+          #          tags$small(
+          #            "Source: Photographed at the Bay State Antique ",
+          #            "Automobile Club's July 10, 2005 show at the ",
+          #            "Endicott Estate in Dedham, MA by ",
+          #            a(href="http://commons.wikimedia.org/wiki/User:Sfoskett",
+          #              "User:Sfoskett")
+          #           )
+          #         )  # end column
+          #       ) # end column
+          #   ) # end fluidrow
+          # ) end tabPanel
+        tabPanel("Variable selection",
+                 includeMarkdown("md/2b_variable_selection.Rmd")
+        ),
+        tabPanel("Model selection",
+                 includeMarkdown("md/2c_model_selection.Rmd")
+        ),
+        tabPanel("Model assumptions",
+                 includeMarkdown("md/2d_model_assumptions.Rmd")
+        ),
+        tabPanel("Generalized Linear Model",
+                 includeMarkdown("md/2e_glm.Rmd")
+        ),
+        tabPanel("Cross-validation",
+                 includeMarkdown("md/2f_cross_validation.Rmd")
+        )
+      ), # end navbarMenu
+        
       
       #===============================================================================
       #                               TAB PANEL: RESULTS                             #

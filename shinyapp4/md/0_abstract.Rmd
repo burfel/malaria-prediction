@@ -12,7 +12,7 @@ The purpose of this project is to develop a __simple prediction tool__ that will
 ![alt text][total_reads_outcome] |
 ![alt text][density]            |
 |:-----:|:--------------:|
-Figure 1: Number of total reads in sample against percentage that map to pathogen | Figure 2: Density plot of reads that map to the pathogen | 
+Figure 1: Number of total reads in sample against percentage that map to pathogen | Figure 2: Density plot of reads that map to the pathogen | | Note: The area under the curve itegrates to 1.
 <!--
 <img src="https://github.com/burfel/malaria-prediction/blob/master/shinyapp2/img/pathogen-read-density.png"
      alt="Markdown Monster icon"

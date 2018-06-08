@@ -53,9 +53,12 @@ ggplot(dat, aes(total_reads, log(outcome))) +
 
 # PLOTS: IS RESPONSE VARIABLE CLOSE TO NORMALITY?
 library("ggpubr")
+#png("img/pathogen_read_density.png")
 ggdensity(dat$outcome, 
           main = "Density plot of pathogen reads",
-          xlab = "Percentage of reads that map to pathogen")
+          xlab = "Percentage of reads that map to pathogen",
+          ylab = "Density/ quantity of reads")
+#dev.off()
 # ggdensity(dat.nona$Percentage.parasitemia, 
 #           main = "Density plot of Percentage of parasitemia",
 #           xlab = "Percentage of parasitemia")
@@ -66,9 +69,10 @@ ggdensity(dat$outcome,
 
 # PLOT --- FOR WEBSITE
 library(e1071)
-#png("shinyapp2/img/pathogen_read_density.png")
-plot(density(dat$outcome), main="Figure 1: Percentage of reads that map to pathogen", ylab="Density", sub=paste("Skewness:", round(e1071::skewness(dat$outcome), 2)))  # density plot for 'speed'
-# polygon(density(dat$outcome), col="red")
+#png("shinyapp4/img/pathogen_read_density.png")
+plot(density(dat$outcome), main="Percentage of reads that map to pathogen", ylab="Density" #, sub=paste("Skewness:", round(e1071::skewness(dat$outcome), 2))
+     )  # density plot for 'speed'
+polygon(density(dat$outcome), col="red")
 #dev.off()
 
 #===============================================================================

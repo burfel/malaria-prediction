@@ -11,5 +11,7 @@
 | hrs                       | hours       |
 | outcome                   | response variable, here: the percentage of reads that map to the pathogen |
 |                           | Note: we use _outcome_ and _response_ variable interchangably here |
-| P.                        | here: Plasmodium |
+| _P._                        | _Plasmodium (genus)_ |
+| M                         | Millions |
+| eg                        | exempli gratia, for example |
 

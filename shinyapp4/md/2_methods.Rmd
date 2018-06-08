@@ -1,10 +1,13 @@
 # Methods
 
+## Data description
+See chapter _Data_ [INSERT LINK HERE].
+
 ## Data pre-processing [INSERT LINK HERE]
 First and foremeost, we have to pre-process the raw data. This includes centering, scaling, skewness transformation and possibly imputing missing values.
 
 ## Variable selection [INSERT LINK HERE]
-Having a tiny sample with lots of variables, we need to choose the most explaining variable(s) for a simple model. 
+Having a tiny sample with lots of variables, we need to choose the most explaining variable(s) for a simple model. Also, we need to choose the variable(s) based on the utility for the user.
 
 ## Model selection [INSERT LINK HERE]
 We need to choose an appropriate model that explains the data well but is simple enough to not overfit the data.

@@ -12,9 +12,9 @@
 # server = function(input, output) {
 server = function(input, output, session) {
   
-    # output$table <- renderTable({
-    #   head(cars, 4)
-    # })
+  # output$table <- renderTable({
+  #   head(cars, 4)
+  # })
   
   # filedata <- reactive({
   #   infile <- input$datafile
@@ -24,222 +24,300 @@ server = function(input, output, session) {
   #   }
   #   read.csv(infile$datapath)
   # })
+  
+  
+  
+  #===============================================================================
+  #                               LOAD MARKDOWN FILES                            #
+  #===============================================================================   
+  output$lay_summary <- renderUI({
+    includeMarkdown("md/00_lay-summary.Rmd")
+  })
+  output$abstract <- renderUI({
+    includeMarkdown("md/0_abstract.Rmd")
+  })
+  output$introduction <- renderUI({
+    includeMarkdown("md/1_introduction.Rmd")
+  })
+  output$methods <- renderUI({
+    includeMarkdown("md/2_methods.Rmd")
+  })
+  output$results <- renderUI({
+    includeMarkdown("md/3_results.Rmd")
+  })
+  output$discussion <- renderUI({
+    includeMarkdown("md/4_discussion.Rmd")
+  })
+  output$conclusion <- renderUI({
+    includeMarkdown("md/5_conclusion.Rmd")
+  })
+  output$data <- renderUI({
+    includeMarkdown("md/6_data.Rmd")
+  })
+  output$references <- renderUI({
+    includeMarkdown("md/7_references.Rmd")
+  })
+  output$glossary <- renderUI({
+    includeMarkdown("md/8_glossary.Rmd")
+  })
+  output$about <- renderUI({
+    includeMarkdown("README.md")
+  })
+  
+  #===============================================================================
+  #                               MODELS                                         #
+  #===============================================================================
+  #===============================================================================
+  #                               SIMPLE   MODEL                                 #
+  #===============================================================================
+  
+  glm_both_simple<-function(ptype){
+    if(ptype == "ppercentage"){
+      glm_simple()
+    } else if(ptype == "pdensity"){
+      glm_simple_dens()
+    }
+  }
+  
+  # glm_both_complex<-function(ptype2, wtype){
+  #   if(type2 == "ppercentage2" & wtype == "white_blood"){
+  #     glm_complex()
+  #   } 
+  #   else if(type2 == "pdensity2" & wtype == "white_blood"){
+  #     glm_complex_dens()
+  #   }
+  #   else if(type2 == "ppercentage2" & wtype == "counts"){
+  #     glm_complex_counts()
+  #   }
+  #   else if(type2 == "pdensity2" & wtype == "counts"){
+  #     glm_complex_counts_dens()
+  #   }
+  # }
+  
+  
+  # MODEL 0a: GLM SIMPLE | PERCENTAGE
+  ## MODEL.log: -1.964e+00 + 6.550e-02*dat.nona$Percentage.parasitemia
+  glm_simple <- function(){
+    I <- -1.964e+00
+    P <- input$parasitemia_percentage
+    logit <- I + 6.550e-02*P
+    exp(logit)/(1+exp(logit))
+  }
+  
+  # MODEL 0b: GLM SIMPLE | DENSITY
+  ## MODEL.log: -2.012e+00 + 2.031e-06*dat.nona$Parasite.density...µl.
+  glm_simple_dens <- function(){
+    I <- 2.012e+00
+    P <- input$parasitemia_density
+    logit <- I + 2.031e-06*P
+    exp(logit)/(1+exp(logit))
+  }
+  
+  #===============================================================================
+  #                               COMPLEX MODEL                                 #
+  #===============================================================================
+  
+  # MODEL 1a: GLM COMPLEX | PERCENTAGE | TOTAL WHITE BLOOD CELLS
+  ## MODEL.log: -1.112e+00 + 5.324e-02*dat.nona$Percentage.parasitemia + (-7.415e-02)*dat.nona$Total.White.Cell.Count..x109.L.
+  glm_complex <- function(){
+    I <- -1.112e+00
+    P <- input$parasitemia_percentage2
+    W <- input$white_blood
+    logit <- I + 5.324e-02*P + (-7.415e-02)*W
+    exp(logit)/(1+exp(logit))
+  }
+  
+  # MODEL 1b: GLM COMPLEX | DENSITY | TOTAL WHITE BLOOD CELLS
+  # MODEL.log: -1.238e+00 + 1.676e-06*dat.nona$Parasite.density...µl. + (-6.638e-02)*dat.nona$Total.White.Cell.Count..x109.L.
+  glm_complex_dens <- function(){
+    I <- -1.238e+00
+    P <- input$parasitemia_density2
+    W <- input$white_blood
+    logit <- I + 1.676e-06*P + (-6.638e-02)*W
+    exp(logit)/(1+exp(logit))
+  }
+  
+  # MODEL 1c: GLM COMPLEX | PERCENTAGE | DIFFERENT WHITE BLOOD CELL COUNTS #############---WRONG-----------
+  ## MODEL.log: -1.068e+00 + 6.155e-02*dat.nona$Percentage.parasitemia + (-5.826e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.898e+00)*dat.nona$Monocyte.count...x109.L. + (-1.634e-01)*dat.nona$Neutrophil.count...x109.L.
+  glm_complex_counts <- function(){
+    I <- -1.068e+00
+    P <- input$parasitemia_percentage2
+    L <- input$lympho
+    M <- input$mono
+    N <- input$neutro
+    logit <- I + 6.155e-02*P + (-5.826e-01)*L + 2.898e+00*M + (-1.634e-01)*N
+    exp(logit)/(1+exp(logit))
+  }
+  
+  # MODEL 1D: GLM COMPLEX | DENSITY | DIFFERENT WHITE BLOOD CELL COUNTS #############---WRONG-----------
+  ## MODEL.log: -1.129e+00 + 1.744e-06*dat.nona$Parasite.density...µl. + (-4.876e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.639e+00)*dat.nona$Monocyte.count...x109.L. + (-1.666e-01)*dat.nona$Neutrophil.count...x109.L.
+  glm_complex_counts_dens <- function(){
+    I <- -1.129e+00
+    P <- input$parasitemia_density2
+    L <- input$lympho
+    M <- input$mono
+    N <- input$neutro
+    logit <- I + 1.744e-06*P + (-4.876e-01)*L + 2.639e+00*M + (-1.666e-01)*N
+    exp(logit)/(1+exp(logit))
+  }
+  
+  
+  
+  
+  
+  #===============================================================================
+  #                               REACTIVE FUNCTIONS                             #
+  #===============================================================================
+  
+  
+  
+  
+  #===============================================================================
+  #                               OUTPUT TEXT                                    #
+  #===============================================================================
+  
+  # # File containing unique geo codes, state,city, zip
+  # output$dummy <- read.csv("Rdata/dummy.csv", header = TRUE)
+  
+  ######## ONLY UPON CLICKING ACTION BUTTON....
+  output$task <- renderText({
+    paste(input$date, input$user_name, sep = ", \n")
+  })
+  
+  output$dummy <- renderTable(dummy)
+  output$summary_simple <- renderTable(summary_simple)
+  output$summary_complex <- renderTable(summary_complex)
+  
+  # output$table.output <- renderTable({
+  #   
+  #   inFile <- input$file1
+  #   
+  #   if (is.null(inFile))
+  #     return(NULL)
+  #   
+  #   tbl <- read.csv(inFile$datapath, header=input$header, sep=input$sep,  dec = input$dec)
+  #   
+  #   return(tbl)
+  # })
+  #===============================================================================
+  #                               SIMPLE MODEL                                   #
+  #===============================================================================
+  #------- UPON CLICKING 'SIMPLE MODEL'...
+  # observeEvent(input$go_simple, {
     
-    #===============================================================================
-    #                               LOAD MARKDOWN FILES                            #
-    #===============================================================================   
-    output$lay_summary <- renderUI({
-      includeMarkdown("md/00_lay-summary.Rmd")
-    })
-    output$abstract <- renderUI({
-      includeMarkdown("md/0_abstract.Rmd")
-    })
-    output$introduction <- renderUI({
-      includeMarkdown("md/1_introduction.Rmd")
-    })
-    output$methods <- renderUI({
-      includeMarkdown("md/2_methods.Rmd")
-    })
-    output$results <- renderUI({
-      includeMarkdown("md/3_results.Rmd")
-    })
-    output$discussion <- renderUI({
-      includeMarkdown("md/4_discussion.Rmd")
-    })
-    output$conclusion <- renderUI({
-      includeMarkdown("md/5_conclusion.Rmd")
-    })
-    output$data <- renderUI({
-      includeMarkdown("md/6_data.Rmd")
-    })
-    output$references <- renderUI({
-      includeMarkdown("md/7_references.Rmd")
-    })
-    output$glossary <- renderUI({
-      includeMarkdown("md/8_glossary.Rmd")
-    })
-    output$about <- renderUI({
-      includeMarkdown("README.md")
-    })
+    # COMPUTE PREDICTION SIMPLE MODEL ----
     
-    #===============================================================================
-    #                               REACTIVE FUNCTIONS                             #
-    #===============================================================================
-    
-    
-    #===============================================================================
-    #                               MODELS                                         #
-    #===============================================================================
-    #===============================================================================
-    #                               SIMPLE   MODEL                                 #
-    #===============================================================================
-    
-      # MODEL 0a: GLM SIMPLE | PERCENTAGE
-      ## MODEL.log: -1.964e+00 + 6.550e-02*dat.nona$Percentage.parasitemia
-      glm_simple <- function(){
-        I <- -1.964e+00
-        P <- input$parasitemia_percentage
-        logit <- I + 6.550e-02*P
-        exp(logit)/(1+exp(logit))
-      }
-    
-      # MODEL 0b: GLM SIMPLE | DENSITY
-      ## MODEL.log: -2.012e+00 + 2.031e-06*dat.nona$Parasite.density...µl.
-      glm_simple_dens <- function(){
-        I <- 2.012e+00
-        P <- input$parasitemia_density
-        logit <- I + 2.031e-06*P
-        exp(logit)/(1+exp(logit))
-      }
-
-      #===============================================================================
-      #                               COMPLEX MODEL                                 #
-      #===============================================================================
+    output$comp_text <- renderText({
       
-      # MODEL 1a: GLM COMPLEX | PERCENTAGE | TOTAL WHITE BLOOD CELLS
-      ## MODEL.log: -1.112e+00 + 5.324e-02*dat.nona$Percentage.parasitemia + (-7.415e-02)*dat.nona$Total.White.Cell.Count..x109.L.
-      glm_complex <- function(){
-        I <- -1.112e+00
-        P <- input$parasitemia_percentage2
-        W <- input$white_blood
-        logit <- I + 5.324e-02*P + (-7.415e-02)*W
-        exp(logit)/(1+exp(logit))
-      }
-
-      # MODEL 1b: GLM COMPLEX | DENSITY | TOTAL WHITE BLOOD CELLS
-      # MODEL.log: -1.238e+00 + 1.676e-06*dat.nona$Parasite.density...µl. + (-6.638e-02)*dat.nona$Total.White.Cell.Count..x109.L.
-      glm_complex_dens <- function(){
-        I <- -1.238e+00
-        P <- input$parasitemia_density2
-        W <- input$white_blood
-        logit <- I + 1.676e-06*P + (-6.638e-02)*W
-        exp(logit)/(1+exp(logit))
-      }
-
-      # MODEL 1c: GLM COMPLEX | PERCENTAGE | DIFFERENT WHITE BLOOD CELL COUNTS
-      ## MODEL.log: -1.068e+00 + 6.155e-02*dat.nona$Percentage.parasitemia + (-5.826e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.898e+00)*dat.nona$Monocyte.count...x109.L. + (-1.634e-01)*dat.nona$Neutrophil.count...x109.L.
-      glm_complex_counts <- function(){
-        I <- -1.068e+00
-        P <- input$parasitemia_percentage2
-        L <- input$lympho
-        M <- input$mono
-        N <- input$neutro
-        logit <- I + 6.155e-02*P + (-5.826e-01)*L + 2.898e+00*M + (-1.634e-01)*N
-        exp(logit)/(1+exp(logit))
-      }
-
-      # MODEL 1D: GLM COMPLEX | DENSITY | DIFFERENT WHITE BLOOD CELL COUNTS
-      ## MODEL.log: -1.129e+00 + 1.744e-06*dat.nona$Parasite.density...µl. + (-4.876e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.639e+00)*dat.nona$Monocyte.count...x109.L. + (-1.666e-01)*dat.nona$Neutrophil.count...x109.L.
-      glm_complex_counts_dens <- function(){
-        I <- -1.129e+00
-        P <- input$parasitemia_density2
-        L <- input$lympho
-        M <- input$mono
-        N <- input$neutro
-        logit <- I + 1.744e-06*P + (-4.876e-01)*L + 2.639e+00*M + (-1.666e-01)*N
-        exp(logit)/(1+exp(logit))
-      }
-    
-    #===============================================================================
-    #                               OUTPUT TEXT                                    #
-    #===============================================================================
-      ######## ONLY UPON CLICKING ACTION BUTTON....
-      output$task <- renderText({
-        paste(input$date, input$user_name, sep = ", \n")
-      })
-    #===============================================================================
-    #                               SIMPLE MODEL                                   #
-    #===============================================================================
-        #------- UPON CLICKING 'SIMPLE MODEL'...
-        observeEvent(input$go_simple, {
-
-        # COMPUTE PREDICTION SIMPLE MODEL ----
-        
-        output$comp_simple <- renderText({
-          paste("Simple model with percentage of parasitemia: \n",
-                "Reads that will map to pathogen: ", round(100*glm_simple(), digits=2), "%", "\n",
-                "Reads that will map to host:     ", round(100*(1 - glm_simple()), digits=2), "%")
-        })
-        
-        # output$comp_simple <- renderText("Simple model with percentage of parasitemia:")
-        # 
-        # output$test0 <- renderUI({
-        # conditionalPanel(condition = "input.pytype == 'ppercentage'",
-        #                  verbatimTextOutput("comp_simple"))
-        # 
-        # })
-        # conditionalPanel(condition = "input.pytype == 'pdensity'",
-        #                  verbatimTextOutput("comp_simple_dens")
-        #                 ),
-
-        output$comp_simple_dens <- renderText({
-          paste("Simple model with parasitemia density: \n",
-                "Reads that will map to pathogen: ", round(100*glm_simple_dens(), digits=2), "%", "\n",
-                "Reads that will map to host:      ", round(100*(1 - glm_simple_dens()), digits=2), "%")
-        })
-        })
-
-        # PLOT SIMPLE MODEL SUMMARY ----
-        output$plot_simple <- renderPlot({
-          plot(fit.nona.paras)
-        })
-        output$plot_simple_dens <- renderPlot({
-          plot(fit.nona.paras.dens)
-        })
-
-        # SUMMARY OF THE SIMPLE MODEL ----
-        output$summary_simple <- renderUI({
-          # dataset <- datasetInput()
-          # summary(dataset)
-          summary(fit.nona.paras)
-        })
-        output$summary_simple_dens <- renderUI({
-          summary(fit.nona.paras.dens)
-        })
-
-    #===============================================================================
-    #                               COMPLEX MODEL                                  #
-    #===============================================================================
-          #------- UPON CLICKING 'COMPLEX MODEL'...
-          observeEvent(input$go_complex, {
-            
-          
-
-          # COMPUTE PREDICTION COMPLEX MODEL ----
-          output$comp_complex <- renderText({
-            paste("Complex model with percentage of parasitemia and total number of white cells: \n",
-                  "Reads that will map to pathogen: ", round(100*glm_complex(), digits=2), "%", "\n",
-                  "Reads that will map to host:      ", round(100*(1 - glm_complex()), digits=2), "%")
-          })
-          output$comp_complex_dens <- renderText({
-            paste("Complex model with parasitemia density and total number of white cells: \n",
-                  "Reads that will map to pathogen: ", round(100*glm_complex_dens(), digits=2), "%", "\n",
-                  "Reads that will map to host:      ", round(100*(1 - glm_complex_dens()), digits=2), "%")
-          })
-          output$comp_complex_counts <- renderText({
-            paste("Complex model with percentage of parasitemia and white cell type counts: \n",
-                  "Reads that will map to pathogen: ", round(100*glm_complex_counts(), digits=2), "%", "\n",
-                  "Reads that will map to host:      ", round(100*(1 - glm_complex_counts()), digits=2), "%")
-          })
-          output$comp_complex_counts_dens <- renderText({
-            paste("Complex model with parasitemia density and white cell type counts: \n",
-                  "Reads that will map to pathogen: ", round(100*glm_complex_counts_dens(), digits=2), "%", "\n",
-                  "Reads that will map to host:      ", round(100*(1 - glm_complex_counts_dens()), digits=2), "%")
-          })
-          })
+      ptype <- paste(input$ptype)
+      ptype2 <- paste(input$ptype2)
+      wtype <- paste(input$wtype)
+      word <- paste0(unlist(strsplit(ptype, ""))[2:length(unlist(strsplit(ptype, "")))], collapse = "")
       
-    #===============================================================================
-    #                               OUTPUT GRAPHS                                  #
-    #===============================================================================
-          
+      if(input$tabset == "simple"){
+      paste("Simple model with", word, "of parasitemia: \n",
+            "Reads that will map to pathogen: ", round(100*glm_both_simple(ptype), digits=2), "%", "\n",
+            "Reads that will map to host:     ", round(100*(1 - glm_both_simple(ptype)), digits=2), "%")
+      }
+      else if(input$tabset == "complex"){
+        if(ptype2 == "ppercentage2" & wtype == "white_blood"){
+          paste("Complex model with percentage of parasitemia and total number of white cells: \n",
+                "Reads that will map to pathogen: ", round(100*glm_complex(), digits=2), "%", "\n",
+                "Reads that will map to host:     ", round(100*(1 - glm_complex()), digits=2), "%")
+        }
+        else if(ptype2 == "pdensity2" & wtype == "white_blood"){
+          paste("Complex model with parasitemia density and total number of white cells: \n",
+                "Reads that will map to pathogen: ", round(100*glm_complex_dens(), digits=2), "%", "\n",
+                "Reads that will map to host:     ", round(100*(1 - glm_complex_dens()), digits=2), "%")
+        }
+        else if(ptype2 == "ppercentage2" & wtype == "counts"){
+          paste("Complex model with percentage of parasitemia and white cell type counts: \n",
+                "Reads that will map to pathogen: ", round(100*glm_complex_counts(), digits=2), "%", "\n",
+                "Reads that will map to host:     ", round(100*(1 - glm_complex_counts()), digits=2), "%")
+        }
+        else if(ptype2 == "pdensity2" & wtype == "counts"){
+          paste("Complex model with parasitemia density and white cell type counts: \n",
+                "Reads that will map to pathogen: ", round(100*glm_complex_counts_dens(), digits=2), "%", "\n",
+                "Reads that will map to host:     ", round(100*(1 - glm_complex_counts_dens()), digits=2), "%")
+        }
+      }
+    })
+    
+    # output$comp_simple <- renderText({
+    #   # paste(input$ptype)
+    #   paste("Simple model with percentage of parasitemia: \n",
+    #         "Reads that will map to pathogen: ", round(100*glm_simple(), digits=2), "%", "\n",
+    #         "Reads that will map to host:     ", round(100*(1 - glm_simple()), digits=2), "%")
+    # })
+    # 
+    # output$comp_simple_dens <- renderText({
+    #   paste("Simple model with parasitemia density: \n",
+    #         "Reads that will map to pathogen: ", round(100*glm_simple_dens(), digits=2), "%", "\n",
+    #         "Reads that will map to host:      ", round(100*(1 - glm_simple_dens()), digits=2), "%")
+    # })
+  # }) # en actionbutton
+  
+  # PLOT SIMPLE MODEL SUMMARY ----
+  # output$plot_simple <- renderPlot({
+  #   plot(fit.nona.paras)
+  # })
+  # output$plot_simple_dens <- renderPlot({
+  #   plot(fit.nona.paras.dens)
+  # })
+  
+  # SUMMARY OF THE SIMPLE MODEL ----
+  output$summary_simple <- renderPrint({
+    # dataset <- datasetInput()
+    # summary(dataset)
+    summary(fit.nona.paras)
+  })
+  output$summary_simple_dens <- renderUI({
+    summary(fit.nona.paras.dens)
+  })
+  
+  #===============================================================================
+  #                               COMPLEX MODEL                                  #
+  #===============================================================================
+  #------- UPON CLICKING 'COMPLEX MODEL'...
+  # observeEvent(input$go_complex, {
+    
+    # COMPUTE PREDICTION COMPLEX MODEL ----
+    output$comp_complex <- renderText({
+      paste("Complex model with percentage of parasitemia and total number of white cells: \n",
+            "Reads that will map to pathogen: ", round(100*glm_complex(), digits=2), "%", "\n",
+            "Reads that will map to host:      ", round(100*(1 - glm_complex()), digits=2), "%")
+    })
+    output$comp_complex_dens <- renderText({
+      paste("Complex model with parasitemia density and total number of white cells: \n",
+            "Reads that will map to pathogen: ", round(100*glm_complex_dens(), digits=2), "%", "\n",
+            "Reads that will map to host:      ", round(100*(1 - glm_complex_dens()), digits=2), "%")
+    })
+    output$comp_complex_counts <- renderText({
+      paste("Complex model with percentage of parasitemia and white cell type counts: \n",
+            "Reads that will map to pathogen: ", round(100*glm_complex_counts(), digits=2), "%", "\n",
+            "Reads that will map to host:      ", round(100*(1 - glm_complex_counts()), digits=2), "%")
+    })
+    output$comp_complex_counts_dens <- renderText({
+      paste("Complex model with parasitemia density and white cell type counts: \n",
+            "Reads that will map to pathogen: ", round(100*glm_complex_counts_dens(), digits=2), "%", "\n",
+            "Reads that will map to host:      ", round(100*(1 - glm_complex_counts_dens()), digits=2), "%")
+    })
+  # })
+  
+  #===============================================================================
+  #                               OUTPUT GRAPHS                                  #
+  #===============================================================================
+  
   # output$residuals <- renderPlot({
   #   hist(rnorm(200))
   # })
   # 
   output$residuals <- renderPlotly({
-    ggplotRegression(fit.nona.paras, glm_simple())
+    ptype<-input$ptype
+    plot_data<-if(input$ptype == "ppercentage") fit.nona.paras else if(input$ptype == "pdensity") fit.nona.paras.dens
+    ggplotRegression(plot_data, glm_both_simple(ptype))
   })
-        
+  
   ###########################################
   #       # -------------------------------------------------------------------
   #       # Linked plots (middle and right)
@@ -275,7 +353,7 @@ server = function(input, output, session) {
   Rawdata <- reactive({
     input$refresh
     input$refresh2
-
+    
     slope <- input$slope
     SD <- input$SD
     sample <- input$sample
@@ -285,7 +363,7 @@ server = function(input, output, session) {
     ypred <- predict(mod)
     Rawdata <- data.frame(y, x, ypred)
   })
-
+  
   SSdata <- reactive({
     dat <- Rawdata()
     Y <- mean(dat$y)
@@ -295,17 +373,17 @@ server = function(input, output, session) {
     SST <- sum((dat$y - Y)^2)
     SSE <- round(sum((dat$y - ypred)^2), digits = 5)
     SSA <- SST - SSE
-
+    
     SSQ <- data.frame(SS = c("Total","Regression","Error"),
                       value = as.numeric(c(SST, SSA, SSE)/SST)*100)
     SSQ$SS <- factor(SSQ$SS, as.character(SSQ$SS))
     SSdata <- data.frame(SS = factor(SSQ$SS, as.character(SSQ$SS)),
                          value = as.numeric(c(SST, SSA, SSE)/SST)*100)
-
+    
   })
-
-
-
+  
+  
+  
   ### First output "graphs"
   output$total <- renderPlot({
     cols <- c("#619CFF", "#00BA38", "#F8766D")
@@ -319,7 +397,7 @@ server = function(input, output, session) {
             panel.background=element_rect(fill="white",colour="black"))+
       ggtitle("SS total")
   })
-
+  
   ### First output "graphs"
   output$regression <- renderPlot({
     cols <- c("#619CFF", "#00BA38", "#F8766D")
@@ -334,9 +412,9 @@ server = function(input, output, session) {
             axis.text  = element_text(size = 18),
             panel.background=element_rect(fill="white",colour="black"))+
       ggtitle("SS regression")
-
+    
   })
-
+  
   ### First output "graphs"
   output$error <- renderPlot({
     cols <- c("#619CFF", "#00BA38", "#F8766D")
@@ -349,9 +427,9 @@ server = function(input, output, session) {
             axis.text  = element_text(size = 18),
             panel.background=element_rect(fill="white",colour="black"))+
       ggtitle("SS error")
-
+    
   })
-
+  
   output$variance <- renderPlot({
     cols <- c("#619CFF", "#00BA38", "#F8766D")
     ggplot(SSdata(), aes(y = value, x = SS, fill = SS))+
@@ -363,10 +441,10 @@ server = function(input, output, session) {
             panel.background=element_rect(fill="white",colour="black")) +
       ylab("% of variance")+
       xlab("Sums of Squares")
-
+    
   })
-
-
+  
+  
   output$reg <- renderPlot({
     ggplot(Rawdata(), aes(y = y, x = x))+
       geom_point(size = 3, colour = "blue", alpha = .5)+
@@ -376,24 +454,24 @@ server = function(input, output, session) {
             panel.background=element_rect(fill="white",colour="black")) +
       ylab("Y")+
       xlab("X")
-
+    
   })
-
+  
   ### Second output "anova"
   output$anova <- renderTable({
     anova(lm(y ~ x, Rawdata()))
   })
-
+  
   ### Second output "SS"
   output$summary <- renderTable({
     summary(lm(y ~ x, Rawdata()))
-
+    
   })
-
+  
   # output$data <- renderDataTable(
   #   Rawdata()[c(1,2)], options = list(
   #     searchable = FALSE, searching = FALSE, pageLength = 100))
-
+  
   output$histogram <- renderPlot({
     d1 <- ggplot(Rawdata(), aes(y = y, x = x))+
       geom_point(size = 3, colour = "blue", alpha = .5)+
@@ -415,10 +493,10 @@ server = function(input, output, session) {
 }
 
 
-  
-  #===============================================================================
-  #                        MODELS                                                #
-  #===============================================================================
+
+#===============================================================================
+#                        MODELS                                                #
+#===============================================================================
 
 
 

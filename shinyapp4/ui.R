@@ -6,7 +6,7 @@
 # ui.R
 
 #source('../src/databuilder.R', local = TRUE)
-
+# setwd("shinyapp4")
 
 #ui = bootstrapPage(
 ui = tagList(
@@ -38,7 +38,7 @@ ui = tagList(
         # tabPanel("Table"
         # #DT::dataTableOutput("table")
         #         ),
-        tabPanel("Overview",
+        tabPanel("OVERVIEW",
                  includeMarkdown("md/2_methods.Rmd")
         ),
         tabPanel("Data pre-processing",
@@ -85,24 +85,24 @@ ui = tagList(
       #                               TAB PANEL: RESULTS                             #
       #===============================================================================
       tabPanel("Results",
-               sidebarPanel(width=4,
+         sidebarPanel(width=4,
                    
-                 #fileInput("file", "File input:"),
+         #fileInput("file", "File input:"),
                  
-                 dateInput('date',
-                            label = "Date input: yyyy-mm-dd",
-                            value = Sys.Date()
-                            ),
-                 textInput("user_name", "User name:", "Enter your name here!"),
+        # dateInput('date',
+        #           label = "Date input: yyyy-mm-dd",
+        #           value = Sys.Date()
+        # ),
+        # textInput("user_name", "User name:", "Enter your name here!"),
                  
-                 # helpText("Choose between the simple and a more complex model."),
+        # helpText("Choose between the simple and a more complex model."),
                  
-                 tabsetPanel(id="tabset",
+        tabsetPanel(id = "tabset",
 
-                #===============================================================================
-                #                               SIMPLE MODEL                                   #
-                #===============================================================================
-                tabPanel("Simple model", id = "simple",
+        #===============================================================================
+        #                               SIMPLE MODEL                                   #
+        #===============================================================================
+            tabPanel("Simple model", value = "simple",
                  
                  br(),
                  # Input: Select the parasitemia type ----
@@ -120,28 +120,28 @@ ui = tagList(
                  conditionalPanel(
                    condition = "input.ptype == 'pdensity'",
                    sliderInput(inputId = "parasitemia_density",
-                               label = "Parasitemia density [1/ql]",
+                               label = "Parasitemia density [1/µl]",
                                value = 800000, min = 0, max = 1500000, step = 1000)
                  ),
+                 bookmarkButton()
                  
-                 actionButton(inputId = "go_simple", label = "Submit"),
-                 #actionButton(inputId = "reset", label = "Reset"),
-                 p("Click the button only once to make a prediction displayed in the main panel. Then use the slider to adjust the input with a direct prediction output.")
+                 # actionButton(inputId = "go_simple", label = "Submit"),
+                 # p("Click the button only once to make a prediction displayed in the main panel. Then use the slider to adjust the input with a direct prediction output.")
                  
                  # tags$h5("actionButton with CSS class:"),
                  # actionButton("action2", "Action button", class = "btn-primary")
-                             ), # end tabPanel
-                 
-                 br(),
+                 ), # end tabPanel
+        
                 
                 #===============================================================================
                 #                               COMPLEX MODEL                                 #
                 #===============================================================================
-                 tabPanel("Complex model", id = "complex",
+                 tabPanel("Complex model", value = "complex",
                           # Input: Select the parasitemia type ----
-                          radioButtons("ptype2", "Which type of data do you have?",
+                          br(),
+                          radioButtons("ptype2", "Which type of parasitemia data do you have?",
                                        c("Percentage of parasitemia" = "ppercentage2",
-                                         "Parasitemia density (/µl)" = "pdensity2"
+                                         "Parasitemia density [1/µl]" = "pdensity2"
                                        )),
                           
                           conditionalPanel(
@@ -154,7 +154,7 @@ ui = tagList(
                           conditionalPanel(
                             condition = "input.ptype2 == 'pdensity2'",
                             sliderInput(inputId = "parasitemia_density2",
-                                        label = "Parasitemia density (/ql)",
+                                        label = "Parasitemia density [1/µl]",
                                         value = 800000, min = 0, max = 1500000, step = 1000)
                           ),   
                           
@@ -163,7 +163,7 @@ ui = tagList(
                           #             choices = c("Total number of white blood cells (* 10^9/ L)", "Percentage of lymphoctyes and monocytes"),
                           #             selected = "Total number of white blood cells (* 10^9/ L)"),
                           
-                          radioButtons("wtype", "Which type of data do you have?",
+                          radioButtons("wtype", "Which type of white blood cell data do you have?",
                                        c("Total number of white blood cells (* 10^9/ L)" = "white_blood",
                                          "Counts of different white blood cell types (lymphocytes, monocytes, neutrophils)" = "counts"
                                        )
@@ -188,8 +188,9 @@ ui = tagList(
                                         label = "Total number of neutrophils (* 10^9/ L)",
                                         value = 5.4, min = 0, max = 100, step = .1)
                           ),
-                          actionButton(inputId = "go_complex", label = "Submit")
-                    ) # wnd tabPanel
+                          # actionButton(inputId = "go_complex", label = "Submit")
+                          bookmarkButton()
+                    ) # end tabPanel
                   ) # end tabsetPanel
                ), # end sidebarPanel
                
@@ -205,23 +206,38 @@ ui = tagList(
                     tabPanel("Output",
                             #h4("Task: "),
                             # tableOutput("table"), # output input values
-                            h2("Task: ", textOutput("task")),
+                            # h2("Task: ", textOutput("task")),
                             h3("Prediction:"),
                             # uiOutput("comp_simple"),
                             # verbatimTextOutput("test0"),
-                            verbatimTextOutput("comp_simple"),
-                            verbatimTextOutput("comp_simple_dens"),
-                            verbatimTextOutput("comp_complex"),
-                            verbatimTextOutput("comp_complex_dens"),
-                            verbatimTextOutput("comp_complex_counts"),
-                            verbatimTextOutput("comp_complex_counts_dens"),
-                            #### ADD RIGHT CONDITIONS HERE
+                            # verbatimTextOutput("comp_simple"),
+                            
+                            # conditionalPanel(
+                            #   condition = "input.tabset == 'complex'",
+                            #   verbatimTextOutput("comp_text")
+                            # ),
+                            verbatimTextOutput("comp_text"),
+                            
+                            # verbatimTextOutput("comp_simple_dens"),
+                            # verbatimTextOutput("comp_complex"),
+                            # verbatimTextOutput("comp_complex_dens"),
+                            # verbatimTextOutput("comp_complex_counts"),
+                            # verbatimTextOutput("comp_complex_counts_dens"),
+                            
+                            # conditionalPanel(condition = "input.pytype!='pdensity'", verbatimTextOutput("comp_simple")),
+                            # conditionalPanel(condition = "input.pytype!='ppercentage'", verbatimTextOutput("comp_simple_dens")),
+                            
+                            
+                            
+                            #### ADD RIGHT CONDITIONS HERE --- DOES NOT WORK!
                             # conditionalPanel(condition = "input.pytype == 'ppercentage'",
                             #                  verbatimTextOutput("comp_simple")
                             #                  ),
                             # conditionalPanel(condition = "input.pytype == 'pdensity'",
                             #                  verbatimTextOutput("comp_simple_dens")
                             #                 ),
+                            h3("Regression line:"),
+                            p("The horizontal line represents the perentage of pathogen reads (dependent variable). As the input (dependent variable) changes, the horizontal line changes."),
                             # plotOutput("residuals", width=600, height=500)
                             plotlyOutput("residuals", width=600, height=500)
                             # ###########################################################
@@ -240,7 +256,14 @@ ui = tagList(
                             # )
                             # ############################################################
                       ),
-                   tabPanel("Summary")
+                   tabPanel("Summary",
+                            # ######################################################
+                            # fileInput('file1', 'Choose CSV File',
+                            #           accept=c('text/csv', 'text/comma-separated- values,text/plain', '.csv'))
+                            # ######################################################
+                            tableOutput("dummy"),
+                            verbatimTextOutput("summary_simple")
+                            )
                    
                  ) # end tabsetPanel
                ) # end mainPanel

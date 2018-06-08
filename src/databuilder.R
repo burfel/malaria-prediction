@@ -12,6 +12,11 @@ registerDoParallel(detectCores() - 1)
 # read in files
 hg_pf <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/data/hg_pf_readcounts.csv")
 supp <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/data/Supplementary_Dataset.csv", header=TRUE)
+# dummy <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4/Rdata/dummy.csv", header=TRUE)
+# summary_simple <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4/Rdata/summary_simple.csv", header=TRUE)
+# summary_simple_dens <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4/Rdata/summary_simple_dens.csv", header=TRUE)
+# summary_complex <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4/Rdata/summary_complex.csv", header=TRUE)
+# summary_complex_dens <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4/Rdata/summary_complex_dens.csv", header=TRUE)
 
 # merge data sets (by samples/ subjectID)
 dat <- merge(supp, hg_pf, by.y = "samples", by.x = "Subject.ID")
@@ -126,9 +131,13 @@ hist(fit.nona.paras$res,main="Residuals") # residuals not really Gaussian
 #                      SAVE MODELS                                             #
 #===============================================================================
 save(fit.nona.paras, file = "../shinyapp4/Rdata/fit_nona_paras.rda")
-
 save(dat.nona, file = "../shinyapp4/Rdata/dat_nona.rda")
-
+save(fit.nona.paras.dens, file = "../shinyapp4/Rdata/fit_nona_paras_dens.rda")
+# save(dummy, file = "../shinyapp4/Rdata/dummy.rda")
+# save(summary_simple, file = "../shinyapp4/Rdata/summary_simple.rda")
+# save(summary_simple_dens, file = "../shinyapp4/Rdata/summary_simple_dens.rda")
+# save(summary_complex, file = "../shinyapp4/Rdata/summary_complex.rda")
+# save(summary_complex_dens, file = "../shinyapp4/Rdata/summary_complex_dens.rda")
 
 #===============================================================================
 #                      REGRESSION PLOTS                                        #

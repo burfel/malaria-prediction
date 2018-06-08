@@ -35,27 +35,16 @@ library(plotly)
 #source('../src/databuilder.R', local = TRUE)
 load(file = "Rdata/fit_nona_paras.rda")
 load(file = "Rdata/dat_nona.rda")
-
-# #Delete the following line before deploying this to shiny.io
-# home <- getwd()
-# 
-# setwd("processedData")
-# 
-# currentZip    = read.csv("currentZip.csv", header = TRUE, stringsAsFactors = FALSE)
-# currentCity   = read.csv("currentCity.csv", header = TRUE, stringsAsFactors = FALSE)
-# currentCounty = read.csv("currentCounty.csv", header = TRUE, stringsAsFactors = FALSE)
-# currentState  = read.csv("currentState.csv", header = TRUE, stringsAsFactors = FALSE)
-# hviAllZip     = read.csv("hviAllZip.csv", header = TRUE, stringsAsFactors = FALSE)
-# hviAllCity    = read.csv("hviAllCity.csv", header = TRUE, stringsAsFactors = FALSE)
-# hviAllCounty  = read.csv("hviAllCounty.csv", header = TRUE, stringsAsFactors = FALSE)
-# hviAllState   = read.csv("hviAllState.csv", header = TRUE, stringsAsFactors = FALSE)
-# 
+load(file = "Rdata/fit_nona_paras.rda")
+load(file = "Rdata/fit_nona_paras_dens.rda")
+load(file = "Rdata/dummy.rda")
+ 
 # # Read model data
 # modelData <- read.xlsx("models.xlsx", sheetIndex = 1, header = TRUE)
-# 
+
 # # File containing unique geo codes, state,city, zip
-# geo <- read.csv("geo.csv", header = TRUE)
-# 
+# dummy <- read.csv("Rdata/dummy.csv", header = TRUE)
+
 # #Set directory back to project home directory
 # setwd(home)
 
@@ -74,3 +63,5 @@ ggplotRegression <- function (fit, constant) {
     #                    "; P-value =",signif(summary(fit)$coef[2,4], 5))) + 
     geom_abline(intercept = constant, slope = 0)
 }
+
+enableBookmarking(store = "url")

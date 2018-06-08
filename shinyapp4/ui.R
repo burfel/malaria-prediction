@@ -90,14 +90,19 @@ ui = tagList(
                    
          #fileInput("file", "File input:"),
         
+        # icon("question circle", "fa-3x"),
         useShinyalert(),
-        actionButton("help_icon", "Help"), 
+        actionButton("help_icon", "Info"), 
         br(), br(),
+        icon("calendar", "fa-2x"),
         dateInput('date',
                   label = "Date input: yyyy-mm-dd",
                   value = Sys.Date()
         ),
-        # textInput("user_name", "User name:", "Enter your name here!"),
+        icon("user", "fa-2x"),
+        textInput("user_name", 
+                  "User name:", 
+                  "Enter your name here!"),
                  
         # helpText("Choose between the simple and a more complex model."),
                  

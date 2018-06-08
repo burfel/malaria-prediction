@@ -34,6 +34,7 @@ library(plotly)
 
 #source('../src/databuilder.R', local = TRUE)
 load(file = "Rdata/fit_nona_paras.rda")
+load(file = "Rdata/dat_nona.rda")
 
 # #Delete the following line before deploying this to shiny.io
 # home <- getwd()

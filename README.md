@@ -7,10 +7,12 @@ To run the app from ```R Studio```, copy and paste the following code from the f
    ```{r} 
  # First install the following packages:
  library(shiny)
- library(shinydashboard)
  library(ggExtra)
  library(ggplot2)
+ library(shinythemes)
+ library(rmarkdown)
+ library(plotly)
  ### run the application:
- shiny::runGitHub("malaria-prediction", "burfel", subdir="shinyapp3")
+ shiny::runGitHub("malaria-prediction", "burfel", subdir="shinyapp4")
  ```
 

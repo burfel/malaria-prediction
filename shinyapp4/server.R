@@ -390,9 +390,9 @@ server = function(input, output, session) {
 
   })
 
-  output$data <- renderDataTable(
-    Rawdata()[c(1,2)], options = list(
-      searchable = FALSE, searching = FALSE, pageLength = 100))
+  # output$data <- renderDataTable(
+  #   Rawdata()[c(1,2)], options = list(
+  #     searchable = FALSE, searching = FALSE, pageLength = 100))
 
   output$histogram <- renderPlot({
     d1 <- ggplot(Rawdata(), aes(y = y, x = x))+

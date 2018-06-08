@@ -38,6 +38,9 @@ ui = tagList(
         # tabPanel("Table"
         # #DT::dataTableOutput("table")
         #         ),
+        tabPanel("Overview",
+                 includeMarkdown("md/2_methods.Rmd")
+        ),
         tabPanel("Data pre-processing",
                  includeMarkdown("md/2a_data_preprocessing.Rmd")
                   ),

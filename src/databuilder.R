@@ -127,6 +127,8 @@ hist(fit.nona.paras$res,main="Residuals") # residuals not really Gaussian
 #===============================================================================
 save(fit.nona.paras, file = "../shinyapp4/Rdata/fit_nona_paras.rda")
 
+save(dat.nona, file = "../shinyapp4/Rdata/dat_nona.rda")
+
 
 #===============================================================================
 #                      REGRESSION PLOTS                                        #

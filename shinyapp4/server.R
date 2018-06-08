@@ -15,6 +15,15 @@ server = function(input, output, session) {
     # output$table <- renderTable({
     #   head(cars, 4)
     # })
+  
+  # filedata <- reactive({
+  #   infile <- input$datafile
+  #   if (is.null(infile)) {
+  #     # User has not uploaded a file yet
+  #     return(NULL)
+  #   }
+  #   read.csv(infile$datapath)
+  # })
     
     #===============================================================================
     #                               LOAD MARKDOWN FILES                            #

@@ -497,9 +497,11 @@ server = function(input, output, session) {
   
   observeEvent(input$help_icon, {
     # Show a modal when the button is pressed
-    shinyalert("How to use this web tool?", "You can either choose between the simple or the complex model to make a prediction depending on the type of your data. 
+    shinyalert("How to use this web tool?", 
+                "You can either choose between the simple or the complex model to make a prediction depending on the type of your data. 
                 \n Then enter your data via the slider(s). 
                 \n You can bookmark the state which automatically saves the values of all inputs.
+                \n Optionally, you can enter the data and your name, so it will be bookmarked as well.
                ")
   })
   
@@ -516,6 +518,10 @@ server = function(input, output, session) {
   })
   observeEvent(input$bookmark2, {
     session$doBookmark()
+  })
+  
+  output$power <- renderUI({
+    withMathJax(helpText('$$10^9$$'))
   })
   
 }

@@ -167,6 +167,8 @@ ui = tagList(
                                         value = 800000, min = 0, max = 1500000, step = 1000)
                           ),   
                           
+                          # withMathJax(),
+                          # uiOutput("power"),
                           # selectInput("wtype",
                           #             label = "Which data do you have?",
                           #             choices = c("Total number of white blood cells (* 10^9/ L)", "Percentage of lymphoctyes and monocytes"),

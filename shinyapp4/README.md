@@ -3,7 +3,7 @@
 This interactive application allows you to predict the percentage of reads that map to the host and to the pathogen based on some information of the patient, ie percentage of parasitemia, number of white blood cells or percentage of monocytes and percentage of lymphocytes.
 This allows the user to know the number of reads necessary for their study.
  
-## Run this application on R Studio
+## Run this application in R Studio
  
 To run this application localy, simple paste the following code on `R` console: 
    ```{r} 

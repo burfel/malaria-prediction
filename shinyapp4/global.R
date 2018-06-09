@@ -64,8 +64,15 @@ ggplotRegression <- function (fit, constant) {
     #                    "; Intercept =",signif(fit$coef[[1]],5 ),
     #                    "; Slope =",signif(fit$coef[[2]], 5),
     #                    "; P-value =",signif(summary(fit)$coef[2,4], 5))) + 
+    
     geom_abline(intercept = constant, slope = 0)
 }
+
+# ggplotRegression2 <- function(fit){
+#   ggplot(mtcars, aes(x=wt, y=mpg)) + 
+#   geom_point()+
+#   geom_smooth(method=lm)
+# }
 
 helpPopup <- function(title, content,
                       placement=c('right', 'top', 'left', 'bottom'),

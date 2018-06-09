@@ -35,7 +35,7 @@ For more information on what data set the model was built, see chapter _Data Pre
   * [Chapter 9: About](#chapter-9) 
 
 [density]: ../img/pathogen_read_density.png "Density plot visualising the variation of reads that map to the pathogen"
-[total_reads_outcome]: ../img/total_reads_outcome.png "Total number of reads plotted against the percentage of these reads that map to the pathogen"
+[total_reads_outcome]: ../img/total_reads_outcome.png "Scatter 2d density estimationo: Total number of reads against the percentage of these that map to pathogen"
 
 <!---
 <div>

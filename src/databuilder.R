@@ -44,14 +44,22 @@ outcome_prop.nona <- cbind(dat.nona$pf_count, dat.nona$hg_count) # 21x2 matrix
 #                      PLOTS to explore relationships                          #
 #===============================================================================
 # PLOT PROPORTION OF PATHOGEN READS, BOTH AS NORMAL AND A LOG SCALE -- FOR WEBSITE
-#par(mfrow = c(1, 2))
-##png("shinyapp2/img/total_reads_outcome.png")
-ggplot(dat, aes(total_reads, outcome)) + 
+par(mfrow = c(1, 2))
+#png("img/total_reads_outcome.png")
+sp <- ggplot(dat, aes(total_reads, outcome)) + 
   geom_point()
+# Scatter plot with the 2d density estimation
+sp + geom_density_2d()
+sp + stat_ellipse()
+sp + geom_bin2d()
 #dev.off()
-#png("shinyapp2/img/total_reads_outcome_logit.png")
-ggplot(dat, aes(total_reads, log(outcome))) + 
+
+#png("img/total_reads_outcome_logit.png")
+sl <- ggplot(dat, aes(total_reads, log(outcome))) + 
   geom_point()
+sl + geom_density_2d()
+sl + stat_ellipse()
+sl + geom_bin2d()
 #dev.off()
 #plot(dat$total_reads, dat$outcome, xlab = "Total number of reads", ylab = "Proportion reads that map to pathogen")
 #ggplot(log(dat$total_reads), dat$outcome, xlab = "Total number of reads", ylab = "Proportion reads that map to pathogen")

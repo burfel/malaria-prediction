@@ -20,6 +20,7 @@ library(ggExtra)
 library(rmarkdown)
 # library(markdown)
 library(plotly)
+library(knitr)
 #library(Cairo)
 
 # ################################################################################

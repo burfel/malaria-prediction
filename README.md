@@ -13,6 +13,7 @@ To run the app from ```R Studio```, copy and paste the following code from the f
  library(ggplot2)
  library(rmarkdown)
  library(plotly)
+ library(knitr)
  --->
  ```{r}
  ### run the application:
@@ -22,7 +23,8 @@ To run the app from ```R Studio```, copy and paste the following code from the f
                   "ggExtra",
                   "ggplot2",
                   "rmarkdown",
-                  "plotly")
+                  "plotly",
+                  "knitr")
  shiny::runGitHub("malaria-prediction", "burfel", subdir="shinyapp4")
  ```
 

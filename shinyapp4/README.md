@@ -15,6 +15,7 @@ To run this application localy, simple paste the following code on `R` console:
  library(shinythemes)
  library(rmarkdown)
  library(plotly)
+ library(knitr)
  ### run the application:
  shiny::runGitHub("malaria-prediction", "burfel", subdir="shinyapp4")
  ```

@@ -27,6 +27,16 @@ knitr::include_graphics("../img/pathogen_read_density.png")
 ]
 
 ---
+
+.center[
+
+![My image](../img/pathogen_read_density.png)
+
+.caption[
+**Fig. 1:** Image caption
+]
+
+]
   
 <!---
   ![alt text][total_reads_outcome] |

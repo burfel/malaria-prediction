@@ -28,7 +28,7 @@ knitr::include_graphics("../img/pathogen_read_density.png")
 
 ---
 
-.center[
+.left[
 
 ![My image](../img/pathogen_read_density.png)
 

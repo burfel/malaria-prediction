@@ -39,6 +39,7 @@ library(lmtest)
 #source('../src/databuilder.R', local = TRUE)
 load(file = "Rdata/fit_nona_paras.rda")
 load(file = "Rdata/dat_nona.rda")
+load(file = "Rdata/dat_nc_nona.rda")
 load(file = "Rdata/fit_nona_paras.rda")
 load(file = "Rdata/fit_nona_paras_dens.rda")
 load(file = "Rdata/dummy.rda")
@@ -96,10 +97,10 @@ ggplotRegression <- function (fit, constant, limit, ptype) {
     scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) + 
     geom_point() +
     stat_smooth(method = "lm", col = "blue", fullrange=TRUE) +
-    # labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
-    #                    "; Intercept =",signif(fit$coef[[1]],5 ),
-    #                    "; Slope =",signif(fit$coef[[2]], 5),
-    #                    "; P-value =",signif(summary(fit)$coef[2,4], 5))) + 
+    labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
+                       "; Intercept =",signif(fit$coef[[1]],5 ),
+                       "; \n Slope =",signif(fit$coef[[2]], 5),
+                       "; P-value (F-test) =",signif(summary(fit)$coef[2,4], 5))) +
     # annotate("text", x=0.1, y=-0.05, label = "R^2 == 0.78", parse=T) +
     # annotate("text", x=0.1, y=-0.06, label = "alpha == 0.00", parse=T) +
     # annotate("text", x=0.1, y=-0.07, label = "beta == 0.67", parse=T) +

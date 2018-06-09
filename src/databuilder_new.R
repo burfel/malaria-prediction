@@ -162,7 +162,7 @@ summary(fit.nona.paras) # # show results: R^2: 0.3767, F-stats: 13.09, p-value: 
 # MODEL: 0.090267 + 0.013339*dat.nona$Percentage.parasitemia
 
 summary(fit.nc.nona.paras) # # show results: R^2: 0.2569, F-stats: 14.49, p-value: 0.0004999 ***
-# MODEL: 0.151629 + 0.009935*dat.nona$Percentage.parasitemia
+# MODEL: 0.151629 + 0.009935*dat.nc.nona$Percentage.parasitemia
 
 #summary(fit.nona.paras)$sigma^2 # estimated variance of residuals around a fitted line: 0.02366394
 # plot the statistics
@@ -180,10 +180,28 @@ plot(fit.nc.nona.paras)
 #===============================================================================
 #                      SAVE MODELS                                             #
 #===============================================================================
-save(fit.nona.paras, file = "../shinyapp4/Rdata/fit_nona_paras.rda")
-save(dat.nona, file = "../shinyapp4/Rdata/dat_nona.rda")
-save(fit.nona.paras.dens, file = "../shinyapp4/Rdata/fit_nona_paras_dens.rda")
+# data files
+save(dat, file = "../shinyapp4/Rdata/dat.rda")
+save(dat.nc, file = "../shinyapp4/Rdata/dat_nc.rda")
+save(dat.nc.logit, file = "../shinyapp4/Rdata/dat_nc_logit.rda")
 
+save(dat.nona, file = "../shinyapp4/Rdata/dat_nona.rda")
+# dat.nona.logit ?
+save(dat.nc.nona, file = "../shinyapp4/Rdata/dat_nc_nona.rda")
+save(dat.nc.nona.log, file = "../shinyapp4/Rdata/dat_nc_nona_log.rda")
+
+# linear models: simple models
+save(fit.nona.paras, file = "../shinyapp4/Rdata/fit_nona_paras.rda")
+save(fit.nona.paras.dens, file = "../shinyapp4/Rdata/fit_nona_paras_dens.rda")
+save(fit.nona.paras.log, file = "../shinyapp4/Rdata/fit_nona_paras_log.rda")
+save(fit.nona.paras.dens.log, file = "../shinyapp4/Rdata/fit_nona_paras_dens_log.rda")
+
+save(fit.nc.nona.paras, file = "../shinyapp4/Rdata/fit_nc_nona_paras.rda")
+save(fit.nc.nona.paras.dens, file = "../shinyapp4/Rdata/fit_nc_nona_paras_dens.rda")
+save(fit.nc.nona.paras.log, file = "../shinyapp4/Rdata/fit_nc_nona_paras_log.rda")
+save(fit.nc.nona.paras.dens.log, file = "../shinyapp4/Rdata/fit_nc_nona_paras_dens_log.rda")
+
+# generalized linear models: simple models, complex models
 save(glm.paras.logit, file = "../shinyapp4/Rdata/glm_paras_logit.rda")
 save(glm.paras.dens.logit, file = "../shinyapp4/Rdata/glm_paras_dens_logit.rda")
 save(glm.total.logit, file = "../shinyapp4/Rdata/glm_total_logit.rda")
@@ -686,6 +704,52 @@ par(mfrow = c(1, 1))  # Return plotting panel to 1 section
 
 
 #===============================================================================
+#                      EXPLORING NON-LINEAR RELATIONSHIPS                      #
+#===============================================================================
+
+# INCLUDING NON-LINEAR TERMS
+fit.nona.mul <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia * dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
+summary(fit.nona.mul)
+fit.nona.mul2 <- lm(dat.nona$outcome ~ dat.nona$Parasite.density...µl. * dat.nona$Total.White.Cell.Count..x109.L., data=dat.nona)
+summary(fit.nona.mul2)
+fit.nona.mul3 <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia * dat.nona$Parasite.density...µl., data=dat.nona)
+summary(fit.nona.mul3)
+
+
+#===============================================================================
+#                      DRAWING MULTIPLE REGRESSION LINES                       #
+#===============================================================================
+
+# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
+# library(ggpubr)
+# sp <- ggscatter(mtcars, x = "wt", y = "mpg",
+#                 add = "reg.line",               # Add regression line
+#                 conf.int = TRUE,                # Add confidence interval
+#                 color = "cyl", palette = "jco" # Color by groups "cyl"
+#                 #shape = "cyl"                   # Change point shape by groups "cyl"
+# )+
+#   stat_cor(aes(color = cyl), label.x = 3)       # Add correlation coefficient
+# sp
+
+#===============================================================================
+#                      MULTIPLE REGRESSION LINES                               #
+#===============================================================================
+
+library(quantreg)
+model.rq <- rq(dat.nc.nona$outcome ~ dat.nc.nona$Percentage.parasitemia * dat.nc.nona$Total.White.Cell.Count..x109.L., tau=c(0.25, 0.5, 0.75))
+quantile.regressions <- data.frame(t(coef(model.rq)))
+colnames(quantile.regressions) <- c("intercept", "slope")
+quantile.regressions$quantile <- rownames(quantile.regressions)
+quantile.regressions
+
+library(ggplot2)
+scatterplot <- qplot(x=Percentage.parasitemia, y=outcome, data=dat.nc.nona)
+scatterplot + geom_abline(aes(intercept=intercept, slope=slope,
+                              colour=quantile), data=quantile.regressions)
+scatterplot1 <- qplot(x=Percentage.parasitemia, y=outcome, data=dat.nona) 
+scatterplot1
+
+#===============================================================================
 #                      GENERALIZED LINEAR REGRESSION MODELS                    #
 #===============================================================================
 # # https://stats.stackexchange.com/questions/38201/problems-plotting-glm-data-of-binomial-proportional-data?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
@@ -1041,6 +1105,65 @@ ggplotRegression3 <- function (fit, limit) {
     # theme(plot.margin = margin(10, 10, 10, 100))
 }
 ###############
+
+# two regression lines on top of each other
+ggplotRegressionLayered <- function (fit1, fit2) {  
+  require(ggplot2)  
+  dfc <- rbind(fit1$model, fit2$model)
+  ggplot(dfc, aes(x,y, group=model)) + 
+        # scale_x_continuous(name="Percentage of parasitemia", limits=c(0,limit)) +  ## -- with it pdenstiy does not show up
+        scale_x_continuous(name="Parasitemia density [1/µl]", limits=c(0,limit)) +  ## -- with it pdenstiy does not show up
+        scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) + 
+        geom_point() +
+        # xlab("Percentage of parasitemia") + 
+        # ylab("Percentage of reads mapping to pathogen") + 
+        stat_smooth(method = "lm", col = "blue", fullrange=TRUE) 
+        # geom_text(label=rownames(fit$model)) 
+      # axis(2, at=y, labels=formatC(y,big.mark=",",format="fg"),las=2,cex=0.1); 
+      # labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
+      #                    "; Intercept =",signif(fit$coef[[1]],5 ),
+      #                    "; Slope =",signif(fit$coef[[2]], 5),
+      #                    "; P-value =",signif(summary(fit)$coef[2,4], 5))) + 
+      # annotate("text", x=0.1, y=-0.05, label = "R^2 == 0.78", parse=T) +
+      # annotate("text", x=0.1, y=-0.06, label = "alpha == 0.00", parse=T) +
+      # annotate("text", x=0.1, y=-0.07, label = "beta == 0.67", parse=T) +
+      # theme(plot.margin = margin(10, 10, 10, 100))
+    }
+
+#ggplotRegressionLayered(fit.nc.nona.paras, fit.nona.paras)
+
+
+ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome), color=cyl) + 
+  scale_x_continuous(name="Percentage of parasitemia", limits=c(0,100)) +  ## -- with it pdenstiy does not show up
+  scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) + 
+  geom_text(label=rownames(dat.nc.nona)) +
+  geom_point() + 
+  geom_smooth(method="lm", se=F) +
+  geom_point(color='darkred') +
+  geom_smooth(data = dat.nc.nona[c(7,10,11,19),], method="lm", se=F, color="darkred", linetype = "dashed") +
+  scale_colour_manual(name="lines", values=c("red", "blue")) 
+  # guides(colour = guide_legend(override.aes = list(alpha = 0)))
+
+
+###################----PLOTS--------!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#png("../shinyapp4/img/both_paras_regr_better_outlier.png")
+ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome)) + 
+  scale_x_continuous(name="Percentage of parasitemia", limits=c(0,50)) +  ## -- with it pdenstiy does not show up
+  scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) + 
+  geom_text(label=rownames(dat.nc.nona)) +
+  geom_point(colour="dodgerblue",alpha=0.75) +
+  geom_abline(aes(colour="linear model on complete \n samples (21) \n", intercept=0.090267, slope=0.013339), alpha=1, size=1) +
+  geom_smooth(aes(colour="linear model on samples that complete \n after variable selection (40) \n"), method = "lm", linetype="dashed", se=FALSE) + 
+  geom_smooth(data = dat.nc.nona[-c(7,10,11,19),], aes(colour="linear model without potential outliers 7,10,11,19"), method="lm", se=F, linetype = "dashed") +
+  scale_colour_manual(name="Linear regression lines \n", values=c("red", "blue", "green")) + 
+  guides(colour = guide_legend(override.aes = list(alpha = 0))) +
+  theme(axis.text=element_text(size=14),
+        axis.title=element_text(size=14,face="bold")) +
+  theme(plot.title = element_text(size = 12, face = "bold"),
+        legend.title=element_text(size=15), 
+        legend.text=element_text(size=13))
+#dev.off()
+
 
 # png("../shinyapp4/img/fit_paras_regr.png")
 # ggplotRegression3(fit.paras, 100)

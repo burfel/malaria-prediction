@@ -68,6 +68,24 @@ ui = tagList(
         ),
         tabPanel("Model selection",
                  includeMarkdown("md/2c_model_selection.Rmd")
+                 
+                 # ###########################
+                 # ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome)) +
+                 #   scale_x_continuous(name="Percentage of parasitemia", limits=c(0,50)) +  ## -- with it pdenstiy does not show up
+                 #   scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) +
+                 #   geom_text(label=rownames(dat.nc.nona)) +
+                 #   geom_point(colour="dodgerblue",alpha=0.75) +
+                 #   geom_abline(aes(colour="linear model on complete \n samples (21) \n", intercept=0.090267, slope=0.013339), alpha=1, size=1) +
+                 #   geom_smooth(aes(colour="linear model on samples that complete \n after variable selection (40) \n"), method = "lm", linetype="dashed", se=FALSE) +
+                 #   geom_smooth(data = dat.nc.nona[-c(7,10,11,19),], aes(colour="linear model without potential outliers 7,10,11,19"), method="lm", se=F, linetype = "dashed") +
+                 #   scale_colour_manual(name="Linear regression lines \n", values=c("red", "blue", "green")) +
+                 #   guides(colour = guide_legend(override.aes = list(alpha = 0))) +
+                 #   theme(axis.text=element_text(size=14),
+                 #         axis.title=element_text(size=14,face="bold")) +
+                 #   theme(plot.title = element_text(size = 12, face = "bold"),
+                 #         legend.title=element_text(size=15),
+                 #         legend.text=element_text(size=13))
+                 # ##########################
         ),
         tabPanel("Model assumptions",
                  includeMarkdown("md/2d_model_assumptions.Rmd")

@@ -544,25 +544,41 @@ server = function(input, output, session) {
   #                               OUTPUT TABLES                                  #
   #===============================================================================
   
-  likelihoodratio <- function(model){
-    if (model == "simple_paras_lr"){
-      lrtest(glm.paras.logit)
-    }
-    else if (model == "simple_paras_dens_lr"){
-      lrtest(glm.paras.dens.logit)
-    }
-    else if (model == "complex_paras_lr"){
-      lrtest(glm.total.logit)
-    }
-    else{
-      lrtest(glm.total.dens.logit)
-    }
-  }
-  
   
   output$likelihoodratio_summary <- renderPrint({
-    likelihoodratio(input$test_select)
+      if (input$test_select == "simple_paras_lr"){
+        lrtest(glm.paras.logit)
+      }
+      else if (input$test_select == "simple_paras_dens_lr"){
+        lrtest(glm.paras.dens.logit)
+      }
+      else if (input$test_select == "complex_paras_lr"){
+        lrtest(glm.total.logit)
+      }
+      else{
+        lrtest(glm.total.dens.logit)
+      }
   })
+  
+  # likelihoodratio <- function(model){
+  #   if (model == "simple_paras_lr"){
+  #     lrtest(glm.paras.logit)
+  #   }
+  #   else if (model == "simple_paras_dens_lr"){
+  #     lrtest(glm.paras.dens.logit)
+  #   }
+  #   else if (model == "complex_paras_lr"){
+  #     lrtest(glm.total.logit)
+  #   }
+  #   else{
+  #     lrtest(glm.total.dens.logit)
+  #   }
+  # }
+  
+  
+  # output$likelihoodratio_summary <- renderPrint({
+  #   likelihoodratio(input$test_select)
+  # })
   
   # mapping <- function(model){
   #   if (model == "simple_paras1" || model == "simple_paras2"){

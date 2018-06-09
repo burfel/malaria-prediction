@@ -98,18 +98,23 @@ server = function(input, output, session) {
   # MODEL 0a: GLM SIMPLE | PERCENTAGE
   ## MODEL.log: -1.964e+00 + 6.550e-02*dat.nona$Percentage.parasitemia
   glm_simple <- function(){
-    I <- -1.964e+00
+    # I <- -1.964e+00 # on small dat.nona (21 rows)
+    I <- -1.613e+00
     P <- input$parasitemia_percentage
-    logit <- I + 6.550e-02*P
+    # logit <- I + 6.550e-02*P 
+    logit <- I + 4.321e-02*P
     exp(logit)/(1+exp(logit))
   }
+   
   
   # MODEL 0b: GLM SIMPLE | DENSITY
   ## MODEL.log: -2.012e+00 + 2.031e-06*dat.nona$Parasite.density...µl.
   glm_simple_dens <- function(){
-    I <- -2.012e+00
+    # I <- -2.012e+00 # on small dat.nona (21 rows)
+    I <- -1.833e+00
     P <- (input$parasitemia_density)/10000
-    logit <- I + 2.031e-02*P
+    # logit <- I + 2.031e-02*P
+    logit <- I + 1.809e-02*P
     exp(logit)/(1+exp(logit))
   }
   
@@ -120,22 +125,28 @@ server = function(input, output, session) {
   # MODEL 1a: GLM COMPLEX | PERCENTAGE | TOTAL WHITE BLOOD CELLS
   ## MODEL.log: -1.112e+00 + 5.324e-02*dat.nona$Percentage.parasitemia + (-7.415e-02)*dat.nona$Total.White.Cell.Count..x109.L.
   glm_complex <- function(){
-    I <- -1.112e+00
+    # I <- -1.112e+00 # on small dat.nona (21 rows)
+    I <- -9.266e-01
     P <- input$parasitemia_percentage2
     W <- input$white_blood
-    logit <- I + 5.324e-02*P + (-7.415e-02)*W
+    # logit <- I + 5.324e-02*P + (-7.415e-02)*W
+    logit <- I + 4.200e-02*P + (-6.456e-02)*W
     exp(logit)/(1+exp(logit))
   }
+
   
   # MODEL 1b: GLM COMPLEX | DENSITY | TOTAL WHITE BLOOD CELLS
   # MODEL.log: -1.238e+00 + 1.676e-06*dat.nona$Parasite.density...µl. + (-6.638e-02)*dat.nona$Total.White.Cell.Count..x109.L.
   glm_complex_dens <- function(){
-    I <- -1.238e+00
+    # I <- -1.238e+00 # on small dat.nona (21 rows)
+    I <- -1.358e+00
     P <- (input$parasitemia_density2)/10000
     W <- input$white_blood
-    logit <- I + 1.676e-02*P + (-6.638e-02)*W
+    # logit <- I + 1.676e-02*P + (-6.638e-02)*W
+    logit <- I + 1.701e-02*P + (-4.139e-02)*W
     exp(logit)/(1+exp(logit))
   }
+
   
   # # MODEL 1c: GLM COMPLEX | PERCENTAGE | DIFFERENT WHITE BLOOD CELL COUNTS #############---WRONG-----------
   # ## MODEL.log: -1.068e+00 + 6.155e-02*dat.nona$Percentage.parasitemia + (-5.826e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.898e+00)*dat.nona$Monocyte.count...x109.L. + (-1.634e-01)*dat.nona$Neutrophil.count...x109.L.
@@ -164,20 +175,24 @@ server = function(input, output, session) {
   # MODEL 1c: GLM COMPLEX | PERCENTAGE | DIFFERENT WHITE BLOOD CELL COUNTS #############---WRONG-----------
   ## MODEL.log: -1.068e+00 + 6.155e-02*dat.nona$Percentage.parasitemia + (-5.826e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.898e+00)*dat.nona$Monocyte.count...x109.L. + (-1.634e-01)*dat.nona$Neutrophil.count...x109.L.
   glm_complex_counts <- function(){
-    I <- -1.112e+00
+    # I <- -1.112e+00 # on small dat.nona (21 rows)
+    I <- -9.266e-01
     P <- input$parasitemia_percentage2
     W <- input$lympho + input$mono + input$neutro
-    logit <- I + 5.324e-02*P + (-7.415e-02)*W
+    # logit <- I + 5.324e-02*P + (-7.415e-02)*W
+    logit <- I + 4.200e-02*P + (-6.456e-02)*W
     exp(logit)/(1+exp(logit))
   }
   
   # MODEL 1D: GLM COMPLEX | DENSITY | DIFFERENT WHITE BLOOD CELL COUNTS #############---WRONG-----------
   ## MODEL.log: -1.129e+00 + 1.744e-06*dat.nona$Parasite.density...µl. + (-4.876e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.639e+00)*dat.nona$Monocyte.count...x109.L. + (-1.666e-01)*dat.nona$Neutrophil.count...x109.L.
   glm_complex_counts_dens <- function(){
-    I <- -1.238e+00
+    # I <- -1.238e+00 # on small dat.nona (21 rows)
+    I <- -1.358e+00
     P <- (input$parasitemia_density2)/10000
     W <- input$lympho + input$mono + input$neutro
-    logit <- I + 1.676e-02*P + (-6.638e-02)*W
+    # logit <- I + 1.676e-02*P + (-6.638e-02)*W
+    logit <- I + 1.701e-02*P + (-4.139e-02)*W
     exp(logit)/(1+exp(logit))
   }
   

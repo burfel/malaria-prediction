@@ -595,51 +595,200 @@ par(mfrow = c(1, 1))  # Return plotting panel to 1 section
 #===============================================================================
 #                      GENERALIZED LINEAR REGRESSION MODELS                    #
 #===============================================================================
-# https://stats.stackexchange.com/questions/38201/problems-plotting-glm-data-of-binomial-proportional-data?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-# GLM
-#GM1<-glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=binomial (logit), data=dat.nona)
-# plot(BPT,p1,col="black",pch=1,main="Relationship a",xlab="Browsing pressure", ylab="Moose Damage Survey")
-# range(log(density))
-# #[1] 0.000000 6.095825
-# xv<-seq(0,6,0.1)
-# range(xv)
-# #[1] 0 6
-# lines(BPT,predict(GM1,type="response"))
-# xv<-seq(0,0.7,length.out = length(BPT))
-# lines(xv,predict(GM1, list(BPT = xv), type="response"))
-#predict(GM1,list(density=exp(xv)),type="response")
+# # https://stats.stackexchange.com/questions/38201/problems-plotting-glm-data-of-binomial-proportional-data?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+# # GLM
+# #GM1<-glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=binomial (logit), data=dat.nona)
+# # plot(BPT,p1,col="black",pch=1,main="Relationship a",xlab="Browsing pressure", ylab="Moose Damage Survey")
+# # range(log(density))
+# # #[1] 0.000000 6.095825
+# # xv<-seq(0,6,0.1)
+# # range(xv)
+# # #[1] 0 6
+# # lines(BPT,predict(GM1,type="response"))
+# # xv<-seq(0,0.7,length.out = length(BPT))
+# # lines(xv,predict(GM1, list(BPT = xv), type="response"))
+# #predict(GM1,list(density=exp(xv)),type="response")
+# 
+# # glm_paras <- glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, family=quasibinomial, data=dat.nona)
+# # #glm_paras_logit <- glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, family=quasibinomial (logit), data=dat.nona)
+# # glm_total <-glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=quasibinomial, data=dat.nona)
+# # #glm_total_logit <-glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=quasibinomial (logit), data=dat.nona)
+# # summary(glm_paras)
+# # # MODEL1: -1.97632 + 0.06533*dat.nona$Percentage.parasitemia
+# # #summary(glm_paras_logit)
+# # summary(glm_total)
+# # # MODEL2: -1.13941 + 0.05487*dat.nona$Percentage.parasitemia + (-0.07721)*dat.nona$Total.White.Cell.Count..x109.L.
+# # #summary(glm_total_logit)
+# 
+# # DO WE NEED LOGIT TRANSFORMATION?
+# model <- glm(outcome_prop ~ dat$total_reads, family=binomial, data=dat.nona)
+# summary(model)
+# 
+# model_log <- glm(outcome_prop ~ log(dat$total_reads), family=binomial, data=dat.nona)
+# summary(model_log) ## ---> LOGIT TRANSFORMATION / LOGIT LINK NOT NECESSARY
+# 
+# # (1) GLM SIMPLE | PERCENTAGE
+# set.seed(1800)
+# glm.paras <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia, family=quasibinomial, data=dat.nona)
+# summary(glm.paras)
+# par(mfrow = c(2, 2))
+# plot(glm.paras)
+# # MODEL: -1.96396 + 0.06550*dat.nona$Percentage.parasitemia
+# glm.paras.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia, family=binomial(link = 'logit'), data=dat.nona)
+# summary(glm.paras.logit)
+# par(mfrow = c(2, 2))
+# plot(glm.paras.logit)
+# #predict(glm_paras2.logit,type='response')
+# # MODEL.log: -1.964e+00 + 6.550e-02*dat.nona$Percentage.parasitemia
+# 
+# # png("shinyapp2/img/glm_paras_regression.png")
+# # #predict gives the predicted value in terms of logits
+# # plot.glm.paras.logit <- data.frame(outcome = dat.nona$outcome,
+# #                                    Percentage.parasitemia = dat.nona$Percentage.parasitemia,
+# #                                    fit = predict(glm.paras.logit, dat.nona))
+# # #convert those logit values to probabilities
+# # plot.glm.paras$fit_prob <- plot.glm.paras$fit
+# # 
+# # library(ggplot2)
+# # ggplot(plot.glm, aes(x=Percentage.parasitemia, y=outcome)) + 
+# #   geom_point() +
+# #   geom_line(aes(x=Percentage.parasitemia, y=fit_prob))
+# # dev.off()
+# 
+# # png("shinyapp2/img/glm_paras_logit_regression.png")
+# # #predict gives the predicted value in terms of logits
+# # plot.glm.paras.logit <- data.frame(outcome = dat.nona$outcome,
+# #                        Percentage.parasitemia = dat.nona$Percentage.parasitemia,
+# #                        fit = predict(glm.paras.logit, dat.nona))
+# # #convert those logit values to probabilities
+# # plot.glm.paras.logit$fit_prob <- exp(plot.dat$fit)/(1+exp(plot.dat$fit))
+# # 
+# # library(ggplot2)
+# # ggplot(plot.glm.paras.logit, aes(x=Percentage.parasitemia, y=outcome)) + 
+# #   geom_point() +
+# #   geom_line(aes(x=Percentage.parasitemia, y=fit_prob))
+# # dev.off()
+# 
+# # (1) GLM SIMPLE | DENSITY
+# set.seed(1800)
+# glm.paras.dens <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl., family=quasibinomial, data=dat.nona)
+# summary(glm.paras.dens)
+# par(mfrow = c(2, 2))
+# plot(glm.paras.dens)
+# # MODEL: -2.012500 + 0.020313*dat.nona$Parasite.density...µl.
+# set.seed(1800)glm.paras.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl., family=binomial(link = 'logit'), data=dat.nona)
+# summary(glm.paras.dens.logit)
+# par(mfrow = c(2, 2))
+# plot(glm.paras.dens.logit)
+# #predict(glm_paras.dens.logit,type='response')
+# # MODEL.log: -2.012e+00 + 2.031e-02*dat.nona$Parasite.density...µl.
+# 
+# # png("shinyapp2/img/glm_paras_dens_logit_regression.png")
+# # #predict gives the predicted value in terms of logits
+# # plot.glm.paras.dens.logit <- data.frame(outcome = dat.nona$outcome,
+# #                                    Parasitemia.density = dat.nona$Parasite.density...µl.,
+# #                                    fit = predict(glm.paras.dens.logit, dat.nona))
+# # #convert those logit values to probabilities
+# # plot.glm.paras.dens.logit$fit_prob <- exp(plot.dat$fit)/(1+exp(plot.dat$fit))
+# # 
+# # library(ggplot2)
+# # ggplot(plot.glm.paras.dens.logit, aes(x=Parasitemia.density, y=outcome)) + 
+# #   geom_point() +
+# #   geom_line(aes(x=Parasitemia.density, y=fit_prob))
+# # dev.off()
+# 
+# # png("shinyapp2/img/glm_paras_dens_regression.png")
+# # #predict gives the predicted value in terms of logits
+# # plot.glm.paras.dens <- data.frame(outcome = dat.nona$outcome,
+# #                                         Parasitemia.density = dat.nona$Parasite.density...µl.,
+# #                                         fit = predict(glm.paras.dens, dat.nona))
+# # #convert those logit values to probabilities
+# # plot.glm.paras.dens$fit_prob <- plot.dat$fit
+# # 
+# # library(ggplot2)
+# # ggplot(plot.glm.paras.dens, aes(x=Parasitemia.density, y=outcome)) + 
+# #   geom_point() +
+# #   geom_line(aes(x=Parasitemia.density, y=fit_prob))
+# # dev.off()
+# 
+# 
+# # (2a) GLM COMPLEX | PERCENTAGE | TOTAL WHITE BLOOD CELLS
+# set.seed(1800)
+# glm.total <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=quasibinomial, data=dat.nona)
+# summary(glm.total)
+# par(mfrow = c(2, 2))
+# plot(glm.total)
+# # MODEL: -1.11189 + 0.05324*dat.nona$Percentage.parasitemia + (-0.07415)*dat.nona$Total.White.Cell.Count..x109.L.
+# set.seed(1800)
+# glm.total.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=binomial(link = 'logit'), data=dat.nona)
+# summary(glm.total.logit)
+# par(mfrow = c(2, 2))
+# plot(glm.total.logit)
+# # MODEL.log: -1.112e+00 + 5.324e-02*dat.nona$Percentage.parasitemia + (-7.415e-02)*dat.nona$Total.White.Cell.Count..x109.L.
+# 
+# 
+# # (2a) GLM COMPLEX | DENSITY | TOTAL WHITE BLOOD CELLS
+# set.seed(1800)
+# glm.total.dens <-glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Total.White.Cell.Count..x109.L., family=quasibinomial, data=dat.nona)
+# summary(glm.total.dens)
+# par(mfrow = c(2, 2))
+# plot(glm.total.dens)
+# # MODEL: -1.2376972 + 0.016756*dat.nona$Parasite.density...µl. + (-0.0663774)*dat.nona$Total.White.Cell.Count..x109.L.
+# set.seed(1800)
+# glm.total.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Total.White.Cell.Count..x109.L., family=binomial(link = 'logit'), data=dat.nona)
+# summary(glm.total.dens.logit)
+# par(mfrow = c(2, 2))
+# plot(glm.total.dens.logit)
+# # MODEL.log: -1.238e+00 + 1.676e-02*dat.nona$Parasite.density...µl. + (-6.638e-02)*dat.nona$Total.White.Cell.Count..x109.L.
+# 
+# 
+# # (2a) GLM COMPLEX | PERCENTAGE | DIFFERENT TYPES OF WHITE BLOOD CELLS COUNTS
+# set.seed(1800)
+# glm.total.counts <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Lymphocyte.count...x109.L. + dat.nona$Monocyte.count...x109.L. + dat.nona$Neutrophil.count...x109.L., family=quasibinomial, data=dat.nona)
+# summary(glm.total.counts)
+# par(mfrow = c(2, 2))
+# plot(glm.total.counts)
+# # MODEL: -1.06792 + 0.06155*dat.nona$Percentage.parasitemia + (-0.58256)*dat.nona$Lymphocyte.count...x109.L. + 2.89776*dat.nona$Monocyte.count...x109.L. + (-0.16340)*dat.nona$Neutrophil.count...x109.L.
+# set.seed(1800)
+# glm.total.counts.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Lymphocyte.count...x109.L. + dat.nona$Monocyte.count...x109.L. + dat.nona$Neutrophil.count...x109.L., family=binomial(link = 'logit'), data=dat.nona)
+# summary(glm.total.counts.logit)
+# par(mfrow = c(2, 2))
+# plot(glm.total.counts.logit)
+# # MODEL.log: -1.068e+00 + 6.155e-02*dat.nona$Percentage.parasitemia + (-5.826e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.898e+00)*dat.nona$Monocyte.count...x109.L. + (-1.634e-01)*dat.nona$Neutrophil.count...x109.L.
+# 
+# 
+# # (2a) GLM COMPLEX | DENSITY | DIFFERENT TYPES OF WHITE BLOOD CELLS COUNTS
+# set.seed(1800)
+# glm.total.counts.dens <-glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Lymphocyte.count...x109.L. + dat.nona$Monocyte.count...x109.L. + dat.nona$Neutrophil.count...x109.L., family=quasibinomial, data=dat.nona)
+# summary(glm.total.counts.dens)
+# par(mfrow = c(2, 2))
+# plot(glm.total.counts.dens)
+# # MODEL: -1.129e+00 + 0.01744*dat.nona$Parasite.density...µl. + (-0.48763)*dat.nona$Lymphocyte.count...x109.L. + 2.63863*dat.nona$Monocyte.count...x109.L. + (-0.16659)*dat.nona$Neutrophil.count...x109.L.
+# set.seed(1800)
+# glm.total.counts.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Lymphocyte.count...x109.L. + dat.nona$Monocyte.count...x109.L. + dat.nona$Neutrophil.count...x109.L., family=binomial(link = 'logit'), data=dat.nona)
+# summary(glm.total.counts.dens.logit)
+# par(mfrow = c(2, 2))
+# plot(glm.total.counts.dens.logit)
+# # MODEL.log: -1.129e+00 + 1.744e-06*dat.nona$Parasite.density...µl. + (-4.876e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.639e+00)*dat.nona$Monocyte.count...x109.L. + (-1.666e-01)*dat.nona$Neutrophil.count...x109.L.
+# 
 
-# glm_paras <- glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, family=quasibinomial, data=dat.nona)
-# #glm_paras_logit <- glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia, family=quasibinomial (logit), data=dat.nona)
-# glm_total <-glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=quasibinomial, data=dat.nona)
-# #glm_total_logit <-glm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=quasibinomial (logit), data=dat.nona)
-# summary(glm_paras)
-# # MODEL1: -1.97632 + 0.06533*dat.nona$Percentage.parasitemia
-# #summary(glm_paras_logit)
-# summary(glm_total)
-# # MODEL2: -1.13941 + 0.05487*dat.nona$Percentage.parasitemia + (-0.07721)*dat.nona$Total.White.Cell.Count..x109.L.
-# #summary(glm_total_logit)
-
-# DO WE NEED LOGIT TRANSFORMATION?
-model <- glm(outcome_prop ~ dat$total_reads, family=binomial, data=dat.nona)
-summary(model)
-
-model_log <- glm(outcome_prop ~ log(dat$total_reads), family=binomial, data=dat.nona)
-summary(model_log) ## ---> LOGIT TRANSFORMATION / LOGIT LINK NOT NECESSARY
+#===============================================================================
+#                      GLMs on data.nc.nona (only complete on selected vars)   #
+#===============================================================================
 
 # (1) GLM SIMPLE | PERCENTAGE
 set.seed(1800)
-glm.paras <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia, family=quasibinomial, data=dat.nona)
+glm.paras <- glm(outcome_prop.nc.nona ~ dat.nc.nona$Percentage.parasitemia, family=quasibinomial, data=dat.nc.nona)
 summary(glm.paras)
 par(mfrow = c(2, 2))
 plot(glm.paras)
-# MODEL: -1.96396 + 0.06550*dat.nona$Percentage.parasitemia
-glm.paras.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia, family=binomial(link = 'logit'), data=dat.nona)
+# MODEL: -1.61320 + 0.04321*dat.nona$Percentage.parasitemia
+glm.paras.logit <- glm(outcome_prop.nc.nona ~ dat.nc.nona$Percentage.parasitemia, family=binomial(link = 'logit'), data=dat.nc.nona)
 summary(glm.paras.logit)
 par(mfrow = c(2, 2))
 plot(glm.paras.logit)
 #predict(glm_paras2.logit,type='response')
-# MODEL.log: -1.964e+00 + 6.550e-02*dat.nona$Percentage.parasitemia
+# MODEL.log: -1.613e+00 + 4.321e-02*dat.nona$Percentage.parasitemia
 
 # png("shinyapp2/img/glm_paras_regression.png")
 # #predict gives the predicted value in terms of logits
@@ -671,17 +820,18 @@ plot(glm.paras.logit)
 
 # (1) GLM SIMPLE | DENSITY
 set.seed(1800)
-glm.paras.dens <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl., family=quasibinomial, data=dat.nona)
+glm.paras.dens <- glm(outcome_prop.nc.nona ~ dat.nc.nona$Parasite.density...µl., family=quasibinomial, data=dat.nc.nona)
 summary(glm.paras.dens)
 par(mfrow = c(2, 2))
 plot(glm.paras.dens)
-# MODEL: -2.012500 + 0.020313*dat.nona$Parasite.density...µl.
-set.seed(1800)glm.paras.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl., family=binomial(link = 'logit'), data=dat.nona)
+# MODEL: -1.83306 + 0.01809*dat.nona$Parasite.density...µl.
+set.seed(1800)
+glm.paras.dens.logit <- glm(outcome_prop.nc.nona ~ dat.nc.nona$Parasite.density...µl., family=binomial(link = 'logit'), data=dat.nc.nona)
 summary(glm.paras.dens.logit)
 par(mfrow = c(2, 2))
 plot(glm.paras.dens.logit)
 #predict(glm_paras.dens.logit,type='response')
-# MODEL.log: -2.012e+00 + 2.031e-02*dat.nona$Parasite.density...µl.
+# MODEL.log: -1.833e+00 + 1.809e-02*dat.nona$Parasite.density...µl.
 
 # png("shinyapp2/img/glm_paras_dens_logit_regression.png")
 # #predict gives the predicted value in terms of logits
@@ -714,73 +864,107 @@ plot(glm.paras.dens.logit)
 
 # (2a) GLM COMPLEX | PERCENTAGE | TOTAL WHITE BLOOD CELLS
 set.seed(1800)
-glm.total <-glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=quasibinomial, data=dat.nona)
+glm.total <-glm(outcome_prop.nc.nona ~ dat.nc.nona$Percentage.parasitemia + dat.nc.nona$Total.White.Cell.Count..x109.L., family=quasibinomial, data=dat.nc.nona)
 summary(glm.total)
 par(mfrow = c(2, 2))
 plot(glm.total)
-# MODEL: -1.11189 + 0.05324*dat.nona$Percentage.parasitemia + (-0.07415)*dat.nona$Total.White.Cell.Count..x109.L.
+# MODEL: -0.92665 + 0.04200*dat.nona$Percentage.parasitemia + (-0.06456)*dat.nona$Total.White.Cell.Count..x109.L.
 set.seed(1800)
-glm.total.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L., family=binomial(link = 'logit'), data=dat.nona)
+glm.total.logit <- glm(outcome_prop.nc.nona ~ dat.nc.nona$Percentage.parasitemia + dat.nc.nona$Total.White.Cell.Count..x109.L., family=binomial(link = 'logit'), data=dat.nc.nona)
 summary(glm.total.logit)
 par(mfrow = c(2, 2))
 plot(glm.total.logit)
-# MODEL.log: -1.112e+00 + 5.324e-02*dat.nona$Percentage.parasitemia + (-7.415e-02)*dat.nona$Total.White.Cell.Count..x109.L.
+# MODEL.log: -9.266e-01 + 4.200e-02*dat.nona$Percentage.parasitemia + (-6.456e-02)*dat.nona$Total.White.Cell.Count..x109.L.
 
 
 # (2a) GLM COMPLEX | DENSITY | TOTAL WHITE BLOOD CELLS
 set.seed(1800)
-glm.total.dens <-glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Total.White.Cell.Count..x109.L., family=quasibinomial, data=dat.nona)
+glm.total.dens <-glm(outcome_prop.nc.nona ~ dat.nc.nona$Parasite.density...µl. + dat.nc.nona$Total.White.Cell.Count..x109.L., family=quasibinomial, data=dat.nc.nona)
 summary(glm.total.dens)
 par(mfrow = c(2, 2))
 plot(glm.total.dens)
-# MODEL: -1.2376972 + 0.016756*dat.nona$Parasite.density...µl. + (-0.0663774)*dat.nona$Total.White.Cell.Count..x109.L.
+# MODEL: -1.357823 + 0.017015*dat.nona$Parasite.density...µl. + (-0.041395)*dat.nona$Total.White.Cell.Count..x109.L.
 set.seed(1800)
-glm.total.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Total.White.Cell.Count..x109.L., family=binomial(link = 'logit'), data=dat.nona)
+glm.total.dens.logit <- glm(outcome_prop.nc.nona ~ dat.nc.nona$Parasite.density...µl. + dat.nc.nona$Total.White.Cell.Count..x109.L., family=binomial(link = 'logit'), data=dat.nc.nona)
 summary(glm.total.dens.logit)
 par(mfrow = c(2, 2))
 plot(glm.total.dens.logit)
-# MODEL.log: -1.238e+00 + 1.676e-02*dat.nona$Parasite.density...µl. + (-6.638e-02)*dat.nona$Total.White.Cell.Count..x109.L.
+# MODEL.log: -1.358e+00 + 1.701e-02*dat.nona$Parasite.density...µl. + (-4.139e-02)*dat.nona$Total.White.Cell.Count..x109.L.
 
 
 # (2a) GLM COMPLEX | PERCENTAGE | DIFFERENT TYPES OF WHITE BLOOD CELLS COUNTS
 set.seed(1800)
-glm.total.counts <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Lymphocyte.count...x109.L. + dat.nona$Monocyte.count...x109.L. + dat.nona$Neutrophil.count...x109.L., family=quasibinomial, data=dat.nona)
+glm.total.counts <- glm(outcome_prop.nc.nona ~ dat.nc.nona$Percentage.parasitemia + dat.nc.nona$Lymphocyte.count...x109.L. + dat.nc.nona$Monocyte.count...x109.L. + dat.nc.nona$Neutrophil.count...x109.L., family=quasibinomial, data=dat.nc.nona)
 summary(glm.total.counts)
 par(mfrow = c(2, 2))
 plot(glm.total.counts)
-# MODEL: -1.06792 + 0.06155*dat.nona$Percentage.parasitemia + (-0.58256)*dat.nona$Lymphocyte.count...x109.L. + 2.89776*dat.nona$Monocyte.count...x109.L. + (-0.16340)*dat.nona$Neutrophil.count...x109.L.
+# MODEL: -1.16788 + 0.04861*dat.nona$Percentage.parasitemia + (-0.19762)*dat.nona$Lymphocyte.count...x109.L. + 0.73308*dat.nona$Monocyte.count...x109.L. + (-0.06992)*dat.nona$Neutrophil.count...x109.L.
 set.seed(1800)
-glm.total.counts.logit <- glm(outcome_prop.nona ~ dat.nona$Percentage.parasitemia + dat.nona$Lymphocyte.count...x109.L. + dat.nona$Monocyte.count...x109.L. + dat.nona$Neutrophil.count...x109.L., family=binomial(link = 'logit'), data=dat.nona)
+glm.total.counts.logit <- glm(outcome_prop.nc.nona ~ dat.nc.nona$Percentage.parasitemia + dat.nc.nona$Lymphocyte.count...x109.L. + dat.nc.nona$Monocyte.count...x109.L. + dat.nc.nona$Neutrophil.count...x109.L., family=binomial(link = 'logit'), data=dat.nc.nona)
 summary(glm.total.counts.logit)
 par(mfrow = c(2, 2))
 plot(glm.total.counts.logit)
-# MODEL.log: -1.068e+00 + 6.155e-02*dat.nona$Percentage.parasitemia + (-5.826e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.898e+00)*dat.nona$Monocyte.count...x109.L. + (-1.634e-01)*dat.nona$Neutrophil.count...x109.L.
+# MODEL.log: -1.168e+00 + 4.861e-02*dat.nona$Percentage.parasitemia + (-1.976e-01)*dat.nona$Lymphocyte.count...x109.L. + (7.331e-01)*dat.nona$Monocyte.count...x109.L. + (-6.992e-02)*dat.nona$Neutrophil.count...x109.L.
 
 
 # (2a) GLM COMPLEX | DENSITY | DIFFERENT TYPES OF WHITE BLOOD CELLS COUNTS
 set.seed(1800)
-glm.total.counts.dens <-glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Lymphocyte.count...x109.L. + dat.nona$Monocyte.count...x109.L. + dat.nona$Neutrophil.count...x109.L., family=quasibinomial, data=dat.nona)
+glm.total.counts.dens <-glm(outcome_prop.nc.nona ~ dat.nc.nona$Parasite.density...µl. + dat.nc.nona$Lymphocyte.count...x109.L. + dat.nc.nona$Monocyte.count...x109.L. + dat.nc.nona$Neutrophil.count...x109.L., family=quasibinomial, data=dat.nc.nona)
 summary(glm.total.counts.dens)
 par(mfrow = c(2, 2))
 plot(glm.total.counts.dens)
-# MODEL: -1.129e+00 + 0.01744*dat.nona$Parasite.density...µl. + (-0.48763)*dat.nona$Lymphocyte.count...x109.L. + 2.63863*dat.nona$Monocyte.count...x109.L. + (-0.16659)*dat.nona$Neutrophil.count...x109.L.
+# MODEL: -1.55608 + 0.01770*dat.nona$Parasite.density...µl. + (-0.13421)*dat.nona$Lymphocyte.count...x109.L. + 0.75485*dat.nona$Monocyte.count...x109.L. + (-0.06598)*dat.nona$Neutrophil.count...x109.L.
 set.seed(1800)
-glm.total.counts.dens.logit <- glm(outcome_prop.nona ~ dat.nona$Parasite.density...µl. + dat.nona$Lymphocyte.count...x109.L. + dat.nona$Monocyte.count...x109.L. + dat.nona$Neutrophil.count...x109.L., family=binomial(link = 'logit'), data=dat.nona)
+glm.total.counts.dens.logit <- glm(outcome_prop.nc.nona ~ dat.nc.nona$Parasite.density...µl. + dat.nc.nona$Lymphocyte.count...x109.L. + dat.nc.nona$Monocyte.count...x109.L. + dat.nc.nona$Neutrophil.count...x109.L., family=binomial(link = 'logit'), data=dat.nc.nona)
 summary(glm.total.counts.dens.logit)
 par(mfrow = c(2, 2))
 plot(glm.total.counts.dens.logit)
-# MODEL.log: -1.129e+00 + 1.744e-06*dat.nona$Parasite.density...µl. + (-4.876e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.639e+00)*dat.nona$Monocyte.count...x109.L. + (-1.666e-01)*dat.nona$Neutrophil.count...x109.L.
+# MODEL.log: -1.556e+00 + 1.770e-02*dat.nona$Parasite.density...µl. + (-1.342e-01)*dat.nona$Lymphocyte.count...x109.L. + (7.549e-01)*dat.nona$Monocyte.count...x109.L. + (-6.598e-02)*dat.nona$Neutrophil.count...x109.L.
 
 
 #===============================================================================
 #                      PLOTS GLMs                                              #
 #===============================================================================
+############
+ggplotRegression3 <- function (fit, constant, limit) {  
+  require(ggplot2)  
+  ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
+    scale_x_continuous(name="", limits=c(0,limit), breaks=NULL) +  ## -- with it pdenstiy does not show up
+    scale_y_continuous(limits=c(0,1)) + 
+    geom_point() +
+    stat_smooth(method = "lm", col = "blue", fullrange=TRUE) +
+    # labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
+    #                    "; Intercept =",signif(fit$coef[[1]],5 ),
+    #                    "; Slope =",signif(fit$coef[[2]], 5),
+    #                    "; P-value =",signif(summary(fit)$coef[2,4], 5))) + 
+    # annotate("text", x=0.1, y=-0.05, label = "R^2 == 0.78", parse=T) +
+    # annotate("text", x=0.1, y=-0.06, label = "alpha == 0.00", parse=T) +
+    # annotate("text", x=0.1, y=-0.07, label = "beta == 0.67", parse=T) +
+    geom_abline(intercept = constant, slope = 0)
+}
+###############
 
-par(mfrow = c(2, 2))
+
+# (1) GLM SIMPLE | PERCENTAGE
+par(mfrow = c(1, 1))
 plot(glm.paras)
+ggplotRegression3(glm.paras, 0.5, 100)
 
 plot(dat.nona$outcome, dat.nona$Percentage.parasitemia)
 lines(log(dat.nona$outcome),glm.paras$fitted.values)
+
+# (1) GLM SIMPLE | DENSITY
+
+
+# (2) GLM COMPLEX | PERCENTAGE | TOTAL WHITE BLOOD CELLS
+
+# (2) GLM COMPLEX | DENSITY | TOTAL WHITE BLOOD CELLS
+
+
+# (2) GLM COMPLEX | PERCENTAGE | DIFFERENT TYPES OF WHITE BLOOD CELLS COUNTS
+
+# (2) GLM COMPLEX | DENSITY | DIFFERENT TYPES OF WHITE BLOOD CELLS COUNTS
+
 
 ## regression plots l.130
 

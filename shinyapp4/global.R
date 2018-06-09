@@ -36,11 +36,11 @@ library(knitr)
 # ###############################################################################
 
 #source('../src/databuilder.R', local = TRUE)
-# load(file = "Rdata/fit_nona_paras.rda")
-# load(file = "Rdata/dat_nona.rda")
-# load(file = "Rdata/fit_nona_paras.rda")
-# load(file = "Rdata/fit_nona_paras_dens.rda")
-# load(file = "Rdata/dummy.rda")
+load(file = "Rdata/fit_nona_paras.rda")
+load(file = "Rdata/dat_nona.rda")
+load(file = "Rdata/fit_nona_paras.rda")
+load(file = "Rdata/fit_nona_paras_dens.rda")
+load(file = "Rdata/dummy.rda")
  
 # # Read model data
 # modelData <- read.xlsx("models.xlsx", sheetIndex = 1, header = TRUE)
@@ -87,10 +87,11 @@ ggplotRegression <- function (fit, constant, limit) {
     #                    "; Intercept =",signif(fit$coef[[1]],5 ),
     #                    "; Slope =",signif(fit$coef[[2]], 5),
     #                    "; P-value =",signif(summary(fit)$coef[2,4], 5))) + 
-    
+    # annotate("text", x=0.1, y=-0.05, label = "R^2 == 0.78", parse=T) +
+    # annotate("text", x=0.1, y=-0.06, label = "alpha == 0.00", parse=T) +
+    # annotate("text", x=0.1, y=-0.07, label = "beta == 0.67", parse=T) +
     geom_abline(intercept = constant, slope = 0)
 }
-
 
 
 # ggplotRegression2 <- function(fit){

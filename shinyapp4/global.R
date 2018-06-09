@@ -76,11 +76,18 @@ enableBookmarking(store = "url")
 #     geom_abline(intercept = constant, slope = 0)
 # }
 
-ggplotRegression <- function (fit, constant, limit) {  
+ggplotRegression <- function (fit, constant, limit, ptype) {  
   require(ggplot2)  
+  if(ptype == "ppercentage")
+  {
+    xname = "Percentage of parasitemia"
+  }
+  else if(ptype == "pdensity"){
+    xname = "Parasitemia density [1/µl]"
+  }
   ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
-    scale_x_continuous(name="", limits=c(0,limit), breaks=NULL) +  ## -- with it pdenstiy does not show up
-    scale_y_continuous(limits=c(0,1)) + 
+    scale_x_continuous(name=xname, limits=c(0,limit)) +  ## -- with it pdenstiy does not show up
+    scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) + 
     geom_point() +
     stat_smooth(method = "lm", col = "blue", fullrange=TRUE) +
     # labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),

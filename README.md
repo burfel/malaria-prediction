@@ -24,7 +24,8 @@ To run the app from ```R Studio```, copy and paste the following code from the f
                   "ggplot2",
                   "rmarkdown",
                   "plotly",
-                  "knitr")
+                  "knitr",
+                  "lmtest")
  shiny::runGitHub("malaria-prediction", "burfel", subdir="shinyapp4")
  ```
 

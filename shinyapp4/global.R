@@ -21,6 +21,7 @@ library(rmarkdown)
 # library(markdown)
 library(plotly)
 library(knitr)
+library(lmtest)
 # library(png)
 # library(raster)
 
@@ -41,6 +42,11 @@ load(file = "Rdata/dat_nona.rda")
 load(file = "Rdata/fit_nona_paras.rda")
 load(file = "Rdata/fit_nona_paras_dens.rda")
 load(file = "Rdata/dummy.rda")
+
+load(file = "Rdata/glm_paras_logit.rda")
+load(file = "Rdata/glm_paras_dens_logit.rda")
+load(file = "Rdata/glm_total_logit.rda")
+load(file = "Rdata/glm_total_dens_logit.rda")
  
 # # Read model data
 # modelData <- read.xlsx("models.xlsx", sheetIndex = 1, header = TRUE)

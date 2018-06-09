@@ -541,6 +541,66 @@ server = function(input, output, session) {
   })
   
   #===============================================================================
+  #                               OUTPUT TABLES                                  #
+  #===============================================================================
+  
+  likelihoodratio <- function(model){
+    if (model == "simple_paras_lr"){
+      lrtest(glm.paras.logit)
+    }
+    else if (model == "simple_paras_dens_lr"){
+      lrtest(glm.paras.dens.logit)
+    }
+    else if (model == "complex_paras_lr"){
+      lrtest(glm.total.logit)
+    }
+    else{
+      lrtest(glm.total.dens.logit)
+    }
+  }
+  
+  
+  output$likelihoodratio_summary <- renderPrint({
+    likelihoodratio(input$test_select)
+  })
+  
+  # mapping <- function(model){
+  #   if (model == "simple_paras1" || model == "simple_paras2"){
+  #     return glm.paras.logit
+  #   }
+  # }
+  # 
+  # translator <- function(model1, model2, model3){
+  #   if (model1=="null"){
+  #     renderText({ 
+  #       anova(model2, model3)
+  #     })
+  #     else{
+  #       renderTest({
+  #         return anova(model1, model2, model3)
+  #     })
+  #   }
+  # }
+  # }
+  
+  # glm.paras.logit
+  # glm.paras.dens.logit
+  # glm.total.logit
+  # glm.total.dens.logit
+    
+  # output$anova_summary <- function(){
+  #   if(input$model1_select == "no_null"){
+  #     anova(input$model2_select, input$model3_select)
+  #     }
+  #     else {
+  #       anova(input$model1_select, input$model2_select, input$model3_select)
+  #     }
+  # }
+  
+  # output$anova_summary <- tanslator(input$model1_select, input$model2_select, input$model3_select)
+  
+
+  #===============================================================================
   #                               BOOKMARKS                                      #
   #===============================================================================
   

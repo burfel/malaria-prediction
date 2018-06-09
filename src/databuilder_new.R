@@ -183,6 +183,13 @@ plot(fit.nc.nona.paras)
 save(fit.nona.paras, file = "../shinyapp4/Rdata/fit_nona_paras.rda")
 save(dat.nona, file = "../shinyapp4/Rdata/dat_nona.rda")
 save(fit.nona.paras.dens, file = "../shinyapp4/Rdata/fit_nona_paras_dens.rda")
+
+save(glm.paras.logit, file = "../shinyapp4/Rdata/glm_paras_logit.rda")
+save(glm.paras.dens.logit, file = "../shinyapp4/Rdata/glm_paras_dens_logit.rda")
+save(glm.total.logit, file = "../shinyapp4/Rdata/glm_total_logit.rda")
+save(glm.total.dens.logit, file = "../shinyapp4/Rdata/glm_total_dens_logit.rda")
+
+
 # save(dummy, file = "../shinyapp4/Rdata/dummy.rda")
 # save(summary_simple, file = "../shinyapp4/Rdata/summary_simple.rda")
 # save(summary_simple_dens, file = "../shinyapp4/Rdata/summary_simple_dens.rda")
@@ -1102,6 +1109,8 @@ anova(glm.paras, glm.paras.dens, null, test = "Chisq")
 
 anova(null, null, glm.paras)
 anova(glm.paras, null)
+
+anova(glm.paras, glm.paras.dens)
   
 # analyse linear model
 summary(fit.nona.paras)

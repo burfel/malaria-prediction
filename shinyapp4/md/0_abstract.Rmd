@@ -26,7 +26,6 @@ knitr::include_graphics("../img/pathogen_read_density.png")
 ```
 ]
 
----
   
 <!---
   ![alt text][total_reads_outcome] |

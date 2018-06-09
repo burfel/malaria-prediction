@@ -124,13 +124,13 @@ ui = tagList(
                    condition = "input.ptype == 'ppercentage'",
                    sliderInput(inputId = "parasitemia_percentage",
                                label = "Percentage of parasitemia",
-                               value = 8, min = 1, max = 99, step =1.)
+                               value = 8, min = 1, max = 99, step = 0.5)
                  ),
                  conditionalPanel(
                    condition = "input.ptype == 'pdensity'",
                    sliderInput(inputId = "parasitemia_density",
                                label = "Parasitemia density [1/µl]",
-                               value = 800000, min = 0, max = 1500000, step = 1000)
+                               value = 800000, min = 0, max = 3000000, step = 1000)
                  ),
                  bookmarkButton(id = "bookmark1")
                  
@@ -157,14 +157,14 @@ ui = tagList(
                             condition = "input.ptype2 == 'ppercentage2'",
                             sliderInput(inputId = "parasitemia_percentage2",
                                         label = "Percentage of parasitemia",
-                                        value = 8, min = 1, max = 99, step =1.)
+                                        value = 8, min = 1, max = 99, step = 0.5)
                             
                           ),
                           conditionalPanel(
                             condition = "input.ptype2 == 'pdensity2'",
                             sliderInput(inputId = "parasitemia_density2",
                                         label = "Parasitemia density [1/µl]",
-                                        value = 800000, min = 0, max = 1500000, step = 1000)
+                                        value = 800000, min = 0, max = 3000000, step = 1000)
                           ),   
                           
                           # withMathJax(),
@@ -184,20 +184,20 @@ ui = tagList(
                             condition = "input.wtype == 'white_blood'",
                             sliderInput(inputId = "white_blood",
                                         label = "Total number of white blood cells (* 10^9/ L)",
-                                        value = 9, min = 0, max = 20, step = .25)
+                                        value = 10, min = 0, max = 100, step = .25)
                           ),
                           # OR
                           conditionalPanel(
                             condition = "input.wtype == 'counts'",
                             sliderInput(inputId = "lympho",
                                         label = "Total number of lymphoctyes (* 10^9/ L)",
-                                        value = 2.7, min = 0, max = 20, step = .1),
+                                        value = 3, min = 0, max = 30, step = .1),
                             sliderInput(inputId = "mono",
                                         label = "Total number of of monocytes (* 10^9/ L)",
-                                        value = 0.9, min = 0, max = 100, step = .1),
+                                        value = 1, min = 0, max = 10, step = .1),
                             sliderInput(inputId = "neutro",
                                         label = "Total number of neutrophils (* 10^9/ L)",
-                                        value = 5.4, min = 0, max = 100, step = .1)
+                                        value = 6, min = 0, max = 60, step = .1)
                           ),
                           # actionButton(inputId = "go_complex", label = "Submit")
                           bookmarkButton(id = "bookmark2")

@@ -107,9 +107,9 @@ server = function(input, output, session) {
   # MODEL 0b: GLM SIMPLE | DENSITY
   ## MODEL.log: -2.012e+00 + 2.031e-06*dat.nona$Parasite.density...µl.
   glm_simple_dens <- function(){
-    I <- 2.012e+00
-    P <- input$parasitemia_density
-    logit <- I + 2.031e-06*P
+    I <- -2.012e+00
+    P <- (input$parasitemia_density)/10000
+    logit <- I + 2.031e-02*P
     exp(logit)/(1+exp(logit))
   }
   
@@ -131,36 +131,55 @@ server = function(input, output, session) {
   # MODEL.log: -1.238e+00 + 1.676e-06*dat.nona$Parasite.density...µl. + (-6.638e-02)*dat.nona$Total.White.Cell.Count..x109.L.
   glm_complex_dens <- function(){
     I <- -1.238e+00
-    P <- input$parasitemia_density2
+    P <- (input$parasitemia_density2)/10000
     W <- input$white_blood
-    logit <- I + 1.676e-06*P + (-6.638e-02)*W
+    logit <- I + 1.676e-02*P + (-6.638e-02)*W
     exp(logit)/(1+exp(logit))
   }
+  
+  # # MODEL 1c: GLM COMPLEX | PERCENTAGE | DIFFERENT WHITE BLOOD CELL COUNTS #############---WRONG-----------
+  # ## MODEL.log: -1.068e+00 + 6.155e-02*dat.nona$Percentage.parasitemia + (-5.826e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.898e+00)*dat.nona$Monocyte.count...x109.L. + (-1.634e-01)*dat.nona$Neutrophil.count...x109.L.
+  # glm_complex_counts <- function(){
+  #   I <- -1.068e+00
+  #   P <- input$parasitemia_percentage2
+  #   L <- input$lympho
+  #   M <- input$mono
+  #   N <- input$neutro
+  #   logit <- I + 6.155e-02*P + (-5.826e-01)*L + 2.898e+00*M + (-1.634e-01)*N
+  #   exp(logit)/(1+exp(logit))
+  # }
+  # 
+  # # MODEL 1D: GLM COMPLEX | DENSITY | DIFFERENT WHITE BLOOD CELL COUNTS #############---WRONG-----------
+  # ## MODEL.log: -1.129e+00 + 1.744e-06*dat.nona$Parasite.density...µl. + (-4.876e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.639e+00)*dat.nona$Monocyte.count...x109.L. + (-1.666e-01)*dat.nona$Neutrophil.count...x109.L.
+  # glm_complex_counts_dens <- function(){
+  #   I <- -1.129e+00
+  #   P <- (input$parasitemia_density2)/10000
+  #   L <- input$lympho
+  #   M <- input$mono
+  #   N <- input$neutro
+  #   logit <- I + 0.01744*P + (-4.876e-01)*L + 2.639e+00*M + (-1.666e-01)*N
+  #   exp(logit)/(1+exp(logit))
+  # }
   
   # MODEL 1c: GLM COMPLEX | PERCENTAGE | DIFFERENT WHITE BLOOD CELL COUNTS #############---WRONG-----------
   ## MODEL.log: -1.068e+00 + 6.155e-02*dat.nona$Percentage.parasitemia + (-5.826e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.898e+00)*dat.nona$Monocyte.count...x109.L. + (-1.634e-01)*dat.nona$Neutrophil.count...x109.L.
   glm_complex_counts <- function(){
-    I <- -1.068e+00
+    I <- -1.112e+00
     P <- input$parasitemia_percentage2
-    L <- input$lympho
-    M <- input$mono
-    N <- input$neutro
-    logit <- I + 6.155e-02*P + (-5.826e-01)*L + 2.898e+00*M + (-1.634e-01)*N
+    W <- input$lympho + input$mono + input$neutro
+    logit <- I + 5.324e-02*P + (-7.415e-02)*W
     exp(logit)/(1+exp(logit))
   }
   
   # MODEL 1D: GLM COMPLEX | DENSITY | DIFFERENT WHITE BLOOD CELL COUNTS #############---WRONG-----------
   ## MODEL.log: -1.129e+00 + 1.744e-06*dat.nona$Parasite.density...µl. + (-4.876e-01)*dat.nona$Lymphocyte.count...x109.L. + (2.639e+00)*dat.nona$Monocyte.count...x109.L. + (-1.666e-01)*dat.nona$Neutrophil.count...x109.L.
   glm_complex_counts_dens <- function(){
-    I <- -1.129e+00
-    P <- input$parasitemia_density2
-    L <- input$lympho
-    M <- input$mono
-    N <- input$neutro
-    logit <- I + 1.744e-06*P + (-4.876e-01)*L + 2.639e+00*M + (-1.666e-01)*N
+    I <- -1.238e+00
+    P <- (input$parasitemia_density2)/10000
+    W <- input$lympho + input$mono + input$neutro
+    logit <- I + 1.676e-02*P + (-6.638e-02)*W
     exp(logit)/(1+exp(logit))
   }
-  
   
   
   
@@ -315,7 +334,8 @@ server = function(input, output, session) {
   output$residuals <- renderPlotly({
     ptype <- input$ptype
     plot_data <- if(input$ptype == "ppercentage") fit.nona.paras else if(input$ptype == "pdensity") fit.nona.paras.dens
-    ggplotRegression(plot_data, glm_both_simple(ptype))
+    limit <- if(input$ptype == "ppercentage"){limit=100} else if(input$ptype == "pdensity"){limit=3000000}
+    ggplotRegression(plot_data, glm_both_simple(ptype), limit)
   })
   
   # output$help <- helpPopup("How to use", "blabla",
@@ -501,7 +521,7 @@ server = function(input, output, session) {
                 "You can either choose between the simple or the complex model to make a prediction depending on the type of your data. 
                 \n Then enter your data via the slider(s). 
                 \n You can bookmark the state which automatically saves the values of all inputs.
-                \n Optionally, you can enter the data and your name, so it will be bookmarked as well.
+                \n Optionally, you can enter the date and your name, so that this information will be bookmarked as well.
                ")
   })
   

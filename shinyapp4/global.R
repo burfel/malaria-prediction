@@ -21,9 +21,8 @@ library(rmarkdown)
 # library(markdown)
 library(plotly)
 library(knitr)
-library(png)
-library(raster)
-#library(Cairo)
+# library(png)
+# library(raster)
 
 # ################################################################################
 # #                             GLOBAL VARIABLES                                 #
@@ -37,11 +36,11 @@ library(raster)
 # ###############################################################################
 
 #source('../src/databuilder.R', local = TRUE)
-load(file = "Rdata/fit_nona_paras.rda")
-load(file = "Rdata/dat_nona.rda")
-load(file = "Rdata/fit_nona_paras.rda")
-load(file = "Rdata/fit_nona_paras_dens.rda")
-load(file = "Rdata/dummy.rda")
+# load(file = "Rdata/fit_nona_paras.rda")
+# load(file = "Rdata/dat_nona.rda")
+# load(file = "Rdata/fit_nona_paras.rda")
+# load(file = "Rdata/fit_nona_paras_dens.rda")
+# load(file = "Rdata/dummy.rda")
  
 # # Read model data
 # modelData <- read.xlsx("models.xlsx", sheetIndex = 1, header = TRUE)
@@ -77,10 +76,10 @@ enableBookmarking(store = "url")
 #     geom_abline(intercept = constant, slope = 0)
 # }
 
-ggplotRegression <- function (fit, constant) {  
+ggplotRegression <- function (fit, constant, limit) {  
   require(ggplot2)  
   ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
-    # scale_x_continuous(name="", limits=c(0,100), breaks=NULL) +  ## -- with it pdenstiy does not show up
+    scale_x_continuous(name="", limits=c(0,limit), breaks=NULL) +  ## -- with it pdenstiy does not show up
     scale_y_continuous(limits=c(0,1)) + 
     geom_point() +
     stat_smooth(method = "lm", col = "blue", fullrange=TRUE) +

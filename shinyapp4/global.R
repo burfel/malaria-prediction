@@ -22,6 +22,7 @@ library(rmarkdown)
 library(plotly)
 library(knitr)
 library(lmtest)
+library(scatterplot3d)
 # library(png)
 # library(raster)
 

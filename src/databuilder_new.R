@@ -1165,13 +1165,100 @@ ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome)) +
 #dev.off()
 
 
+# ##########-----3D plot-----
+# # 3D Scatterplot with Coloring and Vertical Lines
+# # and Regression Plane 
+# library(scatterplot3d) 
+# attach(dat.nona) 
+# s3d <-scatterplot3d(dat.nona$outcome, dat.nona$Percentage.parasitemia, dat.nona$Total.White.Cell.Count..x109.L., pch=16, highlight.3d=TRUE,
+#                     type="h", main="3D Scatterplot")
+# fit_3d <- lm(dat.nona$outcome ~ dat.nona$Percentage.parasitemia + dat.nona$Total.White.Cell.Count..x109.L.) 
+# s3d$plane3d(fit_3d)
+# 
+# 
+# # 3D scatter plot
+# #s3d <- scatterplot(dat.nona$outcome, dat.nona$Percentage.parasitemia, dat.nona$Total.White.Cell.Count..x109.L.)
+# s3d <- scatterplot3d(dat.nona[,c(5,26,17)],
+#                      main = "3D scatter plot with regression plane",
+#                      pch = 16, color="steelblue"
+#                      )
+# # s3d <- scatterplot3d(trees, type = "h", color = "blue",
+# #                      angle=55, pch = 16)
+# # Add regression plane
+# s3d$plane3d(fit.nona.total)
+# # # Add supplementary points
+# # s3d$points3d(seq(10, 20, 2), seq(85, 60, -5), seq(60, 10, -10),
+# #              col = "red", type = "h", pch = 8)
+# 
+# library(Rcmdr)
+# library(rgl)
+# attach(dat.nona) 
+# scatter3d(dat.nona$outcome, dat.nona$Percentage.parasitemia, dat.nona$Total.White.Cell.Count..x109.L.)
+# 
+# 
+# s3d <- scatterplot3d(dat.nona$Percentage.parasitemia, dat.nona$outcome, dat.nona$Total.White.Cell.Count..x109.L., pch=16, highlight.3d = TRUE, type = "h", main = "3D Scatterplot")
+# s3d$plane3d(glm.total)
+# fit.nona.total
+# 
+# 
+# # fit model
+# 
+# # predict over sensible grid of values
+# parasitemia <- unique(dat.nona$Percentage.parasitemia)
+# white_cell <- unique(dat$Total.White.Cell.Count..x109.L.)
+# grid <- with(dat.nona, expand.grid(parasitemia, white_cell))
+# d <- setNames(data.frame(grid), c("Percentage of parsitemia", "Total white cell count"))
+# vals <- predict(fit.nona.total, newdata = d)
+# 
+# # form matrix and give to plotly
+# m <- matrix(vals, nrow = length(unique(d$wt)), ncol = length(unique(d$disp)))
+# 
+# library(plotly)
+# plot_ly() %>% add_surface(x = ~white_cell, y = ~parasitemia, z = ~m)
+# 
+# oneplane <- expand.grid(x = 1:6, y = 1:6)
+# oneplane$z <- 1:6
+# oneplane.m <- as.matrix(spread(oneplane, key = x, value = z)[, -1])
+# plot_ly() %>% add_trace(x = 1:6, 
+#                         y = 1:6, 
+#                         z = oneplane.m, 
+#                         type = "surface", 
+#                         opacity = .5,
+#                         cauto = FALSE,
+#                         cmax = 1,
+#                         cmin = 0,
+#                         colorscale = list(c(0,'#d1d1d1'),c(1,'#000000')))
+# 
+# plot_ly() %>% add_surface(x = 1:6, 
+#                           y = 1:6, 
+#                           z = dancplane.m, 
+#                           type = "surface", 
+#                           opacity = 1,
+#                           colors = c('#d1d1d1','#000000'))
+# 
+# 
+# library(reshape)
+# #Graph Resolution (more important for more complex shapes)
+# graph_reso <- 0.05
+# 
+# #Setup Axis
+# axis_x <- seq(min(dat.nona$Percentage.parasitemia), max(dat.nona$Percentage.parasitemia), by = graph_reso)
+# axis_y <- seq(min(dat.nona$Total.White.Cell.Count..x109.L.), max(dat.nona$Total.White.Cell.Count..x109.L.), by = graph_reso)
+# 
+# #Sample points
+# petal_lm_surface <- expand.grid(Percentage.parasitemia = axis_x, Total.White.Cell.Count..x109.L. = axis_y,KEEP.OUT.ATTRS = F)
+# petal_lm_surface$outcome <- predict.lm(fit.nona.total, newdata = petal_lm_surface[1:21,])
+# petal_lm_surface <- acast(petal_lm_surface, Total.White.Cell.Count..x109.L. ~ Percentage.parasitemia, value.var = "outcome") #y ~ x
+
+#########
+
 # png("../shinyapp4/img/fit_paras_regr.png")
 # ggplotRegression3(fit.paras, 100)
 # dev.off()
 
-png("../shinyapp4/img/fit_nona_paras_regr.png")
+#png("../shinyapp4/img/fit_nona_paras_regr.png")
 ggplotRegression3(fit.nona.paras, 100)
-dev.off()
+#dev.off()
 
 # png("../shinyapp4/img/fit_nc_nona_paras_regr.png")
 # ggplotRegression3(fit.nc.nona.paras, 100)

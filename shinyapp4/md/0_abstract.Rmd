@@ -47,6 +47,28 @@ knitr::include_graphics("../img/pathogen_read_density.png")
 ]
 
 ]
+
+
+```{r 'xy_images', fig.width = 8,fig.height = 4.5, 
+    fig.show='hold',fig.pos='H'fig.cap="X image (A) and Y image (B)"}
+
+
+library(png);library(raster)
+
+X <-readPNG("../img/total_reads_outcome.png")
+Y <-readPNG("../img/pathogen_read_density.png")
+
+#set up figure
+par(mar=c(0,0,0,0), xpd=NA, mgp=c(0,0,0), 
+    oma=c(0,0,0,0), ann=F, mfrow = c(1,2))
+plot.new()
+usr<-par("usr")
+
+#fill plot with images
+rasterImage(X, usr[1], usr[3], usr[2], usr[4])
+rasterImage(Y, usr[1]+1.1, usr[3], usr[2]+1.1, usr[4])
+
+``` 
   
 <!---
   ![alt text][total_reads_outcome] |

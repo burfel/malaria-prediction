@@ -30,8 +30,18 @@ knitr::include_graphics("../img/pathogen_read_density.png")
 
 .left[
 
+![My image](../img/total_reads_outcome.png)
+
+.caption[
+**Fig. 1:** Image caption
+]
+
+]
+
+.right[
+
 ![My image](../img/pathogen_read_density.png)
-.center[A figure caption]
+
 .caption[
 **Fig. 1:** Image caption
 ]

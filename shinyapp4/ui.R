@@ -250,7 +250,7 @@ ui = tagList(
                             #                  verbatimTextOutput("comp_simple_dens")
                             #                 ),
                             h3("Regression:"),
-                            p("The regression line for the linear model and the 95% interval boundaries shaded in grey. The horizontal line represents the percentage of pathogen reads (dependent variable). As the input (dependent variable) changes, the horizontal line changes."),
+                            p("The regression line for the linear model and the 95% interval boundaries shaded in grey relative to the training data on the 21 complete samples. The horizontal line represents the percentage of pathogen reads (dependent variable). As the input (dependent variable) changes, the horizontal line changes."),
                             # plotOutput("residuals", width=600, height=500)
                             plotlyOutput("residuals", width=600, height=500)
                             # ###########################################################
@@ -274,6 +274,11 @@ ui = tagList(
                             # fileInput('file1', 'Choose CSV File',
                             #           accept=c('text/csv', 'text/comma-separated- values,text/plain', '.csv'))
                             # ######################################################
+                            br(),
+                            p("The following table shows the statistics of the linear model, the simple and complex version 
+                              based on the training data of 21 complete samples compared to the models for 46 samples."),
+                            p("For the generalized linear model that is implemented behind this web tool you can calculate the p-value for yourself:
+                              \n Choose which models you would like to compare and how you would like them to compare!"),
                             tableOutput("dummy"),
                             verbatimTextOutput("summary_simple")
                             )

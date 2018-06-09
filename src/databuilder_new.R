@@ -1089,6 +1089,20 @@ lines(log(dat.nona$outcome),glm.paras$fitted.values)
 
 ## regression plots l.130
 
+
+#===============================================================================
+#                      P-VALUES FOR GLMs                                       #
+#===============================================================================
+#===============================================================================
+#                      P-VALUE FOR GLMs                                        #
+#===============================================================================
+
+null <- glm(outcome_prop.nc.nona ~ 1, family=binomial(link = 'logit'), data=dat.nc.nona)
+anova(glm.paras, glm.paras.dens, null, test = "Chisq")
+
+anova(null, null, glm.paras)
+anova(glm.paras, null)
+  
 # analyse linear model
 summary(fit.nona.paras)
 drop1(fit.nona.paras, test="F")

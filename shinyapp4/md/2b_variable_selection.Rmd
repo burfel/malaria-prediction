@@ -1,9 +1,9 @@
 ## Variable Selection
 
-The goal was to keep the model as small as possible but as best performing as possible. Certainly there is a trade-off (see chapter _Discussion_ [INSERT LINK HERE]).
-The categorical variables (includin sex and ethnicity) were encoded as dummy variables.
+The goal was to keep the model as small as possible but as best performing as possible. Certainly there is a trade-off (see chapter _Discussion_ [INSERT LINK HERE]) between these two goals.
 
-Moreover, we looked at the correlation matrix to choose "good" variables to include in our model, ie the ones that do not correlate much with the first independent variable so that a small model can caputure much variance and results in a better performance. 
+For vaiable selection we looked at the correlation matrix and included domain knowledge, eg which type of data a user is most likely to have. The categorical variables (including sex and ethnicity) were encoded as dummy variables. A lot of the variables were collinear, ie in a near-linear relationship, eg monocyte percentage and monocyte counts or lymphocytes with monocytes and neutrophils and various others.
+As "good" variables to include in our model we identified parasitemia (in form of percentage or density) and the number of white cells or its constituents (lymphoctes, monocytes and neutrophils). In general we would want to look at the ones that do not correlate much with the first independent variable (in our case parasitemia) so that a small model can caputure much variance and results in a better performance. 
 [EXPLAIN "ALGORITHM" TO IDENTIFY THESE]
 Here, domain knowledge was important too. Also, we chose the variable(s) based on the utility for the user. Most often people will just have parasitemia or parasite density data. In some cases they may have white cell count data, too.
 

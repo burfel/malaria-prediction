@@ -21,6 +21,8 @@ library(rmarkdown)
 # library(markdown)
 library(plotly)
 library(knitr)
+library(png)
+library(raster)
 #library(Cairo)
 
 # ################################################################################

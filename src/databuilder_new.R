@@ -30,15 +30,17 @@ outcome_prop <- cbind(dat$pf_count, dat$hg_count)
 
 # most important non-categorical variables 
 #dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Red.blood.cell.count..x1012.L, outcome))
-dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Parasite.density...µl., Total.White.Cell.Count..x109.L., Percentage.lymphocytes, Percentage.monocytes, Percentage.neutrophils, outcome))
-dat.nc.logit <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Parasite.density...µl., Total.White.Cell.Count..x109.L., Percentage.lymphocytes, Percentage.monocytes, Percentage.neutrophils, outcome.logit))
+#dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Parasite.density...µl., Total.White.Cell.Count..x109.L., Percentage.lymphocytes, Percentage.monocytes, Percentage.neutrophils, outcome))
+#dat.nc.logit <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Parasite.density...µl., Total.White.Cell.Count..x109.L., Percentage.lymphocytes, Percentage.monocytes, Percentage.neutrophils, outcome.logit))
+dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Parasite.density...µl., Total.White.Cell.Count..x109.L., Lymphocyte.count...x109.L., Monocyte.count...x109.L., Neutrophil.count...x109.L., Percentage.lymphocytes, Percentage.monocytes, Percentage.neutrophils, hg_count, pf_count, outcome))
+dat.nc.logit <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Parasite.density...µl., Total.White.Cell.Count..x109.L., Lymphocyte.count...x109.L., Monocyte.count...x109.L., Neutrophil.count...x109.L., Percentage.lymphocytes, Percentage.monocytes, Percentage.neutrophils, hg_count, pf_count, outcome.logit))
 
 # drop the samples that have blanks
 dat.nona <- na.omit(dat) # 21x27 matrix
-dat.nc.nona <- na.omit(dat.nc) # 40x8 matrix
-dat.nc.nona.logit <- na.omit(dat.nc.logit) # 40x8 matrix
+dat.nc.nona <- na.omit(dat.nc) # 40x13 matrix (added different white cell type counts, hg_count, pf_count)
+dat.nc.nona.logit <- na.omit(dat.nc.logit) # 40x13 matrix
 outcome_prop.nona <- cbind(dat.nona$pf_count, dat.nona$hg_count) # 21x2 matrix
-
+outcome_prop.nc.nona <- cbind(dat.nc.nona$pf_count, dat.nc.nona$hg_count) # 40x2 matrix !!!!!!!!!!!!!
 
 #===============================================================================
 #                      PLOTS to explore relationships                          #
@@ -47,17 +49,21 @@ outcome_prop.nona <- cbind(dat.nona$pf_count, dat.nona$hg_count) # 21x2 matrix
 par(mfrow = c(1, 2))
 #png("img/total_reads_outcome.png")
 sp <- ggplot(dat, aes(total_reads, outcome)) + 
-  geom_point()
+  geom_point() +
+  geom_text(label=rownames(dat)) 
 # Scatter plot with the 2d density estimation
-sp + geom_density_2d()
+sp + geom_density_2d() +
+     labs(x = "Total number of reads", y = "Number of pathogen reads")
 sp + stat_ellipse()
 sp + geom_bin2d()
 #dev.off()
 
 #png("img/total_reads_outcome_logit.png")
-sl <- ggplot(dat, aes(total_reads, log(outcome))) + 
-  geom_point()
-sl + geom_density_2d()
+sl <- ggplot(dat, aes(total_reads, outcome.logit)) + 
+  geom_point() +
+  geom_text(label=rownames(dat))
+sl + geom_density_2d() +
+     labs(x = "Total number of reads", y = "logit(Number of pathogen reads)")
 sl + stat_ellipse()
 sl + geom_bin2d()
 #dev.off()
@@ -84,7 +90,7 @@ ggdensity(dat$outcome,
 library(e1071)
 #png("img/pathogen_read_density.png")
 plot(density(dat$outcome), main="Percentage of reads that map to pathogen", ylab="Density" #, sub=paste("Skewness:", round(e1071::skewness(dat$outcome), 2))
-     )  # density plot for 'speed'
+)  # density plot for 'speed'
 polygon(density(dat$outcome), col="orange")
 #dev.off()
 
@@ -270,7 +276,7 @@ library(ggpubr)
 library(car)
 #png("shinyapp2/img/test6_qq_residuals.png")
 qqPlot(fit.nona.paras$residuals, main = "Normal Q-Q",
-         xlab = "Theoretical Quantiles", ylab = "Standardized residuals")
+       xlab = "Theoretical Quantiles", ylab = "Standardized residuals")
 #dev.off()
 
 # (ii) Outliers

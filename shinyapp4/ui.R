@@ -249,8 +249,8 @@ ui = tagList(
                             # conditionalPanel(condition = "input.pytype == 'pdensity'",
                             #                  verbatimTextOutput("comp_simple_dens")
                             #                 ),
-                            h3("Regression line:"),
-                            p("The horizontal line represents the perentage of pathogen reads (dependent variable). As the input (dependent variable) changes, the horizontal line changes."),
+                            h3("Regression:"),
+                            p("The regression line and the 95% interval boundaries shaded in grey. The horizontal line represents the perentage of pathogen reads (dependent variable). As the input (dependent variable) changes, the horizontal line changes."),
                             # plotOutput("residuals", width=600, height=500)
                             plotlyOutput("residuals", width=600, height=500)
                             # ###########################################################

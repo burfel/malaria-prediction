@@ -55,11 +55,32 @@ load(file = "Rdata/dummy.rda")
 
 enableBookmarking(store = "url")
 
+# ggplotRegression <- function (fit, constant) {  
+#   require(ggplot2)  
+#   ggplot(fit$model, 
+#     aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
+#     scale_x_continuous(name="", limits=c(0,100), breaks=NULL) + 
+#     scale_y_continuous(limits=c(0,1)) + 
+#     scale_size_identity() +
+#     geom_point() +
+#     # xlim(0,100) +
+#     geom_smooth(method = "lm", fullrange=TRUE) +
+#     
+#     # labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
+#     #                    "; Intercept =",signif(fit$coef[[1]],5 ),
+#     #                    "; Slope =",signif(fit$coef[[2]], 5),
+#     #                    "; P-value =",signif(summary(fit)$coef[2,4], 5))) + 
+#     
+#     geom_abline(intercept = constant, slope = 0)
+# }
+
 ggplotRegression <- function (fit, constant) {  
   require(ggplot2)  
   ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
+    # scale_x_continuous(name="", limits=c(0,100), breaks=NULL) +  ## -- with it pdenstiy does not show up
+    scale_y_continuous(limits=c(0,1)) + 
     geom_point() +
-    stat_smooth(method = "lm", col = "blue") +
+    stat_smooth(method = "lm", col = "blue", fullrange=TRUE) +
     # labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
     #                    "; Intercept =",signif(fit$coef[[1]],5 ),
     #                    "; Slope =",signif(fit$coef[[2]], 5),
@@ -67,6 +88,8 @@ ggplotRegression <- function (fit, constant) {
     
     geom_abline(intercept = constant, slope = 0)
 }
+
+
 
 # ggplotRegression2 <- function(fit){
 #   ggplot(mtcars, aes(x=wt, y=mpg)) + 

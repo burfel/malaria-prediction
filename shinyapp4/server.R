@@ -313,8 +313,8 @@ server = function(input, output, session) {
   # })
   # 
   output$residuals <- renderPlotly({
-    ptype<-input$ptype
-    plot_data<-if(input$ptype == "ppercentage") fit.nona.paras else if(input$ptype == "pdensity") fit.nona.paras.dens
+    ptype <- input$ptype
+    plot_data <- if(input$ptype == "ppercentage") fit.nona.paras else if(input$ptype == "pdensity") fit.nona.paras.dens
     ggplotRegression(plot_data, glm_both_simple(ptype))
   })
   

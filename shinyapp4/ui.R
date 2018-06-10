@@ -26,7 +26,7 @@ ui = tagList(
     navbarPage(
       #theme = "spacelab",  # <--- To use a theme, uncomment this
       # "Read map prediction",
-      "Mapped reads prediction in Malaria",
+      "Mapped read prediction in Malaria",
       
       #===============================================================================
       #                               TAB PANELS                                     #
@@ -284,7 +284,7 @@ ui = tagList(
                             # conditionalPanel(condition = "input.pytype == 'pdensity'",
                             #                  verbatimTextOutput("comp_simple_dens")
                             #                 ),
-                            
+                            br(),
                             h3("Linear regression model (ie GLM with identity as link function and normally distributed response variable):"),
                             
                             p("The regression line for the linear model in blue and the 95% interval boundaries shaded in grey relative to the training data on the 21 complete samples."),
@@ -304,7 +304,7 @@ ui = tagList(
                             actionButton("F_help", "What is a F-test?"),
                             useShinyalert(),
                             actionButton("Rsq_help", "What is a R-squared value?"),
-                            br(),
+                            br(), br(),
                             plotlyOutput("residuals", width=600, height=500)
                           
                             # ###########################################################
@@ -323,17 +323,17 @@ ui = tagList(
                             # )
                             # ############################################################
                     ),
-                   tabPanel("Summary",
-                            # ######################################################
-                            # fileInput('file1', 'Choose CSV File',
-                            #           accept=c('text/csv', 'text/comma-separated- values,text/plain', '.csv'))
-                            # ######################################################
-                            br(),
-                            p("The following table shows the statistics of the linear model, the simple and complex version
-                              based on the training data of 21 complete samples compared to the models for 46 samples."),
-                            tableOutput("dummy")
-        
-                   ),
+                   # tabPanel("Summary",
+                   #          # ######################################################
+                   #          # fileInput('file1', 'Choose CSV File',
+                   #          #           accept=c('text/csv', 'text/comma-separated- values,text/plain', '.csv'))
+                   #          # ######################################################
+                   #          br(),
+                   #          p("The following table shows the statistics of the linear model, the simple and complex version
+                   #            based on the training data of 21 complete samples compared to the models for 46 samples."),
+                   #          tableOutput("dummy")
+                   # 
+                   # ),
                    tabPanel("ANOVA",
                             br(),
                             p("For the generalized linear models that are implemented behind this web tool you can calculate the p-value for yourself!"),
@@ -384,7 +384,7 @@ ui = tagList(
                             useShinyalert(),
                             actionButton("help_likelihoodratio", "What is the likelihood ratio test?"), 
                             br(), br(),
-                            selectInput("model3_select",
+                            selectInput("lrt_select",
                                         label = "Which Model would you like to compare against the null model?",
                                         choices = c("Simple model with percentage of parasitemia" = "simple_paras_lr", 
                                                     "Simple model with parasitemia density [1/µl]" = "simple_paras_dens_lr",

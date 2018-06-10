@@ -34,10 +34,10 @@ server = function(input, output, session) {
     includeMarkdown("md/00_lay-summary.Rmd")
   })
   output$abstract <- renderUI({
-    includeMarkdown("md/0_abstract.Rmd")
+    includeMarkdown("md/00_abstract.Rmd")
   })
   output$introduction <- renderUI({
-    includeMarkdown("md/1_introduction.Rmd")
+    includeMarkdown("md/11_introduction.Rmd")
   })
   output$methods <- renderUI({
     includeMarkdown("md/2_methods.Rmd")
@@ -695,26 +695,26 @@ server = function(input, output, session) {
         lrtest(glm.total.dens.logit)
       }
   })
+
+  likelihoodratio <- function(){
+    if (input$lrt_select == "simple_paras_lr"){
+      lrtest(glm.paras.logit)
+    }
+    else if (input$lrt_select == "simple_paras_dens_lr"){
+      lrtest(glm.paras.dens.logit)
+    }
+    else if (input$lrt_select == "complex_paras_lr"){
+      lrtest(glm.total.logit)
+    }
+    else{
+      lrtest(glm.total.dens.logit)
+    }
+  }
   
-  # likelihoodratio <- function(model){
-  #   if (model == "simple_paras_lr"){
-  #     lrtest(glm.paras.logit)
-  #   }
-  #   else if (model == "simple_paras_dens_lr"){
-  #     lrtest(glm.paras.dens.logit)
-  #   }
-  #   else if (model == "complex_paras_lr"){
-  #     lrtest(glm.total.logit)
-  #   }
-  #   else{
-  #     lrtest(glm.total.dens.logit)
-  #   }
-  # }
   
-  
-  # output$likelihoodratio_summary <- renderPrint({
-  #   likelihoodratio(input$test_select)
-  # })
+  output$likelihoodratio_summary <- renderPrint({
+    likelihoodratio()
+  })
   
   # mapping <- function(model){
   #   if (model == "simple_paras1" || model == "simple_paras2"){

@@ -6,8 +6,14 @@ output: html_document
 runtime: shiny
 ---
 
+)
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::include_graphics('../img/total_reads_outcome.png')
+```
+```{r, fig.width = 4}
+# Bigger fig.width
+ggplot2(cars, aes(speed, dist)) + geom_point()
 ```
 
 This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately. 
@@ -34,6 +40,8 @@ renderPlot({
   dens <- density(faithful$eruptions, adjust = input$bw_adjust)
   lines(dens, col = "blue")
 })
+
+knitr::include_graphics('img/total_reads_outcome.png')
 ```
 
 ## Embedded Application

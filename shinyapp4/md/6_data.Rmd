@@ -1,24 +1,45 @@
 # Data
 <big>
-| Data set                  | Description |
-| --------------------------| ------------|
-| __#1: main data set__     | __46 samples from malaria patients and 23 variables__ |
+
+### 1. Main data set: 46 samples from malaria patients and 23 variables
 
 The data that was used was a RNA-seq data set (library prep, sequencing methods); a detailed description can be found in [1].
-It consisted of 46 samples from malaria patients and 24 variables (see figure 1 for a preview [INSERT LINK HERE]). As various values were missing (see figure 2 and figure 3 below), we only took the samples that were complete. However, only 21 samples were complete on all 24 variables. Therefore, we only discarded the non-complete samples after variable selection (see chapter _Methods_ [INSERT LINK HERE]), ie the ones that were not complete on the variables that we identified as most explaining. This complete data set containing 40 samples and for 6 important variables (Parasitemia percentage, parasitemia density, total white blood cell count, as well as lymphocytes, monocytes and neutrophils counts) and the repsonse variable (percentage of reads that map to the pathogen, referred to as the _outcome_ here). It is important to note, that for computing the latter we assumed a unique map of every read to either the pathogen or the host. This was an important assumption and a constraint of our model(s).
-For a detailed protocol on how the data was obtained we refer to [1] [INSERT LINK HERE].
+It consisted of 46 samples from malaria patients and 23 variables. As various values were missing (see figure 2 and figure 3 below), we only took the samples that were complete. However, only 21 samples were complete on all 23 variables. Therefore, we only discarded the non-complete samples after variable selection (see chapter _Methods_), ie the ones that were not complete on the variables that we identified as most explaining. This complete data set containing 40 samples and for 6 important variables (Parasitemia percentage, parasitemia density, total white blood cell count, as well as lymphocytes, monocytes and neutrophils counts) and the repsonse variable (percentage of reads that map to the pathogen, referred to as the _outcome_ here). It is important to note, that for computing the latter we assumed a unique map of every read to either the pathogen or the host. This was an important assumption and a constraint of our model(s).
+For a detailed protocol on how the data was obtained we refer to [1].
 
-[![missingData](../img/missingData.png)](../img/missingData.png)  | [![missingData2](../img/missingData2.png)](../img/missingData2.png) | 
-|:---:|:---:|
-| Figure 1: Missing values displayed over the data set matrix | Figure 2: Rank of variables with missing values |
-</big>
+<p>
+    <img src="../img/missingData.png" alt="missingData" width="600px"/>
+</p>
+**Figure 1**: Missing values displayed over the data set matrix 
+<br>
+
+</br>
+<p>
+    <img src="../img/missingData2.png" alt="missingData2" width="600px"/>
+</p>
+**Figure 2**: Rank of variables with missing values
+
 <!---
+![missingData](../img/missingData.png)
+**Figure 1**: Missing values displayed over the data set matrix 
+
+![missingData2](../img/missingData2.png) 
+**Figure 2**: Rank of variables with missing values
+--->
+<br>
+</br>
+
 ### 2. Two other data sets not presented here
 
+* mice data: parasitemia perecentage and counts of pathogen and host read maps
+* developmental stages: measurements at different time points in the cycle
+
+<!---
 | Data set                  | Description |
 | --------------------------| ------------|
 | #2: mice data             | parasitemia perecentage and counts of pathogen and host read maps |
 | #3: developmental stages  | measurements at different time points in the cycle |
+--->
 
 One consisted of RNA Seq data from mice containing 33 samples. However, parasitemia percentage was the only variable available for prediction. Additionally, it contained many zero values that might have resulted from measurement errors or due to actual non-infected mice. 
 Here, the logit transformation proved to be useful as the residuals of a linear model showed highly non-normal behaviour. A logit regression model has been developed and is available, please [contact us](mailto:felicia.burtscher17@imperial.ac.uk).
@@ -29,7 +50,9 @@ Significant relationships between the developmental stage and some variables, ie
 However, the developmental stages were not directly correlated to our response variable, and did not explain the outliers found in our dataset. Therefore, we did not incorporate them in the model presented.
 Nontheless, they might be relevant for more complex models and once more data has become available.
 
---->
+</big>
+
+
 <!---
 ```{r}
 
@@ -40,9 +63,7 @@ vis_miss(dat[,-c(23,24,25,27)])
 gg_miss_var(dat[,-c(23,24,25,27)])
 
 ```
---->
 
-<!---
 ![alt text][missing]
 ![alt text][missing2]
 

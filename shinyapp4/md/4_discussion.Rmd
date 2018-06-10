@@ -24,7 +24,7 @@ The motivation for the development of this tool was outlined in chapter _Introdu
 ## Who might use the tool? What does the tool allow people to do?
 The tool can be used by malaria researchers or other users alike who want to achieve some percentage of pathogen and/or host mapping of their sample and have parasitemia and optionally white blood cell data to their disposal. 
 Moreover, the tool allows the user to get an idea of what amount of parsitemia they need to have in their sample in order to get a specific target percentage of pathogen and host mapping of their reads using the sliders on the sidepanel.
-They can get the direct result from the output computed based on a logistic regression model and optionally compare it to the linear regression model shown in the plot. The tool allows zooming and saving the plot as well as showing the exact coordinates when hovering over the plot. 
+They can get the direct result from the output computed based on a logistic regression model and optionally compare it to the linear regression model shown in the plot. The tool allows zooming and saving the plot as well as showing the exact coordinates when hovering over the plot. Optionally, the user can perform different statistical tests to compare the available models, including likelihood ratio, Chi-Squared, F and Rao test.
 
 ## Limitations
 Besides the technical points pointed out above, there are some limitations to the predictability performance of the model due to the specific training data set that was used.

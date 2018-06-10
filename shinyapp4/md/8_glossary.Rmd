@@ -1,9 +1,10 @@
 # Glossary
-
-| Abbreviation              | Desciption  |
+<big>
+| Abbreviation              | Full version |
 | --------------------------| ------------|
 | LM                        | Linear model|
 | GLM                       | Generalized linear model |
+| PMM                       | Predictive Mean Matching |
 | ML                        | Machine Learning |
 | RF                        | Random Forest |
 | SVM                       | Support Vector Machines |
@@ -11,7 +12,8 @@
 | hrs                       | hours       |
 | outcome                   | response variable, here: the percentage of reads that map to the pathogen |
 |                           | Note: we use _outcome_ and _response_ variable interchangably here |
-| _P._                        | _Plasmodium (genus)_ |
+| _P._                      | _Plasmodium (genus)_ |
 | M                         | Millions |
-| eg                        | exempli gratia, for example |
-
+| eg                        | exempli gratia, "for example" |
+| ie                        | id est, "in other words" |
+</big>

@@ -1,26 +1,35 @@
+<big>
 # Methods
 
-## Data description
-See chapter _Data_ [INSERT LINK HERE].
+### 1. Data pre-processing 
+First and foremeost, we had to pre-process the raw data. 
+This includes centering, scaling, skewness transformation 
+and possibly imputing missing values.
 
-## Data pre-processing [INSERT LINK HERE]
-First and foremeost, we have to pre-process the raw data. This includes centering, scaling, skewness transformation and possibly imputing missing values.
+### 2. Variable selection
+Having a tiny sample with lots of variables, we needed to 
+choose the most explaining variable(s) for a simple model. 
+Also, we need to choose the variable(s) based on the utility 
+for the user.
 
-## Variable selection [INSERT LINK HERE]
-Having a tiny sample with lots of variables, we need to choose the most explaining variable(s) for a simple model. Also, we need to choose the variable(s) based on the utility for the user.
+### 3. Model selection
+We needed to choose an appropriate model that explains the 
+data well but is simple enough to not overfit the data.
 
-## Model selection [INSERT LINK HERE]
-We need to choose an appropriate model that explains the data well but is simple enough to not overfit the data.
+### 4. Checking assumptions of linear regression model 
+For a linear regression model, we needed to check the model 
+assumptions.
 
-## Checking assumptions of linear regression model [INSERT LINK HERE]
-For a linear regression model, we need to check the model assumptions.
+### 5. The generalized linear model (GLM) 
+In cases where for certain response variables the just tested 
+assumptions do not hold, generalized linear models (GLM) are 
+excellent at dealing with them. 
 
-## The generalized linear model (GLM) [INSERT LINK HERE]
-In cases where for certain response variables the just tested assumptions do not hold, generalized linear models (GLM) are excellent at dealing with them. 
-
-## Cross validation / estimating performance of model(s) [INSERT LINK HERE]
-As we only have one data set available to train and test our model, we use k-fold cross validation on the imputed original data set. 
-
+### 6. Cross-validation / estimating performance of model(s) 
+As we only had one data set available to train and test our 
+model, we were restricted to cross-validation on the original 
+data set. 
+</big>
 <!---
 1. Data Splitting
 

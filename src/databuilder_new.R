@@ -1,4 +1,5 @@
 library(caret)
+library(klaR)
 library(doParallel)
 library(tidyverse)
 registerDoParallel(detectCores() - 1)
@@ -1165,7 +1166,7 @@ ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome)) +
 #dev.off()
 
 
-# ##########-----3D plot-----
+# ##########-----3D plot----------------------------------------------------------------------------
 # # 3D Scatterplot with Coloring and Vertical Lines
 # # and Regression Plane 
 # library(scatterplot3d) 
@@ -1306,13 +1307,50 @@ lines(log(dat.nona$outcome),glm.paras$fitted.values)
 
 ## regression plots l.130
 
+#===============================================================================
+#                      CROSSVALIDATION                                         #
+#===============================================================================
 
-#===============================================================================
-#                      P-VALUES FOR GLMs                                       #
-#===============================================================================
-#===============================================================================
-#                      P-VALUE FOR GLMs                                        #
-#===============================================================================
+# # train a naive bayes -- only for classification problems
+# model <- NaiveBayes(outcome_prop ~ Percentage.parasitemia + Total.White.Cell.Count..x109.L., data = dat.nc.nona)
+# 
+# # make predictions
+# x_test <- completeDat[,1:6]
+# y_test <- completeDat[,7]
+# predictions <- predict(model, x_test)
+# 
+# # summarise results
+# confusionMatrix(predictions$class, y_test)
+
+# # BOOTSTRAP
+# # define training control
+# train_control <- trainControl(method = "boot", number = 50)
+# # train the model
+# model <- train(outcome ~ Percentage.parasitemia + Total.White.Cell.Count..x109.L., data = dat.nc.nona, trControl=train_control, method="nb")
+# # summarise results
+# print(model)
+
+# bootstrapping with 1000 replications
+results <- boot(data=dat.nc.nona, statistic)
+
+## TO CONTINUE
+
+
+# # K-FOLD CROSS VALIDATION
+# # define training control
+# train_control <- trainControl(method = "cv", number = 10)
+# # fix parameters of the algorithm
+# grid <- expand.grid(.fL=c(0), usekernel=c(FALSE))
+# # train the model
+# model <- train(outcome ~ Percentage.parasitemia + Total.White.Cell.Count..x109.L., data = dat.nc.nona, trControl=train_control, method="nb", tuneGrid=grid)
+# print(model)
+
+library(DAAG)
+cv.lm(completeDat[1:43,], fit.paras, m=3) # 3-fold cross-validation
+
+#===============================================================================#
+#                      P-VALUES FOR GLMs                                        #
+#===============================================================================#
 
 null <- glm(outcome_prop.nc.nona ~ 1, family=binomial(link = 'logit'), data=dat.nc.nona)
 anova(glm.paras, glm.paras.dens, null, test = "Chisq")
@@ -1987,48 +2025,53 @@ abline(h=0.6)
 # library(ggplot2)
 # gg_miss_fct(x = dat, fct = Subject.ID) + labs(title = "Missing values")
 # 
-# # library(VIM)
-# # mice_plot <- aggr(dat, col=c('navyblue', 'yellow'), numbers=TRUE, sortVars=TRUE,
-# #                   labels=names(dat), cex.axis=.7, gap=3, ylab=c("Missing data", "Pattern"))
-# # # There are 45.7% values in the data set with no missing values
-# # # 17.4% missing values in parasite clone...
-# 
-# # ##--- 1. Impute missing values
-# # 
-# # #imputed_dat <- mice(dat, m=5, maxit=50, method='pmm', #seed=500)
-# # ## TODO: TRY VARIOUS NUMBER OF ITERATIONS (MAXIT) AND METHODS
-# # ## Note: multiple imputation helps to reduce bias and increase efficiency
-# # 
-# # # problem here: singular matrix (some variables highly collinear)
-# # # --> exclude some variables that are not essential to all the analyses we are going to conduct
-# # 
-# # ##--- remove categorical variables
-# # #dat.nc <- subset(dat, select = -c(Sex, Ethnicity, Sickle.cell.screen))
-# # # SINGULAR MATRIX --> CHOOSE LESS VARIABLES
-# # #dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, total.number.of.cells, Total.White.Cell.Count..x109.L., Monocyte.count...x109.L., Lymphocyte.count...x109.L., Red.blood.cell.count..x1012.L, Hemoglobin.concentration..g.dL., Parasite.density...µl., Parasite.clones, outcome))
-# # dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Percentage.lymphocytes, Percentage.monocytes, Percentage.neutrophils, outcome, total_reads))
-# # 
-# # #imputed_dat <- mice(dat.nc, m=5, maxit=50, method='pmm', #seed=500)
-# # imputed_dat <- mice(dat.nc, m=5, maxit=50, method='cart', #seed=500)
-# # 
-# # summary(imputed_dat)
-# # # missing cells per column: 0 | 1 | 3 | 2
-# # 
-# # # get complete data (2nd out of 5 imputed data sets)
-# # completeDat <- complete(imputed_dat, 2)
-# # completeDat
-# # 
-# # ## To score better accuracy in building predictive models
-# # ##--alternative packages to impute data:
-# # ## - Amelia: uses bootstrap based EMB algoithm which makes it faster and robust to impute many variables incl cross sectional, time series data etc;
-# # ##           also, it is enabled with parallel imputation feature using multicore CPUs
-# # ##    works best when data has multivariate normal distribution, otherwise: transform data!
-# # ## - missForest: uses random forest -- a non-parametric imputation method applicable to various variable types,
-# # ##                ie it makes no explicit assumptions about functional form of f
-# # ## - Hmisc: automatically recognises the variable types and uses bootstrap sample and predictive mean matching to impute missing values,
-# # ##          ie no need to separate or treat categorical variables
-# # ## - mi
-# # 
+# library(VIM)
+# mice_plot <- aggr(dat, col=c('navyblue', 'yellow'), numbers=TRUE, sortVars=TRUE,
+#                   labels=names(dat), cex.axis=.7, gap=3, ylab=c("Missing data", "Pattern"))
+# # There are 45.7% values in the data set with no missing values
+# # 17.4% missing values in parasite clone...
+
+##--- 1. Impute missing values
+
+#imputed_dat <- mice(dat, m=5, maxit=50, method='pmm', #seed=500)
+## TODO: TRY VARIOUS NUMBER OF ITERATIONS (MAXIT) AND METHODS
+## Note: multiple imputation helps to reduce bias and increase efficiency
+
+# problem here: singular matrix (some variables highly collinear)
+# --> exclude some variables that are not essential to all the analyses we are going to conduct
+
+#===============================================================================
+#                     IMPUING MISSING VALUES FOR CROSSVALIDATION               #
+#===============================================================================
+
+##--- remove categorical variables
+#dat.nc <- subset(dat, select = -c(Sex, Ethnicity, Sickle.cell.screen))
+# SINGULAR MATRIX --> CHOOSE LESS VARIABLES
+#dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, total.number.of.cells, Total.White.Cell.Count..x109.L., Monocyte.count...x109.L., Lymphocyte.count...x109.L., Red.blood.cell.count..x1012.L, Hemoglobin.concentration..g.dL., Parasite.density...µl., Parasite.clones, outcome))
+dat.nc <- subset(dat, select = c(Subject.ID, Percentage.parasitemia, Total.White.Cell.Count..x109.L., Lymphocyte.count...x109.L., Monocyte.count...x109.L., Neutrophil.count...x109.L., outcome))
+
+library(mice)
+imputed_dat <- mice(dat.nc, m=5, maxit=50, method='pmm', seed=500)
+#imputed_dat <- mice(dat.nc, m=5, maxit=50, method='cart', seed=500)
+
+summary(imputed_dat)
+# missing cells per column: 0 | 1 | 3 | 2
+
+# get complete data (2nd out of 5 imputed data sets)
+completeDat <- complete(imputed_dat, 2)
+completeDat
+
+## To score better accuracy in building predictive models
+##--alternative packages to impute data:
+## - Amelia: uses bootstrap based EMB algoithm which makes it faster and robust to impute many variables incl cross sectional, time series data etc;
+##           also, it is enabled with parallel imputation feature using multicore CPUs
+##    works best when data has multivariate normal distribution, otherwise: transform data!
+## - missForest: uses random forest -- a non-parametric imputation method applicable to various variable types,
+##                ie it makes no explicit assumptions about functional form of f
+## - Hmisc: automatically recognises the variable types and uses bootstrap sample and predictive mean matching to impute missing values,
+##          ie no need to separate or treat categorical variables
+## - mi
+
 # # 
 # # ######--------------------------------NO LONGER NECESSARY--------------------------------------------------
 # # #---2. PREDICTIVE / LINEAR REGRESSION MODEL

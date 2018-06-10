@@ -10,16 +10,19 @@
 
 #ui = bootstrapPage(
 ui = tagList(
-    #tags$style(type='text/css', ".selectize-input { font-size: 64px; line-height: 64px;} .selectize-dropdown { font-size: 28px; line-height: 28px; }"),
-    tags$head(tags$style("#text1{color: blue;
-                         font-size: 120px;
-                         font-style: italic;
-                         }")
-              ),
+    # tags$style(type='text/css', ".selectize-input { font-size: 64px; line-height: 64px;} .selectize-dropdown { font-size: 28px; line-height: 28px; }"),
+    # tags$head(tags$style("#text1{color: blue;
+    #                      font-size: 120px;
+    #                      font-style: italic;
+    #                      }")
+   # tags$style(type = "text/css",
+   #           "label { font-size: 40px; }"
+   #            ),
     shinythemes::themeSelector(),
     navbarPage(
       #theme = "spacelab",  # <--- To use a theme, uncomment this
       "Read map prediction",
+      
       
       #===============================================================================
       #                               TAB PANELS                                     #
@@ -39,7 +42,17 @@ ui = tagList(
         # #DT::dataTableOutput("table")
         #         ),
         tabPanel("OVERVIEW",
-                 includeMarkdown("md/2_methods.Rmd")
+                 includeMarkdown("md/2_methods.Rmd"
+                 # tags$footer("My footer", align = "center", style = "
+                 #                             position:absolute;
+                 #                             bottom:0;
+                 #                             width:100%;
+                 #                             height:50px;   /* Height of the footer */
+                 #                             color: white;
+                 #                             padding: 10px;
+                 #                             background-color: black;
+                 #                             z-index: 1000;")
+                 )
         ),
         tabPanel("Data pre-processing",
                  includeMarkdown("md/2a_data_preprocessing.Rmd")

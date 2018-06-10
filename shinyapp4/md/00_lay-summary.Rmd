@@ -1,8 +1,10 @@
 # Lay-summary
 
-## Can we predict parasite read depth in whole blood Dual RNA-seq data from malaria patients?
+### Can we predict parasite read depth in whole blood Dual RNA-seq data from malaria patients?
 
-Scientists studying malaria in humans would like to study the behaviour of the parasite causing disease and the response of human blood cells to the parasite. In order to do this, they can look a the messages produced from genes from both human and parasite. More specifically, we take a snapshot of such messages present in a biological sample from a malaria patient to measure the presence and quantity of these messages. For an accurate measurement we need enough copies of these sequences; however, we do not want to produce more sequences than necessary as this is an time-comsuming and costly undertaking. Knowing the right amount of copies necessary to make a good measurement of the processes happening in the cell often poses a problem for scientists in malaria research.  
+<big>
+Scientists studying malaria in humans would like to study the behaviour of the parasite causing disease and the response of human blood cells to the parasite. In order to do this, they can look a the messages produced from genes from both human and parasite. More specifically, they take a snapshot of such messages present in a biological sample from a malaria patient to measure the presence and quantity of these messages. For an accurate measurement they need enough copies of these sequences. However, they do not want to produce more sequences than necessary as this is an time-comsuming and expensive undertaking. Knowing the right amount of copies necessary to make a good measurement of the processes happening in the cell often is a problem for scientists in malaria research.  
 
 This is where the web tool presented on this website comes into play. It is a tool developed for physicians and biologists working in malaria research to assisst them to produce the right amount of total RNA sequences of a human blood cell sample necessary for their analysis; here we make use of the fact that the samples contain both white blood cells and malaria parasites.
-The web tool does this by computing the average percentage of the sequences that are likely from the host and the pathogen genome based on some information of the sample, including the number of parasites and the number of white blood cells. 
+The web tool does this by computing the **average percentage** of the sequences that are likely **from the host and the pathogen** genome based on some **information of the sample**, including the number of parasites and the number of white blood cells. 
+</big>

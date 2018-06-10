@@ -1,9 +1,10 @@
 # Conclusion
-
-Based on the given data sets of dual RNA-seq reads and different measurements of the malaria patients, we developed a simple general linear model that appropriately predicts the percentage of reads that will map to the host and to the pathogen. [GIVE SOME STATISTICS HERE]
+<big>
+Based on the given data sets of dual RNA-seq reads and different measurements of the malaria patients, we developed different general linearized models (with Gaussian and Logit link function) that appropriately predicts the percentage of reads that will map to the host and to the pathogen. [GIVE SOME STATISTICS HERE] However, our models still need to undergo a more throrough validation once more data are available. 
 
 The model was kept simple in order for the malaria community to be easy to use and the results easy to interpret. Also, we restricted the variables to the measurements a user is most likely to have. 
 
 We hope that this webtool will turn out to be useful for the malaria community.
 
 If you have any further questions, suggestions and feedback, please [email us](mailto:felicia.burtscher17@imperial.ac.uk).
+<\big>

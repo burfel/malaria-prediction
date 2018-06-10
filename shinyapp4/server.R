@@ -627,8 +627,28 @@ server = function(input, output, session) {
                "The R-squared value measures how much variation in the output variable is explained 
                 by the input variable(s). This means that (1- (R-squared)) of the variation is unaccounted for.
                 The majority of the rest is due to noise and possibly measurement errors.
-               \n The R-squared values in our simple model(s) do not seem very high; however, it does not assess the goodness-of-fit.")
+                \n The adjusted R-squared is a modified version of R-squared. It has been adjusted for the number of predictors in the model.
+                \n The R-squared values in our simple model(s) do not seem very high; however, it does not assess the goodness-of-fit.")
   })
+  
+  observeEvent(input$help_anova, {
+    shinyalert("What is ANOVA?",
+               "Analysis of variance (ANOVA) is a collection of statistical models used to analyse 
+               the differences among group means in a sample. Here we use it for model comparison. 
+               You can choose between different tests: Chi-Squared, F and Rao."
+               # In its simplest form, ANOVA provides a statistical test of whether the population means of several groups are equal, 
+               # and therefore generalizes the t-test to more than two groups. 
+               # ANOVA is useful for comparing (testing) three or more group means for statistical significance.
+               )
+  })
+  
+  observeEvent(input$help_likelihoodratio, {
+    shinyalert("What is the likelihood ratio test?",
+               "The likelihood ratio test compares two different models in terms of the goodness-of-fit: the null (here the intercept only model) model against an alternative model.
+                \n It uses the likelihood ratio, which measures how many times more likely the data are under one model than the other. 
+                \n From this likelihood ratio we compute a p-value to decide whether or not to reject the null model.")
+  })
+  
   
   
   #===============================================================================

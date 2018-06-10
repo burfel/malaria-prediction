@@ -304,7 +304,7 @@ ui = tagList(
                             actionButton("F_help", "What is a F-test?"),
                             useShinyalert(),
                             actionButton("Rsq_help", "What is a R-squared value?"),
-                            
+                            br(),
                             plotlyOutput("residuals", width=600, height=500)
                           
                             # ###########################################################
@@ -334,15 +334,17 @@ ui = tagList(
                             tableOutput("dummy")
         
                    ),
-                   tabPanel("Comparison",
+                   tabPanel("ANOVA",
                             br(),
                             p("For the generalized linear models that are implemented behind this web tool you can calculate the p-value for yourself!"),
-                            br(), 
-                            p("You can choose between comparing the fitted models with the anova function or with the likelihood ratio test."),
-                            h3("Comparing different models with ANOVA"),                         
+                          
+                            # p("You can choose between comparing the fitted models with the anova function or with the likelihood ratio test."),
+                            h3("Comparing different fitted models with ANOVA"),                         
                             p("Choose which models you would like to compare and which statistical test you would like to use to compare them!
                               \n Then choose for yourself, which model you would like to trust."),
-                            
+                            useShinyalert(),
+                            actionButton("help_anova", "What is ANOVA?"), 
+                            br(), br(),
                             selectInput("model1_select",
                                          label = "Model 1",
                                          choices = c("Null" = "null", "No Null" = "no_null"),
@@ -370,17 +372,20 @@ ui = tagList(
                                         label = "Test",
                                         choices = c("Chisq" = "chiq", 
                                                     "F" = "f",
-                                                    "Rao" = "rao",
-                                                    "LRT" = "lrt",
-                                                    "Cp" = "cp"),
+                                                    "Rao" = "rao"),
                                         selected = "chisq"),
                             # br(),
-                            verbatimTextOutput("anova_summary"),
-                            br(),
+                            verbatimTextOutput("anova_summary")
+                            #verbatimTextOutput("summary_simple")
+                            ),
+                   tabPanel("Likelihood ratio test",
                             h3("Likelihood ratio test"),  
                             
+                            useShinyalert(),
+                            actionButton("help_likelihoodratio", "What is the likelihood ratio test?"), 
+                            br(), br(),
                             selectInput("model3_select",
-                                        label = "Which Model?",
+                                        label = "Which Model would you like to compare against the null model?",
                                         choices = c("Simple model with percentage of parasitemia" = "simple_paras_lr", 
                                                     "Simple model with parasitemia density [1/µl]" = "simple_paras_dens_lr",
                                                     "Complex model with percentage of parasitemia and total white blood cell count" = "complex_paras_lr",
@@ -389,9 +394,7 @@ ui = tagList(
                                         selected = "complex_paras_lr"),
                             
                             verbatimTextOutput("likelihoodratio_summary")
-                            #verbatimTextOutput("summary_simple")
-                            )
-                   
+                   ) # end tabPanel
                  ) # end tabsetPanel
                ) # end mainPanel
             ), # end tabpanel

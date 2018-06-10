@@ -16,4 +16,7 @@
 | M                         | Millions |
 | eg                        | exempli gratia, "for example" |
 | ie                        | id est, "in other words" |
+| AIC                       | Aikaike information criterion |
+| BIC                       | Bayesian information criterion |
+| LRT                       | Likelihood ratio test |
 </big>

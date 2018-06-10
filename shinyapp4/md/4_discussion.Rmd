@@ -13,7 +13,7 @@ Our model(s) still need to be properly validated on independent data. Although w
 
 Once more data has become available, it might be meaningful to explore more elaborate non-parametric predictive models that are more powerful. 
 
-We might want to consider models where outliers do not have much influence on the model, eg tree-based classification models if we formulate our problem as a classification problem or lasso and elastic-net regularized linear models. Also SVMs for classification generally disregard a part of the training set (that may be far away from the decision boundary and outside of the data mainstream) when creating a prediction equation. However, there is always a trade-off between performance on existent data set and over-fitting, and also the loss of interpretability in case of ML methods. In any case, the complex model should be properly validated.
+We might want to consider models where outliers do not have much influence on the model, eg tree-based classification models if we formulate our problem as a classification problem or lasso and elastic-net regularized linear models. Also SVMs for classification generally disregard a part of the training set (that may be far away from the decision boundary and outside of the data mainstream) when creating a prediction equation. However, there is always a trade-off between performance on existent data set and over-fitting, and also the loss of interpretability in case of ML methods. In any case, the complex model should be properly validated and for model selection common estimator such as Aikaike information criterion (AIC) or Bayesian information criterion (BIC) should be used.
 
 However, this was not the purpose of this project.
 

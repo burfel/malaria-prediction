@@ -1,6 +1,6 @@
 # References
 <big>
-[1] Lee HJ et al. _Integrated pathogen load and dual transcriptome analysis of systemic host-pathogen interactions in severe malaria._ (September 25, 2017). [Link to preprint](https://www.biorxiv.org/content/early/2017/09/25/193631](https://www.biorxiv.org/content/early/2017/09/25/193631)
+[1] Lee HJ et al. _Integrated pathogen load and dual transcriptome analysis of systemic host-pathogen interactions in severe malaria._ (September 25, 2017). [Link to preprint](https://www.biorxiv.org/content/early/2017/09/25/193631)
 
 [2] Lee HJ et al. _Transcriptomic Studies of Malaria: a Paradigm for Investigation of Systemic Host-Pathogen Interactions_. Microbiology and Molecular Biology Reviews, volume 82, issue 2. (June 1, 2018).
 [Link to article](https://doi.org/10.1128/MMBR.00071-17)
@@ -16,5 +16,5 @@
 [6] https://www.gla.ac.uk/myglasgow/library/collections/virtualdisplays/worldmalariaday/whatismalaria/, June 6, 2018
 
 [7] http://www.who.int/malaria/publications/world-malaria-report-2017/en/, June 6, 2018
-<\big>
+</big>
  

@@ -1,7 +1,6 @@
 ## Cross-validation / estimating performance of model(s)
 <big>
 As we only had one data set available to train and test our model, we were restricted to cross-validation on the original data set. For training the model we did not use the samples that contained missing values but instead, we used an imputed version of them (using the [Predictive Mean Matching (PMM) method](http://journals.sagepub.com/doi/abs/10.1177/0049124197026001001)) as a test data set.
-We tried different methods of imputing missing values, in
 
 Comparing the peformance of the linear model (with and without variable transformation) and beta regression proved to be difficult. There was very limited data vailable: We had 6 samples that were not used for the model based on the 40 samples that were complete on the selcted model variables; and 25 samples for the model that was based on the 21 fully complete samples (see chapter _Results_ for the graph of the regression lines). No independent test data set was available. <!--- Also, beta regression has an additional tunable parameter. --->
 

@@ -1,11 +1,11 @@
 ## The generalized linear model (GLM)
 <big>
-In cases where for certain response variables the just tested assumptions do not hold, generalized linear models (GLM) are excellent at dealing with them. 
+In cases where for certain response variables the just tested assumptions do not hold, generalized linear models (GLM) are excellent at dealing with them. They are an extension of the linear regression model.
 GLMs are recommended when
 * the variance is not constant (heteroscedasticity) and/or
 * the errors are not normally distributed.
 
-In our case where the response variable is a percentage or a proportion derived from count data, GLMs prove especially useful. We use a logistic regression, which is similar to a linear regression except for the logit link function. The logit link function is simply a function that is applied to the mean of the outcome variable instead of the outcome itself, ie we transform the percentage scores into logits and use them as outcome for the linear regression. 
+In our case where the response variable is a percentage or a proportion derived from count data, GLMs prove especially useful. We use a logistic regression, which is similar to a linear regression except for the logit link function (and the response variable does not have to be normally distributed). The logit link function is simply a function that is applied to the mean of the outcome variable instead of the outcome itself, ie we transform the percentage scores into logits and use them as outcome for the linear regression. 
 
 This approach has a couple of advantages
 * Unlike a simple linear model it does not predict scores outside of the boundary which would make interpretation difficult, since logits boundaries are -infinite and +infinite.

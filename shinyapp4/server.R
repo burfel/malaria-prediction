@@ -72,10 +72,32 @@ server = function(input, output, session) {
   #===============================================================================
   
   glm_both_simple<-function(ptype){
-    if(ptype == "ppercentage"){
+    if(input$tabset == "simple" && ptype == "ppercentage"){
       glm_simple()
-    } else if(ptype == "pdensity"){
+    } 
+    else if(input$tabset == "simple" && ptype == "pdensity"){
       glm_simple_dens()
+    }
+    #   ###########
+    # else if(input$tabset == "complex" && ptype == "ppercentage"){
+    #     glm_complex()
+    #     # call_null()
+    #   }
+    # else if(input$tabset == "complex" && ptype == "pdensity"){
+    #   glm_complex_dens()
+    # }
+    ###########-- attempts to include two regression plots for the complex model
+    else if(input$tabset == "complex" && ptype == "ppercentage2" && input$wtype == "white_blood"){
+      glm_complex()
+    }
+    else if(input$tabset == "complex" && ptype == "pdensity2" && input$wtype == "white_blood"){
+      glm_complex_dens()
+    }
+    else if(input$tabset == "complex" && ptype == "ppercentage2" && input$wtype == "counts"){
+      glm_complex_counts()
+    }
+    else if(input$tabset == "complex" && ptype == "pdensity2" && input$wtype == "counts"){
+      glm_complex_counts_dens()
     }
   }
   
@@ -116,6 +138,11 @@ server = function(input, output, session) {
     # logit <- I + 2.031e-02*P
     logit <- I + 1.809e-02*P
     exp(logit)/(1+exp(logit))
+  }
+  
+  call_null <- function(){
+    zero_outcome <- 0
+    zero_outcome
   }
   
   #===============================================================================
@@ -345,14 +372,63 @@ server = function(input, output, session) {
   # output$residuals <- renderPlot({
   #   hist(rnorm(200))
   # })
-  # 
+
   output$residuals <- renderPlotly({
-    ptype <- input$ptype
-    plot_data <- if(input$ptype == "ppercentage") fit.nona.paras else if(input$ptype == "pdensity") fit.nona.paras.dens
-    limit <- if(input$ptype == "ppercentage"){limit=100} else if(input$ptype == "pdensity"){limit=3000000}
+    # if(input$tabset == "simple"){
+    # ptype <- input$ptype
+    ptype <- if(input$tabset == "simple") input$ptype else input$ptype2
+    # plot_data <- if(input$ptype == "ppercentage") fit.nona.paras else if(input$ptype == "pdensity") fit.nona.paras.dens
+    plot_data <- if(ptype == "ppercentage" || ptype == "ppercentage2") fit.nona.paras else fit.nona.paras.dens
+    # limit <- if(input$ptype == "ppercentage"){limit=100} else if(input$ptype == "pdensity"){limit=3000000}
+    limit <- if(ptype == "ppercentage" || ptype == "ppercentage2"){limit=100} else {limit=3000000}
     ggplotRegression(plot_data, glm_both_simple(ptype), limit, ptype)
+    # }
+    # else{
+    #   renderUI({
+    #     summary(fit.nona.paras.dens)
+    #   })
+    # }
   })
   
+    # # attempts to make different plots relative to which tab is open
+    # output$residuals <- renderPlotly({
+    #   # if(input$tabset == "simple"){
+    #   ptype <- input$ptype
+    #   if(input$tabset == "simple" && input$ptype == "ppercentage"){
+    #     plot_data <- fit.nona.paras
+    #     limit <- 100
+    #     ggplotRegression(plot_data, glm_both_simple(ptype), limit, ptype)
+    #     }
+    #     else if(input$tabset == "simple" && input$ptype == "pdensity"){
+    #     plot_data <- fit.nona.paras.dens
+    #     limit <- 3000000
+    #     ggplotRegression(plot_data, glm_both_simple(ptype), limit, ptype)
+    #     }
+    #   else{
+    #   }
+    #   
+    #   # # attempts to include 2 regression plots for the complex model
+    #   # else if(input$tabset == "complex" && input$ptype == "ppercentage2"){
+    #   #   wtype <- input$wtype
+    #   #   plot_data <- fit.nona.total
+    #   #   limit <- 100
+    #   #   ggplotRegression2(plot_data, glm_both_simple(ptype), limit, ptype)
+    #   # }
+    #   # else if(input$tabset == "complex" && input$ptype == "pdensity2"){
+    #   #   wtype <- input$wtype
+    #   #   plot_data <- fit.nona.total.dens
+    #   #   limit <- 3000000
+    #   #   ggplotRegression2(plot_data, glm_both_simple(ptype), limit, ptype)
+    #   # }
+    #   # }
+    #   # else{
+    #   #   renderUI({
+    #   #     summary(fit.nona.paras.dens)
+    #   #   })
+    #   # }
+    # })
+    # 
+    
   # output$help <- helpPopup("How to use", "blabla",
   #                                                placement=c('right'),
   #                                                trigger=c('hover'))
@@ -540,10 +616,50 @@ server = function(input, output, session) {
                ")
   })
   
+  observeEvent(input$F_help, {
+    shinyalert("What is a F-test?",
+               "The F-test tests whether to reject the smaller reduced model (ie the intercept only model in case of the simple model) in favour of the larger full model.
+               \n Therefore, we aim for a significant p-value (< 0.05) that indicates to reject the null (ie intercept model) in favour of the larger model.")
+  })
+  
+  observeEvent(input$Rsq_help, {
+    shinyalert("What is a R-squared value?",
+               "The R-squared value measures how much variation in the output variable is explained 
+                by the input variable(s). This means that (1- (R-squared)) of the variation is unaccounted for.
+                The majority of the rest is due to noise and possibly measurement errors.
+               \n The R-squared values in our simple model(s) do not seem very high; however, it does not assess the goodness-of-fit.")
+  })
+  
+  
+  #===============================================================================
+  #                               OUTPUT TEXT                                    #
+  #===============================================================================
+  
+  output$link_text <- renderText({
+    if(input$tabset == "complex"){
+      paste("For a 3D scatterplot including the regression plane we suggest to follow the link")
+    }
+    else{
+      paste()
+    }
+   })
+  
+  
+  #===============================================================================
+  #                               LINKS                                          #
+  #===============================================================================
+  
+  url <- a("Interactive 3D regression tool", href="http://miabellaai.net/demo.html")
+  output$tab <- renderUI({
+    if(input$tabset == "complex"){
+      tagList("here:", url)
+    }
+    else{}
+  })
+    
   #===============================================================================
   #                               OUTPUT TABLES                                  #
   #===============================================================================
-  
   
   output$likelihoodratio_summary <- renderPrint({
       if (input$test_select == "simple_paras_lr"){

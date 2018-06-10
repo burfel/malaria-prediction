@@ -11,7 +11,7 @@ For a detailed protocol on how the data was obtained we refer to [1] [INSERT LIN
 [![missingData](../img/missingData.png)](../img/missingData.png)  | [![missingData2](../img/missingData2.png)](../img/missingData2.png) | 
 |:---:|:---:|
 | Figure 1: Missing values displayed over the data set matrix | Figure 2: Rank of variables with missing values |
-<\big>
+</big>
 <!---
 ### 2. Two other data sets not presented here
 

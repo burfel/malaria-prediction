@@ -19,10 +19,14 @@ ui = tagList(
    #           "label { font-size: 40px; }"
    #            ),
     shinythemes::themeSelector(),
+    # tags$style(type = 'text/css', '.navbar { background-color: #262626;
+    #                                            font-family: Arial;
+    #                                            font-size: 13px;
+    #                                            color: #FF0000; }'),
     navbarPage(
       #theme = "spacelab",  # <--- To use a theme, uncomment this
-      "Read map prediction",
-      
+      # "Read map prediction",
+      "Mapped reads prediction in Malaria",
       
       #===============================================================================
       #                               TAB PANELS                                     #
@@ -115,7 +119,7 @@ ui = tagList(
       #===============================================================================
       #                               TAB PANEL: RESULTS                             #
       #===============================================================================
-      tabPanel("Results",
+      tabPanel("RESULTS | web tool",
                
          sidebarPanel(width=4,
                    
@@ -251,7 +255,7 @@ ui = tagList(
                             #h4("Task: "),
                             # tableOutput("table"), # output input values
                             # h2("Task: ", textOutput("task")),
-                            h3("Prediction:"),
+                            h3("Prediction of the generalized linear model (GLM) with logit link function:"),
                             # uiOutput("comp_simple"),
                             # verbatimTextOutput("test0"),
                             # verbatimTextOutput("comp_simple"),
@@ -271,7 +275,7 @@ ui = tagList(
                             # conditionalPanel(condition = "input.pytype!='pdensity'", verbatimTextOutput("comp_simple")),
                             # conditionalPanel(condition = "input.pytype!='ppercentage'", verbatimTextOutput("comp_simple_dens")),
                             
-                            
+                    
                             
                             #### ADD RIGHT CONDITIONS HERE --- DOES NOT WORK!
                             # conditionalPanel(condition = "input.pytype == 'ppercentage'",
@@ -280,10 +284,29 @@ ui = tagList(
                             # conditionalPanel(condition = "input.pytype == 'pdensity'",
                             #                  verbatimTextOutput("comp_simple_dens")
                             #                 ),
-                            h3("Regression:"),
-                            p("The regression line for the linear model and the 95% interval boundaries shaded in grey relative to the training data on the 21 complete samples. The horizontal line represents the percentage of pathogen reads (dependent variable). As the input (dependent variable) changes, the horizontal line changes."),
+                            
+                            h3("Linear regression model (ie GLM with identity as link function and normally distributed response variable):"),
+                            
+                            p("The regression line for the linear model in blue and the 95% interval boundaries shaded in grey relative to the training data on the 21 complete samples."),
+                            p("The horizontal line represents the percentage of pathogen reads (dependent variable). As the input (dependent variable) changes, the horizontal line changes."),
+                            p("The results of the linear model differ only slightly from the results above."),
                             # plotOutput("residuals", width=600, height=500)
+                            textOutput("link_text"),
+                            uiOutput("tab"),
+              
+                            br(),
+                            
+                            # conditionalPanel(condition = "tabset == 'simple'",
+                            #                  plotlyOutput("residuals", width=600, height=500)
+                            #                  ),
+                           
+                            useShinyalert(),
+                            actionButton("F_help", "What is a F-test?"),
+                            useShinyalert(),
+                            actionButton("Rsq_help", "What is a R-squared value?"),
+                            
                             plotlyOutput("residuals", width=600, height=500)
+                          
                             # ###########################################################
                             # fluidRow(
                             #   column(width = 6,
@@ -306,7 +329,7 @@ ui = tagList(
                             #           accept=c('text/csv', 'text/comma-separated- values,text/plain', '.csv'))
                             # ######################################################
                             br(),
-                            p("The following table shows the statistics of the linear model, the simple and complex version 
+                            p("The following table shows the statistics of the linear model, the simple and complex version
                               based on the training data of 21 complete samples compared to the models for 46 samples."),
                             tableOutput("dummy")
         

@@ -22,8 +22,8 @@ library(rmarkdown)
 library(plotly)
 library(knitr)
 library(lmtest)
-library(scatterplot3d)
-# library(png)
+# library(scatterplot3d)
+library(png)
 # library(raster)
 
 # ################################################################################
@@ -86,18 +86,18 @@ enableBookmarking(store = "url")
 
 ggplotRegression <- function (fit, constant, limit, ptype) {  
   require(ggplot2)  
-  if(ptype == "ppercentage")
+  if(ptype == "ppercentage" || ptype == "ppercentage2")
   {
     xname = "Percentage of parasitemia"
   }
-  else if(ptype == "pdensity"){
+  else if(ptype == "pdensity" || ptype == "pdensity2"){
     xname = "Parasitemia density [1/µl]"
   }
   ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
     scale_x_continuous(name=xname, limits=c(0,limit)) +  ## -- with it pdenstiy does not show up
     scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) + 
     geom_point() +
-    stat_smooth(method = "lm", col = "blue", fullrange=TRUE) +
+    stat_smooth(method = "lm", fullrange=TRUE) +
     labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
                        "; Intercept =",signif(fit$coef[[1]],5 ),
                        "; \n Slope =",signif(fit$coef[[2]], 5),
@@ -105,9 +105,31 @@ ggplotRegression <- function (fit, constant, limit, ptype) {
     # annotate("text", x=0.1, y=-0.05, label = "R^2 == 0.78", parse=T) +
     # annotate("text", x=0.1, y=-0.06, label = "alpha == 0.00", parse=T) +
     # annotate("text", x=0.1, y=-0.07, label = "beta == 0.67", parse=T) +
-    geom_abline(intercept = constant, slope = 0)
+    geom_abline(intercept = constant, slope = 0) 
 }
 
+# # DEFINE NICE REGRESSION PLOT FUNCTION FOR COMPLEX MODEL, ie second variable
+# ggplotRegression2 <- function (fit, constant, limit, ptype) {  
+#   require(ggplot2)  
+#   if(ptype == "ppercentage")
+#   {
+#     xname = "Percentage of parasitemia"
+#   }
+#   else if(ptype == "pdensity"){
+#     xname = "Parasitemia density [1/µl]"
+#   } 
+#   ggplot(fit$model, aes_string(x = names(fit$model)[3], y = names(fit$model)[1])) + 
+#     scale_x_continuous(name=xname, limits=c(0,limit)) +  ## -- with it pdenstiy does not show up
+#     scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) + 
+#     geom_point() +
+#     stat_smooth(method = "lm", col = "blue", fullrange=TRUE) +
+#     labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
+#                        "; Intercept =",signif(fit$coef[[1]],5 ),
+#                        "; \n Slope =",signif(fit$coef[[2]], 5),
+#                        "; Slope2 =",signif(fit$coef[[3]], 5),
+#                        "; P-value (F-test) =",signif(summary(fit)$coef[2,4], 5))) +
+#     geom_abline(intercept = constant, slope = 0)
+# }
 
 # ggplotRegression2 <- function(fit){
 #   ggplot(mtcars, aes(x=wt, y=mpg)) + 

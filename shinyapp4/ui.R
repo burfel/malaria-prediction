@@ -334,50 +334,50 @@ ui = tagList(
                    #          tableOutput("dummy")
                    # 
                    # ),
-                   tabPanel("ANOVA",
-                            br(),
-                            p("For the generalized linear models that are implemented behind this web tool you can calculate the p-value for yourself!"),
-                          
-                            # p("You can choose between comparing the fitted models with the anova function or with the likelihood ratio test."),
-                            h3("Comparing different fitted models with ANOVA"),                         
-                            p("Choose which models you would like to compare and which statistical test you would like to use to compare them!
-                              \n Then choose for yourself, which model you would like to trust."),
-                            useShinyalert(),
-                            actionButton("help_anova", "What is ANOVA?"), 
-                            br(), br(),
-                            selectInput("model1_select",
-                                         label = "Model 1",
-                                         choices = c("Null" = "null", "No Null" = "no_null"),
-                                         selected = "null"),
-                            
-                            selectInput("model2_select",
-                                        label = "Model 2",
-                                        choices = c("Simple model with percentage of parasitemia" = "simple_paras1", 
-                                                    "Simple model with parasitemia density [1/µl]" = "simple_paras1_dens",
-                                                    "Complex model with percentage of parasitemia and total white blood cell count" = "complex_paras1",
-                                                    "Complex model with parasitemia density [1/µl] and total white blood cell count" = "complex_paras1_dens"
-                                                    ),
-                                        selected = "simple_paras1"),
-                            
-                            selectInput("model3_select",
-                                        label = "Model 3",
-                                        choices = c("Simple model with percentage of parasitemia" = "simple_paras2", 
-                                                    "Simple model with parasitemia density [1/µl]" = "simple_paras1_dens",
-                                                    "Complex model with percentage of parasitemia and total white blood cell count" = "complex_paras1",
-                                                    "Complex model with parasitemia density [1/µl] and total white blood cell count" = "complex_paras1_dens"
-                                                    ),
-                                        selected = "complex_paras1"),
-                            
-                            selectInput("test_select",
-                                        label = "Test",
-                                        choices = c("Chisq" = "chiq", 
-                                                    "F" = "f",
-                                                    "Rao" = "rao"),
-                                        selected = "chisq"),
-                            # br(),
-                            verbatimTextOutput("anova_summary")
-                            #verbatimTextOutput("summary_simple")
-                            ),
+                   # tabPanel("ANOVA",
+                   #          br(),
+                   #          p("For the generalized linear models that are implemented behind this web tool you can calculate the p-value for yourself!"),
+                   #        
+                   #          # p("You can choose between comparing the fitted models with the anova function or with the likelihood ratio test."),
+                   #          h3("Comparing different fitted models with ANOVA"),                         
+                   #          p("Choose which models you would like to compare and which statistical test you would like to use to compare them!
+                   #            \n Then choose for yourself, which model you would like to trust."),
+                   #          useShinyalert(),
+                   #          actionButton("help_anova", "What is ANOVA?"), 
+                   #          br(), br(),
+                   #          selectInput("model1_select",
+                   #                       label = "Model 1",
+                   #                       choices = c("Null" = "null", "No Null" = "no_null"),
+                   #                       selected = "null"),
+                   #          
+                   #          selectInput("model2_select",
+                   #                      label = "Model 2",
+                   #                      choices = c("Simple model with percentage of parasitemia" = "simple_paras1", 
+                   #                                  "Simple model with parasitemia density [1/µl]" = "simple_paras1_dens",
+                   #                                  "Complex model with percentage of parasitemia and total white blood cell count" = "complex_paras1",
+                   #                                  "Complex model with parasitemia density [1/µl] and total white blood cell count" = "complex_paras1_dens"
+                   #                                  ),
+                   #                      selected = "simple_paras1"),
+                   #          
+                   #          selectInput("model3_select",
+                   #                      label = "Model 3",
+                   #                      choices = c("Simple model with percentage of parasitemia" = "simple_paras2", 
+                   #                                  "Simple model with parasitemia density [1/µl]" = "simple_paras1_dens",
+                   #                                  "Complex model with percentage of parasitemia and total white blood cell count" = "complex_paras1",
+                   #                                  "Complex model with parasitemia density [1/µl] and total white blood cell count" = "complex_paras1_dens"
+                   #                                  ),
+                   #                      selected = "complex_paras1"),
+                   #          
+                   #          selectInput("test_select",
+                   #                      label = "Test",
+                   #                      choices = c("Chisq" = "chiq", 
+                   #                                  "F" = "f",
+                   #                                  "Rao" = "rao"),
+                   #                      selected = "chisq"),
+                   #          # br(),
+                   #          verbatimTextOutput("anova_summary")
+                   #          #verbatimTextOutput("summary_simple")
+                   #          ),
                    tabPanel("Likelihood ratio test",
                             h3("Likelihood ratio test"),  
                             

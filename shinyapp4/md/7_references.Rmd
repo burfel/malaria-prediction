@@ -7,26 +7,28 @@ runtime: shiny
 ---
 # References
 <big>
-[1] Lee HJ et al. _Integrated pathogen load and dual transcriptome analysis of systemic host-pathogen interactions in severe malaria_. (September 25, 2017). [Link to preprint](https://www.biorxiv.org/content/early/2017/09/25/193631)
+[1] Lee HJ et al. _Integrated pathogen load and dual transcriptome analysis of systemic host-pathogen interactions in severe malaria_. (September 25, 2017) [Link to preprint](https://www.biorxiv.org/content/early/2017/09/25/193631)
 
-[2] Lee HJ et al. _Transcriptomic Studies of Malaria: a Paradigm for Investigation of Systemic Host-Pathogen Interactions_. Microbiology and Molecular Biology Reviews, volume 82, issue 2 (2018).
+[2] Lee HJ et al. _Transcriptomic Studies of Malaria: a Paradigm for Investigation of Systemic Host-Pathogen Interactions_. Microbiology and Molecular Biology Reviews, volume 82, issue 2 (2018)
 [Link to article](http://mmbr.asm.org/content/82/2/e00071-17.abstract)
 
-[3] Kuhn M and Johnson K. _Applied Predictive Modeling_. Springer, New York (2013). [Link to book](https://link.springer.com/book/10.1007%2F978-1-4614-6849-3)
+[3] Kuhn M and Johnson K. _Applied Predictive Modeling_. Springer, New York (2013) [Link to book](https://link.springer.com/book/10.1007%2F978-1-4614-6849-3)
 
-[4] Papke LE and Wooldridge JM. _Panel data methods for fractional response variables with an application to test pass rates._ Journal of Econometrics, volume 145 (2008), pp. 121–133. [Link to article](http://people.stern.nyu.edu/wgreene/Econometrics/Papke-Wooldridge-FractionalResponse.pdf)
+[4] Papke LE and Wooldridge JM. _Panel data methods for fractional response variables with an application to test pass rates._ Journal of Econometrics, volume 145 (2008), pp. 121–133 [Link to article](http://people.stern.nyu.edu/wgreene/Econometrics/Papke-Wooldridge-FractionalResponse.pdf)
 
-[5] Box GEP and Cox DR. _An analysis of transformations._ Journal of the Royal Statistical Society, volume 26 (1964), pp. 211–252. [Link to article](https://pdfs.semanticscholar.org/6e82/0cf11712b9041bb625634612a535476f0960.pdf)
+[5] Box GEP and Cox DR. _An analysis of transformations._ Journal of the Royal Statistical Society, volume 26 (1964), pp. 211–252 [Link to article](https://pdfs.semanticscholar.org/6e82/0cf11712b9041bb625634612a535476f0960.pdf)
 
-[6] Phillips MA et al. _Malaria_. Nature Reviews Disease Primers, volume 3, Article number: 17050 (2017). [Link to aricle](https://www.nature.com/articles/nrdp201750)
+[6] Phillips MA et al. _Malaria_. Nature Reviews Disease Primers, volume 3, Article number: 17050 (2017) [Link to aricle](https://www.nature.com/articles/nrdp201750)
 
-[7] White NJ et al. _Malaria_. The Lancet, volume 383, issue 9918 (2013), pp. 723-735. [Link to article](https://www.sciencedirect.com/science/article/pii/S0140673613600240?via%3Dihub)
+[7] White NJ et al. _Malaria_. The Lancet, volume 383, issue 9918 (2013), pp. 723-735 [Link to article](https://www.sciencedirect.com/science/article/pii/S0140673613600240?via%3Dihub)
 
-[8] Cowman AF et al. _Malaria: biology and disease_. Cell, issue 167 (2016), pp. 610–624. [Link to article](https://www.sciencedirect.com/science/article/pii/S009286741631008X?via%3Dihub)
+[8] Cowman AF et al. _Malaria: biology and disease_. Cell, issue 167 (2016), pp. 610–624 [Link to article](https://www.sciencedirect.com/science/article/pii/S009286741631008X?via%3Dihub)
 
-[9] World Malaria Report 2017. World Health Organization (29 November 2017). [Link to report](http://www.who.int/malaria/publications/world-malaria-report-2017/en/)
+[9] World Malaria Report 2017. World Health Organization (29 November 2017) [Link to report](http://www.who.int/malaria/publications/world-malaria-report-2017/en/)
 
 [10] https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html, June 6, 2018 
 
 [11] https://www.gla.ac.uk/myglasgow/library/collections/virtualdisplays/worldmalariaday/whatismalaria/, June 6, 2018
+
+[12] Everitt B et al. _Cluster analysis_ (5th edition). Chichester: Wiley (2011). [Link to book](https://pdfs.semanticscholar.org/b05a/ca28ced3751d6302d8ce7396f80c90d612fd.pdf)
 </big>

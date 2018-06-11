@@ -2,8 +2,8 @@
 <big>
 The goal was to keep the model as small as possible but as best performing as possible. Certainly there is a trade-off (see chapter _Discussion_) between these two goals.
 
-For vaiable selection we looked at the correlation matrix and included domain knowledge, eg which type of data a user is most likely to have. The categorical variables (including sex and ethnicity) were encoded as dummy variables. A lot of the variables were collinear, ie in a near-linear relationship, eg monocyte percentage and monocyte counts or lymphocytes with monocytes and neutrophils and various others (see figure 1).
-As "good" variables to include in our model we identified parasitemia (in form of percentage or density) and the number of white cells or its constituents (lymphoctes, monocytes and neutrophils). In general, we would want to include the ones that do not correlate much with the first independent variable (in our case parasitemia) so that a small model can caputure much variance and results in a better performance. 
+For variable selection we looked at the correlation matrix and included domain knowledge, eg which type of data a user is most likely to have. The categorical variables (including sex and ethnicity) were encoded as dummy variables. A lot of the variables were collinear, ie in a near-linear relationship, eg monocyte percentage and monocyte counts or lymphocytes with monocytes and neutrophils and various others (see figure 1).
+Using heursitic apprach (see figure 1 and procedure below), we identified parasitemia (in form of percentage or density) and the number of white cells or its constituents (lymphoctes, monocytes and neutrophils) as appriopriate variables to include in our model. In general, we would want to include the ones that do not correlate much with the first independent variable (in our case parasitemia) so that a small model can caputure much variance and results in a better performance, ie we want to avoid between-predictor correlations.
 
 Our procedure to determine the two most suitable variables:
 ```
@@ -20,5 +20,6 @@ Here, domain knowledge was important, too. Also, we chose the variable(s) based 
 <p>
     <img src="../img/correlation.png" alt="correlation" width="600px"/>
 </p>
-**Figure 1:** Correlation matrix of the variables in the sample used for variable selection
+**Figure 1:** Correlation matrix (clustered version) of the variables in the sample used for variable selection. Each pairwise correlation is computed from the data set and coloured according to its magnitude. Note this matrix is symmetric: the top and bottom diagonals show identical information. Dark blue colours indicate strong positive correlations, dark red is used for strong negative correlations; white implies no empirical relationship between the predictors. Here the predictor variables have been grouped using a clustering technique [12] so that collinear predictors are close to one another. Looking along the diagonal, there are blocks of strong positive correlations that indicate "clusters" of collinearity. 
+Therefore, it would be meaningful to include two predictors that are not in the same group -- eg parasitemia (percentage or density) and total number of white cell counts meet this condition.
 </big>

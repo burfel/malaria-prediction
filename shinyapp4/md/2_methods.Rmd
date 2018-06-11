@@ -1,6 +1,12 @@
-<big>
+---
+title: "introduction"
+author: "Felicia Burtscher"
+date: "10 June 2018"
+output: html_document
+runtime: shiny
+---
 # Methods
-
+<big>
 ### 1. Data pre-processing 
 First and foremeost, we had to pre-process the raw data. 
 This includes centering, scaling, skewness transformation 

@@ -382,7 +382,7 @@ server = function(input, output, session) {
     # plot_data <- if(input$ptype == "ppercentage") fit.nona.paras else if(input$ptype == "pdensity") fit.nona.paras.dens
     plot_data <- if(ptype == "ppercentage" || ptype == "ppercentage2") fit.nona.paras else fit.nona.paras.dens
     # limit <- if(input$ptype == "ppercentage"){limit=100} else if(input$ptype == "pdensity"){limit=3000000}
-    limit <- if(ptype == "ppercentage" || ptype == "ppercentage2"){limit=100} else {limit=3000000}
+    limit <- if(ptype == "ppercentage" || ptype == "ppercentage2"){limit=100} else {limit=30}
     ggplotRegression(plot_data, glm_both_simple(ptype), limit, ptype)
     # }
     # else{

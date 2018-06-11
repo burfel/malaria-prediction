@@ -92,16 +92,14 @@ enableBookmarking(store = "url")
 
 ggplotRegression <- function (fit, constant, limit, ptype) {  
   require(ggplot2)  
-  if(ptype == "ppercentage" || ptype == "ppercentage2")
-  {
+  if(ptype == "ppercentage" || ptype == "ppercentage2"){
     xname = "Percentage of parasitemia"
-  }
-  else if(ptype == "pdensity" || ptype == "pdensity2"){
+  } else if(ptype == "pdensity" || ptype == "pdensity2"){
     xname = "Parasitemia density [1/µl]"
   }
   ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
     scale_x_continuous(name=xname, limits=c(0,limit)) +  ## -- with it pdenstiy does not show up
-    scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) + 
+    scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) +
     # scale_size_identity() +
     geom_point() +
     stat_smooth(method = "lm", fullrange=TRUE) +

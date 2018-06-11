@@ -2,7 +2,8 @@
 <big>
 The goal was to keep the model as small as possible but as best performing as possible. Certainly there is a trade-off (see chapter _Discussion_) between these two goals.
 
-For variable selection we looked at the correlation matrix and included domain knowledge, eg which type of data a user is most likely to have. The categorical variables (including sex and ethnicity) were encoded as dummy variables. A lot of the variables were collinear, ie in a near-linear relationship, eg monocyte percentage and monocyte counts or lymphocytes with monocytes and neutrophils and various others (see figure 1).
+For variable selection we looked at the correlation matrix and included domain knowledge, eg which type of data a user is most likely to have. The categorical variables (including gender and ethnicity) were encoded as "dummy" variables.
+A lot of the variables were collinear, ie in a near-linear relationship, eg monocyte percentage and monocyte counts or lymphocytes with monocytes and neutrophils and various others (see figure 1).
 Using heursitic apprach (see figure 1 and procedure below), we identified parasitemia (in form of percentage or density) and the number of white cells or its constituents (lymphoctes, monocytes and neutrophils) as appriopriate variables to include in our model. In general, we would want to include the ones that do not correlate much with the first independent variable (in our case parasitemia) so that a small model can caputure much variance and results in a better performance, ie we want to avoid between-predictor correlations.
 
 Our procedure to determine the two most suitable variables:
@@ -11,7 +12,7 @@ Our procedure to determine the two most suitable variables:
 2. We determined the two predictors associated with the largest absolute pairwise correlation (let us call them predictors A and B).
 3. We determined the average corrleation between A and the other variables. The same we did for predictor B.
 4. If A had a larger average correlation, we removed it; otherwise we removed predictor B.
-5. We repeated steps 2-4 until we had the desired amount of variables selected (here: 2); we could have defined a threshold as a lower bound for the absolute correlations.
+5. We repeated steps 2-4 until we had the desired amount of variables selected (here: 2); we could have defined a threshold as a lower bound for the absolute correlations (eg 0.4 would hold in our case).
 ```
 This way we identified parasitemia percentage and white blood cell count. As alernative and (almost) equally good variables we identified parasitemia density and the ensemble of different white blood cell types (lymphoctes, monocytes and neutrophils).
 

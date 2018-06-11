@@ -13,7 +13,7 @@ The two outliers we identified (sample 35 and 39) could be discarded but due to 
 </p>
 **Figure 1:** Q-Q plot of the residuals of the simple model with percentage of parasite
 
-* No **Multicollinearity** Multiple regression assumes that the independent variables are not highly correlated with each other. We can test this assumption using Variance Inflation Factor (VIF) values; however by applying the algorithm outlined in subchapter _Variable selection_, we made sure that the independent variables correlate as least as possible.
+* No **Multicollinearity** Multiple regression assumes that the independent variables are not highly correlated with each other. We can test this assumption using Variance Inflation Factor (VIF) values; however by applying the algorithm outlined in subchapter _Variable selection_, we already made sure that the independent variables correlate as least as possible or under a certain threshold.
 
 * **Homoscedasticity**, ie the variance of error terms are similar across the values of the independent variables. A plot of **standardised residuals** versus predicted values can show whether points are equally distributed across all values of the independent variables (see figure 1.3 (bottom left)).
 

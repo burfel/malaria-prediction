@@ -24,4 +24,6 @@
 [11] https://www.gla.ac.uk/myglasgow/library/collections/virtualdisplays/worldmalariaday/whatismalaria/, June 6, 2018
 
 [12] Everitt B et al. _Cluster analysis_ (5th edition). Chichester: Wiley (2011). [Link to book](https://pdfs.semanticscholar.org/b05a/ca28ced3751d6302d8ce7396f80c90d612fd.pdf)
+
+[13] Stine RA. _Graphical Interpretation of Variance Inflation Factors_. The American Statistician, volume 49 (1995), pp. 53-56 [Link to article](https://amstat.tandfonline.com/doi/abs/10.1080/00031305.1995.10476113)
 </big>

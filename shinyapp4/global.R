@@ -38,6 +38,11 @@ library(png)
 # ###############################################################################
 
 #source('../src/databuilder.R', local = TRUE)
+
+# # TO RUN IN ON MSC SERVER
+# source('ui.R', local = TRUE)
+# source('server.R', local = TRUE)
+
 load(file = "Rdata/fit_nona_paras.rda")
 load(file = "Rdata/dat_nona.rda")
 load(file = "Rdata/dat_nc_nona.rda")
@@ -161,3 +166,7 @@ helpPopup <- function(title, content,
     )
   )
 }
+
+# # TO RUN IN ON MSC SERVER
+# app <- shinyApp(ui = ui, server = server)
+# runApp(app, port=20199, launch.browser = FALSE, host = getOption("shiny.host", "0.0.0.0"))

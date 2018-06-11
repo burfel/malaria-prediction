@@ -469,11 +469,12 @@ ui = tagList(
                uiOutput("data")
       ),
       tabPanel("References", 
-               tableOutput("ref")
-               # uiOutput("references")
+               # tableOutput("ref")
+               uiOutput("references")
       ),
       tabPanel("Glossary", 
-               uiOutput("glossary")
+               tableOutput("ref")
+               # uiOutput("glossary")
       ),
       tabPanel("About", 
                uiOutput("about")

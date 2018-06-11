@@ -19,8 +19,10 @@ supp <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/data/Supplementary_Data
 # summary_complex <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4/Rdata/summary_complex.csv", header=TRUE)
 # summary_complex_dens <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4/Rdata/summary_complex_dens.csv", header=TRUE)
 
-# references <- summary_complex_dens <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4/Rdata/references.csv", header=TRUE)
-# references
+# glossary <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4/Rdata/references.csv", header=TRUE)
+# glossary <- glossary[,1:2]
+# sub("[.]", " ", glossary) 
+# glossary
 
 # merge data sets (by samples/ subjectID)
 dat <- merge(supp, hg_pf, by.y = "samples", by.x = "Subject.ID")

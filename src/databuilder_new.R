@@ -19,6 +19,9 @@ supp <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/data/Supplementary_Data
 # summary_complex <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4/Rdata/summary_complex.csv", header=TRUE)
 # summary_complex_dens <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4/Rdata/summary_complex_dens.csv", header=TRUE)
 
+# references <- summary_complex_dens <- read.csv("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4/Rdata/references.csv", header=TRUE)
+# references
+
 # merge data sets (by samples/ subjectID)
 dat <- merge(supp, hg_pf, by.y = "samples", by.x = "Subject.ID")
 
@@ -181,6 +184,9 @@ plot(fit.nc.nona.paras)
 #===============================================================================
 #                      SAVE MODELS                                             #
 #===============================================================================
+# save references R object
+save(references, file = "../shinyapp4/Rdata/references.rda")
+
 # data files
 save(dat, file = "../shinyapp4/Rdata/dat.rda")
 save(dat.nc, file = "../shinyapp4/Rdata/dat_nc.rda")

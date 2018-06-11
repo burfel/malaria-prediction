@@ -249,6 +249,8 @@ server = function(input, output, session) {
   output$summary_simple <- renderTable(summary_simple)
   output$summary_complex <- renderTable(summary_complex)
   
+  output$ref <- renderTable(references)
+  
   # output$table.output <- renderTable({
   #   
   #   inFile <- input$file1

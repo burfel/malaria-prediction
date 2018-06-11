@@ -53,6 +53,8 @@ load(file = "Rdata/glm_total_dens_logit.rda")
 load(file = "Rdata/outcome_prop.rda")
 load(file = "Rdata/outcome_prop_nc_nona.rda")
 load(file = "Rdata/outcome_prop_nona.rda")
+
+load(file = "Rdata/references.rda")
  
 # # Read model data
 # modelData <- read.xlsx("models.xlsx", sheetIndex = 1, header = TRUE)

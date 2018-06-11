@@ -469,7 +469,8 @@ ui = tagList(
                uiOutput("data")
       ),
       tabPanel("References", 
-               uiOutput("references")
+               tableOutput("references")
+               # uiOutput("references")
       ),
       tabPanel("Glossary", 
                uiOutput("glossary")

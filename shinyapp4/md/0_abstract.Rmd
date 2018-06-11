@@ -12,7 +12,20 @@
 For physicians and biologists in the malaria community it is of substantial use to know how many of the dual RNA-seq reads will map to the host, and how many will map to the pathogen in order to compute the read depth. This way, they will know how many reads are necessary in the first place for the study of interest. 
 The purpose of this project was to develop a __simple prediction tool__ that will enable a user to __estimate the likely proportion of reads__ that will map to parasite and host, given basic information on the sample. This will be of substantial use to the __malaria__ research community as no such tool exists yet to our knowledge.
 For the web tool (see chapter _Results_) we implemented a logistic regression model, ie a generalized linear model with a logit transformation, based on the sample data set (see chapter _Data_). We cross-validated the performance of our model on the the samples that were non-complete, ie containing missing values, and therefore not used in the training data set after imputing the missing values [INSERT STATISTICS HERE]. However, further validation of our model should be made after more data has become available. 
+<br>
+</br>
+<p>
+    <img src="../img/total_reads_outcome.png" alt="total_reads_outcome" width="600px"/>
+</p>
+**Figure 1:** Scatterplot of the data set: Number of total reads in sample against percentage that map to pathogen. The numbers indicate the sample IDs.
+<br>
+</br>
+<p>
+    <img src="../img/pathogen_read_density.png" alt="total_reads_outcome" width="600px"/>
+</p>
+**Figure 2:** Density plot of reads that map to the pathogen: The percentage varies a lot, in the given data set most samples mapped with around 18% of the total reads to the pathogen. Note: The area under the curve itegrates to 1.
 
+<!---
 ![total_reads_outcome](../img/total_reads_outcome.png)
 
 **Figure 1:** Scatterplot of the data set: Number of total reads in sample against percentage that map to pathogen. The numbers indicate the sample IDs.
@@ -22,6 +35,7 @@ For the web tool (see chapter _Results_) we implemented a logistic regression mo
 ![density](../img/pathogen_read_density.png)
 
 **Figure 2:** Density plot of reads that map to the pathogen: The percentage varies a lot, in the given data set most samples mapped with around 18% of the total reads to the pathogen. Note: The area under the curve itegrates to 1.
+--->
 
 ---
 **Note:**

@@ -1,6 +1,6 @@
 ## Model selection
 <big>
-By plotting the outcome variable against different variables, we could identify a fairly linear relationship, especially between parasitemia percentage and the outcome variable (see figure X) which suggested to use a linear model. 
+By plotting the outcome variable against different variables, we could identify a fairly linear relationship, especially between parasitemia percentage and the outcome variable (see figure 1) which suggested to use a linear model. 
 After checking the model assumptions for that, see subchapter _Checking assumptions of linear regression model_, we also built generalized linear models as well as performed a beta regression. 
 
 As the response variable we chose the percentage of reads that map to the pathogen. From that we directly compute the percentage of reads that map to the host, assuming the mapping is unique (one reads exactly maps to either the host or the pathogen) which is an important model assumption. For the generalized linear model we used the weighted percentage (percentage associated with the total number of reads), as we knew the proportion and, therefore the total number of reads under our model assumptions. 
@@ -8,25 +8,4 @@ As the response variable we chose the percentage of reads that map to the pathog
 Moreover, we tested combinations of non-linear relationships, eg percentage of parsitemia and total number of white blood cells, that were not significant (p-value of F-test < 0.05) but increased the R-squared value slightly. We chose the generalized linear model with a logit link function (equal to a logistic regression, see subchapter _The generalized linear model_ for more) including the variables parasitemia (percentage or density) and white blood cell counts (or the different types of them) based on its low p-values in the F-test, not for its R-squared values.
 
 We also tried multiple combinations of different equally suitable and non-collinear variables (including lymphocyte, monocyte and neutrophil percentage), the best yet simple general linearized models are implemented in chapter _Results_.
-
-[INSERT PLOT HERE]
-
-```{r}
-load(file = "../Rdata/dat_nc_nona.rda")
-ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome)) +
-                   scale_x_continuous(name="Percentage of parasitemia", limits=c(0,50)) +  
-                   scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) +
-                   geom_text(label=rownames(dat.nc.nona)) +
-                   geom_point(colour="dodgerblue",alpha=0.75) +
-                   geom_abline(aes(colour="linear model on complete \n samples (21) \n", intercept=0.090267, x = slope=0.013339), alpha=1, size=1) +
-                   geom_smooth(aes(colour="linear model on samples that complete \n after variable selection (40) \n"), method = "lm", linetype="dashed", se=FALSE) +
-                   geom_smooth(data = dat.nc.nona[-c(7,10,11,19),], aes(colour="linear model without potential outliers 7,10,11,19"), method="lm", se=F, linetype = "dashed") +
-                   scale_colour_manual(name="Linear regression lines \n", values=c("red", "blue", "green")) +
-                   guides(colour = guide_legend(override.aes = list(alpha = 0))) +
-                   theme(axis.text=element_text(size=14),
-                         axis.title=element_text(size=14,face="bold")) +
-                   theme(plot.title = element_text(size = 12, face = "bold"),
-                         legend.title=element_text(size=15),
-                         legend.text=element_text(size=13))
-```
 </big>

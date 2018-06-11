@@ -16,10 +16,9 @@ In the model presented in the chapter _Results_, we did scale some variables (pa
 
 ### Skewness transformation
 <!---..to remove distributional skewness.--->
-As the data was found to be skewed, ie not symmetric, see figure X [INSERT FIGURE], we tried different transformations (log, square root, inverse) to remove the skew, ie so that the probability of falling on either side of the distribution's mean is roughly equal. 
-We found the log transformation the most suitable to the given data set. The distribution is not entirely symmetric but the transformed data are better behaved than when they are in the original units.
+As the data was found to be skewed, ie not symmetric, we tried different transformations (log, square root, inverse) to remove the skew, ie so that the probability of falling on either side of the distribution's mean is roughly equal. 
+We found the logit transformation the most suitable to the given data set. The distribution is not entirely symmetric but the transformed data are better behaved than when they are in the original units.
 
-[INSERT PLOTS HISTOGRAM PLOTS HERE] 
 <!---(p32)
 
 [! alt text!] [fit_nona_paras]

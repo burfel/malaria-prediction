@@ -34,10 +34,10 @@ server = function(input, output, session) {
     includeMarkdown("md/00_lay-summary.Rmd")
   })
   output$abstract <- renderUI({
-    includeMarkdown("md/00_abstract.Rmd")
+    includeMarkdown("md/0_abstract.Rmd")
   })
   output$introduction <- renderUI({
-    includeMarkdown("md/11_introduction.Rmd")
+    includeMarkdown("md/1_introduction.Rmd")
   })
   output$methods <- renderUI({
     includeMarkdown("md/2_methods.Rmd")

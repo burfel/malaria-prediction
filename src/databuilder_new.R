@@ -208,6 +208,9 @@ save(glm.paras.dens.logit, file = "../shinyapp4/Rdata/glm_paras_dens_logit.rda")
 save(glm.total.logit, file = "../shinyapp4/Rdata/glm_total_logit.rda")
 save(glm.total.dens.logit, file = "../shinyapp4/Rdata/glm_total_dens_logit.rda")
 
+save(outcome_prop, file = "../shinyapp4/Rdata/outcome_prop.rda")
+save(outcome_prop.nc.nona, file = "../shinyapp4/Rdata/outcome_prop_nc_nona.rda")
+save(outcome_prop.nona, file = "../shinyapp4/Rdata/outcome_prop_nona.rda")
 
 # save(dummy, file = "../shinyapp4/Rdata/dummy.rda")
 # save(summary_simple, file = "../shinyapp4/Rdata/summary_simple.rda")
@@ -1147,7 +1150,7 @@ ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome), color=cyl) +
 
 
 ###################----PLOTS--------!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#png("../shinyapp4/img/both_paras_regr_better_outlier.png")
+png("../shinyapp4/img/both_paras_regr_better_outlier_4.png")
 ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome)) + 
   scale_x_continuous(name="Percentage of parasitemia", limits=c(0,50)) +  ## -- with it pdenstiy does not show up
   scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) + 
@@ -1155,15 +1158,19 @@ ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome)) +
   geom_point(colour="dodgerblue",alpha=0.75) +
   geom_abline(aes(colour="linear model on complete \n samples (21) \n", intercept=0.090267, slope=0.013339), alpha=1, size=1) +
   geom_smooth(aes(colour="linear model on samples that complete \n after variable selection (40) \n"), method = "lm", linetype="dashed", se=FALSE) + 
-  geom_smooth(data = dat.nc.nona[-c(7,10,11,19),], aes(colour="linear model without potential outliers 7,10,11,19"), method="lm", se=F, linetype = "dashed") +
-  scale_colour_manual(name="Linear regression lines \n", values=c("red", "blue", "green")) + 
+  geom_smooth(data = dat.nc.nona[-c(29,33),], aes(colour="linear model without \n potential outliers 35,39 \n"), method="lm", se=F, linetype = "dashed") +
+  geom_smooth(data = dat.nc.nona[-c(5,8,9,14),], aes(colour="linear model without \n potential outliers 7,10,11,19 \n"), method="lm", se=F, linetype = "dashed") +
+  geom_smooth(data = dat.nc.nona[-c(5,8,9,14,29,33),], aes(colour="linear model without \n potential outliers 7,10,11,19,35,39 \n"), method="lm", se=F, linetype = "dashed") +
+  #geom_smooth(data = dat.nc.nona[c(7,10,11,19),], aes(colour="linear model without potential outliers 7,10,11,19 \n"), method="lm", se=F, linetype = "dashed") +
+  
+  scale_colour_manual(name="Linear regression lines \n", values=c("red", "blue", "orange", "green", "brown")) + 
   guides(colour = guide_legend(override.aes = list(alpha = 0))) +
   theme(axis.text=element_text(size=14),
         axis.title=element_text(size=14,face="bold")) +
   theme(plot.title = element_text(size = 12, face = "bold"),
         legend.title=element_text(size=15), 
         legend.text=element_text(size=13))
-#dev.off()
+dev.off()
 
 
 # ##########-----3D plot----------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 
 <big>
 ## Why Malaria?
-Malaria is still a serious global health problem killing about 500,000 people every year, more than any other infectious disease except tuberculosis, mainly children under the age of 5. An additional 200 million people get infected with devastating consequences for the economics and the healtcare systems of endemic countries [6].
+Malaria is still a serious global health problem killing about 500,000 people every year, more than any other infectious disease except tuberculosis, mainly children under the age of 5. An additional 200 million people get infected with devastating consequences for the economics and the healtcare systems of endemic countries [10].
 
 ## What is Malaria?
 Malaria is an infectious disease caused by a few Plasmodium species (see below) which are single-cell parasites that get spread around by mosquitos.
@@ -15,33 +15,33 @@ Amongst the millions of people are especially
 * patients with other health conditions like HIV/Aids
 * travellers with no prior exposure to malaria.
 
-Tropical and subtropical regions are hit the hardest, together the most affected regions form the malaria belt, a belt around the equator that includes most of Latin America, Sub-saharan Africa, South Asia and Southeast Asia (see figure 1 below). Even though the geographical area affected by malaria has shrunk considerably over the past 50 years, imported cases of malaria are now more frequently registered in developed countries [6]. Malaria is re-emerging in areas where it was previously under control or eradicated, e.g. in the Central Asian Republics of Tajikistan and Azerbaijan, and in Korea [6].
+Tropical and subtropical regions are hit the hardest, together the most affected regions form the malaria belt, a belt around the equator that includes most of Latin America, Sub-saharan Africa, South Asia and Southeast Asia (see figure 1 below). Even though the geographical area affected by malaria has shrunk considerably over the past 50 years, imported cases of malaria are now more frequently registered in developed countries [10]. Malaria is re-emerging in areas where it was previously under control or eradicated, e.g. in the Central Asian Republics of Tajikistan and Azerbaijan, and in Korea [10].
 <br>
 </br>
 <p>
     <img src="../img/malaria_prevalence.png" alt="malaria_prevalence" width="600px"/>
 </p>
-**Figure 3**: Malaria [prevalence](https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html "the proportion of a population that at some point in their life have experienced this disease") on a global scale (from [6]) 
+**Figure 3**: Malaria [prevalence](https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html "the proportion of a population that at some point in their life have experienced this disease") on a global scale (from [10]) 
 <br>
 </br>
 <p>
     <img src="../img/malaria_piechart.png" alt="malaria_piechart" width="600px"/>
 </p>
-**Figure 2**: 9% of deaths globally among children under the age of 5 are caused by malaria; in Africa 20% of this group dies (from [7]). 
+**Figure 2**: 9% of deaths globally among children under the age of 5 are caused by malaria; in Africa 20% of this group dies (from [11]). 
 <br>
 </br>
 <!---
 ![malaria_prevalence](../img/malaria_prevalence.png)  
 
-**Figure 3**: Malaria [prevalence](https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html "the proportion of a population that at some point in their life have experienced this disease") on a global scale (from [6]) 
+**Figure 3**: Malaria [prevalence](https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html "the proportion of a population that at some point in their life have experienced this disease") on a global scale (from [10]) 
  
  
 ![malaria_piechart](../img/malaria_piechart.png) 
-**Figure 2**: 9% of deaths globally among children under the age of 5 are caused by malaria; in Africa 20% of this group dies (from [7]). 
+**Figure 2**: 9% of deaths globally among children under the age of 5 are caused by malaria; in Africa 20% of this group dies (from [11]). 
 --->
 
 ## Are there different types of Plasmodium (P.)?
-Yes, there are 100 of Plasmodium species but only 5 cause malaria disease in humans [8]:
+Yes, there are 100 of Plasmodium species but only 5 cause malaria disease in humans [9]:
 * falciparum
 * malariae
 * ovale

@@ -1,10 +1,3 @@
----
-title: "references"
-author: "Felicia Burtscher"
-date: "10 June 2018"
-output: html_document
-runtime: shiny
----
 # References
 <big>
 [1] Lee HJ et al. _Integrated pathogen load and dual transcriptome analysis of systemic host-pathogen interactions in severe malaria_. (September 25, 2017) [Link to preprint](https://www.biorxiv.org/content/early/2017/09/25/193631)

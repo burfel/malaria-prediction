@@ -1,10 +1,3 @@
----
-title: "introduction"
-author: "Felicia Burtscher"
-date: "10 June 2018"
-output: html_document
-runtime: shiny
----
 # Methods
 <big>
 ### 1. Data pre-processing 
@@ -118,7 +111,7 @@ This matrix is symmetric: the top and bottom diagonals show identical informatio
 
 ![alt text][correlation]
 INSERT CORRELATION MATRIX CLUSTERED
-In this figure, the predictor variables have been grouped using a clustering technique (Everitt et al. 2011) so that that collinear groups of predictors are adjacent to one another. CHANGE THAT. Looking along the diagonal, there are blocks of strong positive correlations that indicate "clusters" of collinearity. .....
+In this figure, the predictor variables have been grouped using a clustering technique (Everitt et al. 2011) so that collinear groups of predictors are adjacent to one another. CHANGE THAT. Looking along the diagonal, there are blocks of strong positive correlations that indicate "clusters" of collinearity. .....
 
 Instead of using VIF (variance inflation factor) (Myers, 1994), we use a less theoretical, more heuristic approach to dealing with this issue: We remove the minimum number of predictors to ensure that all pairwise correlations are below a certain threshold (INSERT REFERENCE p47). Here we apply a threshold of 60%. 
 

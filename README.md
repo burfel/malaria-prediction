@@ -18,7 +18,7 @@ To run the app from ```R Studio```, copy and paste the following code from the f
  --->
  ```{r}
  ### run the application:
- install.packages("shiny", 
+ install.packages(c("shiny", 
                   "shinythemes", 
                   "shinyalert", 
                   "ggExtra",
@@ -26,6 +26,7 @@ To run the app from ```R Studio```, copy and paste the following code from the f
                   "rmarkdown",
                   "plotly",
                   "knitr",
-                  "lmtest")
+                  "lmtest",
+                  "png"))
  shiny::runGitHub("malaria-prediction", "burfel", subdir="shinyapp4")
  ```

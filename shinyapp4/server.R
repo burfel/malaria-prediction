@@ -54,9 +54,9 @@ server = function(input, output, session) {
   output$data <- renderUI({
     includeMarkdown("md/6_data.Rmd")
   })
-  output$references <- renderUI({
-    includeMarkdown("md/7_references.Rmd")
-  })
+  # output$references <- renderUI({
+  #   includeMarkdown("md/7_references.Rmd")
+  # })
   output$glossary <- renderUI({
     includeMarkdown("md/8_glossary.Rmd")
   })

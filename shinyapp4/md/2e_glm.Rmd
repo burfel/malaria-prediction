@@ -24,7 +24,9 @@ However, neither zeros nor ones can be included in a logit, since the logit tran
 A strategy for handling proportions data in which zeros and ones may appear as well as intermediate values was proposed by Papke and Wooldridge (1996) [4]. We did not face this problem in the given data set but is might be relevant for future data set to improve our model.
 
 ---
+
 <!--- Beta-Regression might be the model you are looking for. The following vignette shows how to apply beta regression in R using Cribari-Neto's and Zeileis's "betareg"-Package: ftp://cran.r-project.org/pub/R/web/packages/betareg/vignettes/betareg.pdf 
 --->
+
 Additionally, we used statistical methods from [3] to empirically identify an appropriate transformation, including a family of transformations that are indexed by a parameter proposed by Box and Cox (1964)[5].
 </big>

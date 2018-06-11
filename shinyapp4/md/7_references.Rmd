@@ -11,7 +11,7 @@
 
 [5] Box GEP and Cox DR. _An analysis of transformations._ J. Roy. Statist. Soc. B, 26 (1964) pp. 211–252. [Link to article](https://pdfs.semanticscholar.org/6e82/0cf11712b9041bb625634612a535476f0960.pdf)
 
-[6] https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html, June 6, 2018 [PREFERABLE JOURNAL ARTICLES RATHER THAN WEBSITES]
+[6] https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html, June 6, 2018 
 
 [7] https://www.gla.ac.uk/myglasgow/library/collections/virtualdisplays/worldmalariaday/whatismalaria/, June 6, 2018
 

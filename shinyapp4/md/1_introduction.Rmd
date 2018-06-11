@@ -1,9 +1,4 @@
----
-title: "introduction"
-output: html_document
-runtime: shiny
----
-# Introduction 
+# Introduction
 
 <big>
 ## Why Malaria?

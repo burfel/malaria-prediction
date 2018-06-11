@@ -40,8 +40,8 @@ ui = tagList(
       tabPanel("Introduction", 
                uiOutput("introduction")
       ),
-      navbarMenu("Methods", 
-                  uiOutput("methods"),
+      navbarMenu("Methods",
+                  # uiOutput("methods"),
         # tabPanel("Table"
         # #DT::dataTableOutput("table")
         #         ),
@@ -85,7 +85,7 @@ ui = tagList(
         ),
         tabPanel("Model selection",
                  includeMarkdown("md/2c_model_selection.Rmd")
-                 
+
                  # ###########################
                  # ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome)) +
                  #   scale_x_continuous(name="Percentage of parasitemia", limits=c(0,50)) +  ## -- with it pdenstiy does not show up
@@ -469,7 +469,7 @@ ui = tagList(
                uiOutput("data")
       ),
       tabPanel("References", 
-               tableOutput("references")
+               tableOutput("ref")
                # uiOutput("references")
       ),
       tabPanel("Glossary", 

@@ -1,6 +1,6 @@
 ---
 title: "introduction"
-author: "Felicia Burtscher""
+author: "Felicia Burtscher"
 date: "10 June 2018"
 output: html_document
 runtime: shiny

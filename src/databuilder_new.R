@@ -404,6 +404,7 @@ plot(fit.paras) # diagnostic plots: residuals do not have non-linear patterns, a
 # (1) SIMPLEST MODEL (JUST PARASITEMIA), DENSITY, WITHOUT TRANSFORMATION, ON COMPLETE SAMPLES
 set.seed(1800)
 fit.nona.paras.dens <- lm(dat.nona$outcome ~ dat.nona$Parasite.density...µl., data=dat.nona)
+#dat.nona$Parasite.density...µl. <- dat.nona$Parasite.density...µl.*100000
 
 summary(fit.nona.paras.dens) # # show results: R^2: 0.3812, F-stats: 13.32, p-value: 0.001703 **
 # MODEL: 0.080372 + 0.004186 * dat.nona$Parasite.density...µl

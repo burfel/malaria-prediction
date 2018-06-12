@@ -1,0 +1,21 @@
+## Data: Additional data sets (not presented on website)
+<big>
+* mice data: parasitemia perecentage and counts of pathogen and host read maps
+* developmental stages: measurements at different time points in the cycle
+
+<!---
+  | Data set                  | Description |
+  | --------------------------| ------------|
+  | #2: mice data             | parasitemia perecentage and counts of pathogen and host read maps |
+  | #3: developmental stages  | measurements at different time points in the cycle |
+  --->
+  
+One consisted of RNA Seq data from mice containing 33 samples. However, parasitemia percentage was the only variable available for prediction. Additionally, it contained many zero values that might have resulted from measurement errors or due to actual non-infected mice. 
+Here, the logit transformation proved to be useful as the residuals of a linear model showed highly non-normal behaviour. A logit regression model has been developed and is available, please [contact us](mailto:felicia.burtscher17@imperial.ac.uk).
+
+The other data set analysed captured the SPVs (surrogate proportion variables) for each parasite developmental stage. The measurements were from different time points in the life cycle (0hrs, 24hrs and 48 hrs) progressing from most immature to most mature stages. It also contained the level of [gametocytes (Gam5)](https://en.wikipedia.org/wiki/Gametocyte "eukaryotic germ cells") which are the sexual stage of the parasite.
+Significant relationships between the developmental stage and some variables, ie increase in total white cell count, [PfHRP2](https://www.malariasite.com/tag/pfhrp2/ "histidine-rich protein-3, an important indicator in malaria studies") concentration, and [lactate](https://malariajournal.biomedcentral.com/articles/10.1186/1475-2875-5-101 "Click here to read more on the relaitonship between lactate and malaria!") as well as a decrease in total red blood cell count, [hemoglobin](https://www.emedicinehealth.com/hemoglobin_levels/article_em.htm "a protein found in red blood cells") concentraion and parasite clone could be found. 
+
+However, the developmental stages were not directly correlated to our response variable, and did not explain the outliers found in our dataset. Therefore, we did not incorporate them in the model presented.
+Nontheless, they might be relevant for more complex models and once more data has become available.
+</big>

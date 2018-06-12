@@ -1,0 +1,18 @@
+## Discussion: Limitations & Outlook
+<big>
+### Limitations
+Besides the technical points pointed out above, there are some limitations to the predictability performance of the model due to the specific training data set that was used.
+The model was built based on one single data set in Gambian children (see chapter _Data_ and [1] for more information on the data set). It might very likely be not generalisable to other settings and ages. Also, it constists only of one type of RNA-seq data (Ribosomal RNA depleted, Globin Depleted RNA), and may not be directly equivalent to results from other preparation methods, eg PolyA.
+
+<!--
+  Thre predictive performance, provided the complex model is properly validated, may compensate the loss in interpretation. 
+-->
+  
+### Outlook
+For more complex models, one might want to incorporate the information of the developmental stage of the disease (given by the surrogate proportion variables (SPVs) at different time points in the life cycle) as well the level of gametocytes (Gam5) representing the sexual stage of the parasite.
+The observations found in chapter _Data_ might help for that.
+
+Also, additional insight might be gained by comparing different species. We developed a logistic regression on the mouse data set; however, comparison to our models behind this web tool here, turned out to be difficult as it was not based on the same measurements and very few data was available. 
+
+Once more data has become available, we might also want analyse with respect to different subject ID groups.
+</big>

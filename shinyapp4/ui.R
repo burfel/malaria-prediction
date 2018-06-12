@@ -463,19 +463,23 @@ ui = tagList(
       #===============================================================================
       navbarMenu("Discussion", 
                tabPanel("Practical relevance",
-                        includeMarkdown("")),
+                        includeMarkdown("md/4a_practical_relevance.Rmd")),
                tabPanel("Web tool",
-                        includeMarkdown()),
+                        includeMarkdown("md/4b_webtool.Rmd")),
                tabPanel("Model",
-                        includeMarkdown()),
+                        includeMarkdown("md/4c_model.Rmd")),
                tabPanel("Limitations & Outlook",
-                        includeMarkdown())
+                        includeMarkdown("md/4d_limitations_outlook.Rmd"))
       ),
       tabPanel("Conclusion", 
                uiOutput("conclusion")
       ),
-      tabPanel("Data", 
-               uiOutput("data")
+      navbarMenu("Data", 
+                tabPanel("Main data set",
+                          includeMarkdown("md/6a_main_data.Rmd")),
+               # uiOutput("data")
+                tabPanel("Additonal data",
+                         includeMarkdown("md/6b_additional_data.Rmd"))
       ),
       tabPanel("References", 
                # tableOutput("ref")

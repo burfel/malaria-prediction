@@ -1,5 +1,5 @@
 <big>
-## Data pre-processing
+## Methods: Data pre-processing
 
 **First and foremeost, we had to pre-process the raw data. 
 This includes centering, scaling, skewness transformation and possibly imputing missing values.**

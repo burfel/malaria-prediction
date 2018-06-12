@@ -1,0 +1,10 @@
+## Discussion: Practical relevance
+<big>
+The web tool in chapter _Results_ is ready to use and will be maintained and further developed and validated by the author. 
+The motivation for the development of this tool was outlined in chapter _Introduction_. Dual RNA-seq used to understand 
+host-pathogen interactions is an expensive and labour-intensive process, that is dependent on mainly two factors (sequence depth 
+and number of samples). For the former, malaria researchers want to know the number of reads required in order to achieve a certain 
+minimum sequencing depths for both host and parasite in order to quantify their gene expression. 
+Here our web tool can contribute to predict the average percentage of dual RNA-seq reads that will map to the host and to the pathogen 
+given some basic information on the sample.
+</big>

@@ -1,4 +1,4 @@
-## Model selection
+## Methods: Model selection
 <big>
 
 **We needed to choose an appropriate model that explains the data well but is simple enough to not overfit the data.**

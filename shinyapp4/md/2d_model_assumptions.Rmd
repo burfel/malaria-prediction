@@ -1,4 +1,4 @@
-## Checking assumptions of linear regression model
+## Methods: Checking assumptions of linear regression model
 
 <big>
 Linear regression makes several key assumptions that we might want to test:

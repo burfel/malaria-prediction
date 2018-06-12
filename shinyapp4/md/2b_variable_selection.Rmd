@@ -1,4 +1,4 @@
-## Variable Selection
+## Methods: Variable Selection
 <big>
 
 **Having a tiny sample with lots of variables, we needed to choose the most explaining variable(s) for a simple model. Also, we need to choose the variable(s) based on the utility for the user.**

@@ -1,4 +1,4 @@
-## The generalized linear model (GLM)
+## Methods: The generalized linear model (GLM)
 <big>
 
 **In cases where for certain response variables the just tested assumptions do not hold, generalized linear models (GLM) are very good at dealing with them.** They are an extension of the linear regression model.

@@ -76,6 +76,34 @@ sl + geom_bin2d()
 #plot(dat$total_reads, dat$outcome, xlab = "Total number of reads", ylab = "Proportion reads that map to pathogen")
 #ggplot(log(dat$total_reads), dat$outcome, xlab = "Total number of reads", ylab = "Proportion reads that map to pathogen")
 
+
+########
+
+par(mfrow = c(1, 2))
+
+png("img/parasitemia_outcome.png")
+al <- ggplot(dat.nona, aes(Percentage.parasitemia, outcome)) + 
+  geom_point() +
+  geom_text(label=rownames(dat)) 
+# Scatter plot with the 2d density estimation
+al + geom_density_2d() +
+  labs(x = "Percentage of parasitemia", y = "Percentage of reads mapping to pathogen")
+#sp + stat_ellipse()
+#sp + geom_bin2d()
+#dev.off()
+  
+as <- ggplot(dat.nona, aes(Percentage.parasitemia, outcome.logit)) + 
+    geom_point() +
+    geom_text(label=rownames(dat)) 
+  # Scatter plot with the 2d density estimation
+  as + geom_density_2d() +
+  labs(x = "Percentage of parasitemia", y = "logit(Percentage of reads mapping to pathogen)")
+  #sp + stat_ellipse()
+  #sp + geom_bin2d()
+  dev.off()
+
+#######
+
 # PLOTS: IS RESPONSE VARIABLE CLOSE TO NORMALITY?
 library(ggpubr)
 #png("img/pathogen_read_density.png")

@@ -461,8 +461,15 @@ ui = tagList(
       #===============================================================================
       #                               TAB PANELS CONT'D                              #
       #===============================================================================
-      tabPanel("Discussion", 
-               uiOutput("discussion")
+      navbarMenu("Discussion", 
+               tabPanel("Practical relevance",
+                        includeMarkdown("")),
+               tabPanel("Web tool",
+                        includeMarkdown()),
+               tabPanel("Model",
+                        includeMarkdown()),
+               tabPanel("Limitations & Outlook",
+                        includeMarkdown())
       ),
       tabPanel("Conclusion", 
                uiOutput("conclusion")

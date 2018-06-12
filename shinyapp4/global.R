@@ -100,7 +100,7 @@ ggplotRegression <- function (fit, constant, limit, ptype) {
   if(ptype == "ppercentage" || ptype == "ppercentage2"){
     xname = "Percentage of parasitemia"
   } else if(ptype == "pdensity" || ptype == "pdensity2"){
-    xname = "Parasitemia density [1/µl]"
+    xname = "Parasitemia density [10^6/µl]"
   }
   ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
     scale_x_continuous(name=xname, limits=c(0,limit)) +  ## -- with it pdenstiy does not show up

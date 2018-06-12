@@ -203,7 +203,7 @@ plot(fit.nc.nona.paras)
 #
 # # linear models: simple models
 # save(fit.nona.paras, file = "../shinyapp4/Rdata/fit_nona_paras.rda")
-# save(fit.nona.paras.dens, file = "../shinyapp4/Rdata/fit_nona_paras_dens.rda")
+# save(fit.nona.paras.dens.new, file = "../shinyapp4/Rdata/fit_nona_paras_dens_new.rda")
 # save(fit.nona.paras.log, file = "../shinyapp4/Rdata/fit_nona_paras_log.rda")
 # save(fit.nona.paras.dens.log, file = "../shinyapp4/Rdata/fit_nona_paras_dens_log.rda")
 #

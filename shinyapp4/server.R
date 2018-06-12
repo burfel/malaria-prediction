@@ -633,6 +633,15 @@ server = function(input, output, session) {
                 \n The R-squared values in our simple model(s) do not seem very high; however, it does not assess the goodness-of-fit.")
   })
   
+  observeEvent(input$confidenceInterval_help, {
+    shinyalert("What do the different colours and lines in the plot mean?",
+               "The regression line for the linear model is in darkgreen and the extrapolated 95% interval boundaries in lightgreen,
+                ie the area in between represents these boundaries and the regression line represent the 95% confidence interval.
+                \n The dots in the shaded area are still a reasonably well fitted by the model, especially as we extrapolate
+                 to higher percentages of parasitemia. As there are no data points available above
+                 37% parasitemia, we get more uncertainty which adds another interval.")
+  })
+  
   observeEvent(input$help_anova, {
     shinyalert("What is ANOVA?",
                "Analysis of variance (ANOVA) is a collection of statistical models used to analyse 

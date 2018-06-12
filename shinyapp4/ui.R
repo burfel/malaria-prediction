@@ -286,9 +286,9 @@ ui = tagList(
                             #                 ),
                             br(),
                             h3("Linear regression model (ie GLM with identity as link function and normally distributed response variable):"),
-                            
-                            p("The regression line for the linear model in blue and the 95% interval boundaries shaded in grey relative to the training data on the 21 complete samples."),
-                            p("The horizontal line represents the percentage of pathogen reads (dependent variable). As the input (dependent variable) changes, the horizontal line changes."),
+                          
+                            p("The horizontal line represents the percentage of pathogen reads (dependent variable). 
+                              As the input (independent variable(s)) change(s), the horizontal line changes."),
                             p("The results of the linear model differ only slightly from the results above."),
                             # plotOutput("residuals", width=600, height=500)
                             textOutput("link_text"),
@@ -304,6 +304,8 @@ ui = tagList(
                             actionButton("F_help", "What is a F-test?"),
                             useShinyalert(),
                             actionButton("Rsq_help", "What is a R-squared value?"),
+                            useShinyalert(),
+                            actionButton("confidenceInterval_help", "What do the different colours mean?"),
                             br(), br(),
                             plotlyOutput("residuals", width=600, height=500)
                           

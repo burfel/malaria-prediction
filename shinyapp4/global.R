@@ -107,7 +107,7 @@ ggplotRegression <- function (fit, constant, limit, ptype) {
     scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) +
     # scale_size_identity() +
     geom_point(shape=1) +
-    stat_smooth(method = "lm", fullrange=TRUE, se=TRUE) +
+    stat_smooth(method = "lm", fullrange=TRUE, se=TRUE, colour = "darkgreen", fill="lightgreen") +
     labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
                        "; Intercept =",signif(fit$coef[[1]],5 ),
                        "; \n Slope =",signif(fit$coef[[2]], 5),

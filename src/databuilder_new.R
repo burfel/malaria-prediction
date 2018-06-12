@@ -1772,7 +1772,41 @@ abline(h=0.6)
 library(caret)
 library(psych)
 
+data_ctrl <- trainControl(method = "cv", number = 5)
 
+model_caret <- train(outcome ~ Percentage.parasitemia,   # model to fit
+                     data = dat,                        
+                     trControl = data_ctrl,              # folds
+                     method = "lm",                      # specifying regression model
+                     na.action = na.pass)                # pass missing data to model - some models will handle this
+
+model_caret
+
+model_caret$finalModel
+
+model_caret$resample
+
+sd(model_caret$resample$Rsquared)
+
+whole <- lm(outcome ~ Percentage.parasitemia, data = dat.nona)
+summary(whole)
+
+# randomly select half of the sample
+set.seed(0123)
+half_size <- floor(0.50 * nrow(dat.nona))
+random_sample <- sample(seq_len(nrow(dat.nona)), size = half_size)
+first_half_data <- data[random_sample, ]
+
+# run the model
+first_half <- lm(ACT ~ gender + age + SATV + SATQ, data = first_half_data)
+summary(first_half)
+
+#select half of data not used in the above model
+second_half_data <- data[-random_sample, ]
+
+# run the model
+second_half <- lm(ACT ~ gender + age + SATV + SATQ, data = second_half_data)
+summary(second_half)
 
 # # 
 # # # 1. Validation set approach -- NOT SUITABLE HERE

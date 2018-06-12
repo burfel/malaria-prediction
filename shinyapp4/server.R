@@ -249,7 +249,7 @@ server = function(input, output, session) {
   output$summary_simple <- renderTable(summary_simple)
   output$summary_complex <- renderTable(summary_complex)
   
-  output$ref <- renderTable(references)
+  output$ref <- renderTable(glossary)
   
   # output$table.output <- renderTable({
   #   
@@ -676,6 +676,23 @@ server = function(input, output, session) {
    })
   
   
+  ##########
+  mydata <- reactive({
+    
+    inFile <- input$file1
+    
+    if (is.null(inFile))
+      return(NULL)
+    
+    tbl <- read.csv(inFile$datapath, header=input$header, sep=input$sep,  dec = input$dec)
+    
+    return(tbl)
+  })
+  
+  output$table.output <- renderTable({
+    mydata()
+  })
+  #########
   #===============================================================================
   #                               LINKS                                          #
   #===============================================================================

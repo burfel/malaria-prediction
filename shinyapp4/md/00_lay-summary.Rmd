@@ -1,14 +1,4 @@
----
-title: "lay-summary"
-author: "Felicia Burtscher"
-date: "10 June 2018"
-output: html_document
-runtime: shiny
----
-# Lay-summary
-
-### Can we predict parasite read depth in whole blood Dual RNA-seq data from malaria patients?
-
+# Lay summary
 <big>
 Scientists studying malaria in humans would like to study the behaviour of the parasite causing disease and the response of human blood cells to the parasite. In order to do this, they can look a the messages produced from genes from both human and parasite. More specifically, they take a snapshot of such messages present in a biological sample from a malaria patient to measure the presence and quantity of these messages. For an accurate measurement they need enough copies of these sequences. However, they do not want to produce more sequences than necessary as this is an time-comsuming and expensive undertaking. Knowing the right amount of copies necessary to make a good measurement of the processes happening in the cell often is a problem for scientists in malaria research.  
 

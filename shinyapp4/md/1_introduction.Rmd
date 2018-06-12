@@ -1,50 +1,43 @@
----
-title: "introduction"
-author: "Felicia Burtscher"
-date: "10 June 2018"
-output: html_document
-runtime: shiny
----
 # Introduction
 
 <big>
 ## Why Malaria?
-Malaria is still a serious global health problem killing about 500,000 people every year, more than any other infectious disease except tuberculosis, mainly children under the age of 5. An additional 200 million people get infected with devastating consequences for the economics and the healtcare systems of endemic countries [10].
+Malaria is still a serious global health problem killing about 500,000 people every year, more than any other infectious disease except tuberculosis, mainly children under the age of 5. An additional 200 million people get infected with devastating consequences for the economics and the healtcare systems of endemic countries [9].
 
 ## What is Malaria?
 Malaria is an infectious disease caused by a few Plasmodium species (see below) which are single-cell parasites that get spread around by mosquitos.
-Plasmodium has an incubation period in the liver in which it does not cause any disease. Once the Plasmodium exits the liver and enters the blood stream during it causes a disease: It infects and destroys mainly liver cells and red blood cells which causes a variety of symptoms, and sometimes even death.
+Plasmodium has an incubation period in the liver in which no disease sets in. Once the Plasmodium exits the liver and enters the blood stream, it causes a disease: It infects and destroys mainly liver cells and red blood cells which causes a variety of symptoms, and sometimes even death.
 
 ## Who is affected by Malaria?
 Amongst the millions of people are especially
-* young children under 5 years old
+* young children under 5 years old (see figure 1.2)
 * pregnant women
 * patients with other health conditions like HIV/Aids
 * travellers with no prior exposure to malaria.
 
-Tropical and subtropical regions are hit the hardest, together the most affected regions form the malaria belt, a belt around the equator that includes most of Latin America, Sub-saharan Africa, South Asia and Southeast Asia (see figure 1 below). Even though the geographical area affected by malaria has shrunk considerably over the past 50 years, imported cases of malaria are now more frequently registered in developed countries [10]. Malaria is re-emerging in areas where it was previously under control or eradicated, e.g. in the Central Asian Republics of Tajikistan and Azerbaijan, and in Korea [10].
+Tropical and subtropical regions are hit the hardest, together the most affected regions form the malaria belt, a belt around the equator that includes most of Latin America, Sub-saharan Africa, South Asia and Southeast Asia (see figure 1.1 below). Even though the geographical area affected by malaria has shrunk considerably over the past 50 years, imported cases of malaria are now more frequently registered in developed countries [10]. Malaria is re-emerging in areas where it was previously under control or eradicated, e.g. in the Central Asian Republics of Tajikistan and Azerbaijan, and in Korea [6][10].
 <br>
 </br>
 <p>
     <img src="../img/malaria_prevalence.png" alt="malaria_prevalence" width="600px"/>
 </p>
-**Figure 3**: Malaria [prevalence](https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html "the proportion of a population that at some point in their life have experienced this disease") on a global scale (from [10]) 
+**Figure 1.1**: Malaria [prevalence](https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html "the proportion of a population that at some point in their life have experienced this disease") on a global scale (from [10]) 
 <br>
 </br>
 <p>
     <img src="../img/malaria_piechart.png" alt="malaria_piechart" width="600px"/>
 </p>
-**Figure 2**: 9% of deaths globally among children under the age of 5 are caused by malaria; in Africa 20% of this group dies (from [11]). 
+**Figure 1.2**: 9% of deaths globally among children under the age of 5 are caused by malaria; in Africa 20% of this group dies (from [11]). 
 <br>
 </br>
 <!---
 ![malaria_prevalence](../img/malaria_prevalence.png)  
 
-**Figure 3**: Malaria [prevalence](https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html "the proportion of a population that at some point in their life have experienced this disease") on a global scale (from [10]) 
+**Figure 1.1**: Malaria [prevalence](https://www.nobelprize.org/educational/medicine/malaria/readmore/global.html "the proportion of a population that at some point in their life have experienced this disease") on a global scale (from [10]) 
  
  
 ![malaria_piechart](../img/malaria_piechart.png) 
-**Figure 2**: 9% of deaths globally among children under the age of 5 are caused by malaria; in Africa 20% of this group dies (from [11]). 
+**Figure 1.2**: 9% of deaths globally among children under the age of 5 are caused by malaria; in Africa 20% of this group dies (from [11]). 
 --->
 
 ## Are there different types of Plasmodium (P.)?
@@ -66,5 +59,5 @@ The cost for this process is determined by sequencing depth and number of sample
 The minimum sequencing depths need to be achieved for both host and parasite in order to quantify their gene expression (~30M reads for human, ~5M for parasite).
 Estimating the total sequence depth for a sample containing mixed human and parasite RNA in order to achieve this is highly desirable in order to plan the most economical experiment. 
 
-A web tool that predicts the likely percentage of pathogen and host reads is useful to compute the required number of reads and thus saves money or time, in case the necessary read depth was not acquired at the first attempt. 
+A web tool that predicts the likely percentage of pathogen and host reads is useful to compute the required number of reads and, thus, saves money or time, in case the necessary read depth was not acquired at the first attempt. 
 </big>

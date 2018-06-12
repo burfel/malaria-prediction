@@ -3,10 +3,10 @@
 
 **We needed to choose an appropriate model that explains the data well but is simple enough to not overfit the data.**
 
-By plotting the outcome variable against different variables, we could identify a fairly linear relationship, especially between parasitemia percentage and the outcome variable (see figure 1) which suggested to use a linear model. 
+By plotting the outcome variable against different variables, we could identify a fairly linear relationship, especially between parasitemia percentage and the outcome variable (see figure 2.3) which suggested to use a linear model. 
 After checking the model assumptions for that, see subchapter _Checking assumptions of linear regression model_, we also built generalized linear models as well as performed a beta regression. 
 
-As the response variable we chose the percentage of reads that map to the pathogen. From that we directly compute the percentage of reads that map to the host, assuming the mapping is unique (one reads exactly maps to either the host or the pathogen) which is an important model assumption. For the generalized linear model we used the weighted percentage (percentage associated with the total number of reads), as we knew the proportion and, therefore the total number of reads under our model assumptions. 
+As the response variable we chose the percentage of reads that map to the pathogen. From that we directly compute the percentage of reads that map to the host, assuming the mapping is unique (one reads exactly maps to either the host or the pathogen) which was an important assumption we made. For the generalized linear model we used the weighted percentage (percentage associated with the total number of reads), as we knew the proportion and, therefore the total number of reads under our model assumptions. 
 
 Moreover, we tested combinations of non-linear relationships, eg percentage of parsitemia and total number of white blood cells, that were not significant (p-value of F-test < 0.05) but increased the R-squared value slightly (< 0.05). We chose the generalized linear model with a logit link function (equal to a logistic regression, see subchapter _The generalized linear model_ for more) including the variables parasitemia (percentage or density) and white blood cell counts (or the different types of them) based on its low p-values in the F-test (< 0.02), not for its R-squared values (< 0.4).
 

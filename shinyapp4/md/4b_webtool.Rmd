@@ -1,9 +1,11 @@
 ## Discussion: The web tool
 ### Who might use the tool? What does the tool allow people to do?
 <big>
-The tool can be used by malaria researchers or other users alike who want to achieve some percentage of pathogen and/or host mapping of their sample and have parasitemia and optionally white blood cell data to their disposal. 
-Moreover, the tool allows the user to get an idea of what amount of parsitemia they need to have in their sample in order to get a specific target percentage of pathogen and host mapping of their reads using the sliders on the sidepanel.
-They can get the direct result from the output computed based on a logistic regression model and optionally compare it to the linear regression model shown in the plot. The tool allows zooming and saving the plot as well as showing the exact coordinates when hovering over the plot. Optionally, the user can perform different statistical tests to compare the available models, including likelihood ratio, Chi-Squared, F and Rao test. As we wanted to make available to a large range of users with different statistical background, we included different pop up windows on request that explain concepts like F-test and R-squared value in easy terms; this way it does the user can get help if need be without text taking up much space on the user interface.
+The tool can be used by malaria researchers or other users alike who want to achieve a certain read depth of the pathogen or the host and have parasitemia and optionally white blood cell data to their disposal. 
+Moreover, the tool allows the user to get an idea of what amount of parsitemia they need to have in their sample in order to get a specific target percentage of pathogen and host mapping of their reads (which translates into read depth) using the sliders on the sidepanel.
+They can get the direct result from the output computed based on a logistic regression model and optionally compare it to the linear regression model shown in the plot. The tool allows zooming and saving the plot as well as showing the exact coordinates when hovering over the plot. Optionally, the user can perform different statistical tests to compare the available models, including the likelihood ratio test. 
+<!---, Chi-Squared, F and Rao test ---> 
+As we wanted to make the tool accessible to a variety of users with different statistical background, we included different pop up windows on request that explain concepts like F-test and R-squared value in easy terms. This way the user can get help if need be without text taking up much space on the graphical user interface (GUI).
 More features such as direct calculation of the number of reads that are required or another vertical line that indicated the position of the slider values will improve the user experience and are to be implemented in the future.
 
 Also, validation not only of the model but also of the web tool itself has to be done with a large cohort of users.

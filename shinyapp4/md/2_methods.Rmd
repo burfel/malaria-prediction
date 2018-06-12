@@ -5,7 +5,7 @@ This sections highlights different steps we took in the modeling process.
 <p>
     <img src="../img/flowchart.png" alt="flowchart" width="900px"/>
 </p>
-**Figure 1:** A directed graph visualising the different steps in the model building process
+**Figure 2.1:** A directed graph visualising the different steps in the model building process
 
 <!--
 ### 1. Data pre-processing 

@@ -119,7 +119,7 @@ ui = tagList(
       #===============================================================================
       #                               TAB PANEL: RESULTS                             #
       #===============================================================================
-      tabPanel("RESULTS | web tool",
+      tabPanel("Results | WEB TOOL",
                
          sidebarPanel(width=4,
                    
@@ -486,7 +486,7 @@ ui = tagList(
                uiOutput("references")
       ),
       tabPanel("Glossary", 
-               tableOutput("ref")
+               h4(tableOutput("ref"))
                # uiOutput("glossary")
       ),
       tabPanel("About", 

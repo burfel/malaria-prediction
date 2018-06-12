@@ -2,7 +2,8 @@
 <big>
 ### Limitations
 Besides the technical points pointed out above, there are some limitations to the predictability performance of the model due to the specific training data set that was used.
-The model was built based on one single data set in Gambian children (see chapter _Data_ and [1] for more information on the data set). It might very likely be not generalisable to other settings and ages. Also, it constists only of one type of RNA-seq data (Ribosomal RNA depleted, Globin Depleted RNA), and may not be directly equivalent to results from other preparation methods, eg PolyA.
+
+The model was built based on one single data set in Gambian children (see chapter _Data_ and [1] for more information on the data set). It might very likely be not generalisable to other settings and ages. Also, it constists only of one type of RNA-seq data (ribosomal RNA and globin messenger RNA depleted), and may not be directly equivalent to results from other preparation methods.
 
 <!--
   Thre predictive performance, provided the complex model is properly validated, may compensate the loss in interpretation. 
@@ -16,3 +17,8 @@ Also, additional insight might be gained by comparing different species. We deve
 
 Once more data has become available, we might also want analyse with respect to different subject ID groups.
 </big>
+
+<br>
+</br>
+
+<div style="text-align: right"> *All models are wrong but some are useful.* -- George Box </div>

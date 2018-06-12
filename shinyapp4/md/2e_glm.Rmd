@@ -6,7 +6,15 @@ In general, GLMs are recommended when
 * the variance is not constant (heteroscedasticity) and/or
 * the errors are not normally distributed.
 
-In our case where the response variable is a percentage or a proportion derived from count data, GLMs prove especially useful. We use a logistic regression, which is similar to a linear regression except for the logit link function (and the response variable does not have to be normally distributed). The logit link function is simply a function that is applied to the mean of the outcome variable instead of the outcome itself, ie we transform the percentage scores into logits and use them as outcome for the linear regression. Indeed the plot of the GLM with a logit link function in figure 1 does not differ much from the linear models seen in chapter _Checking assumptions of linear regression model_.
+In our case where the response variable is a percentage or a proportion derived from count data, GLMs prove especially useful. We use a logistic regression, which is similar to a linear regression except for the logit link function (and the response variable does not have to be normally distributed). The logit link function is simply a function that is applied to the mean of the outcome variable instead of the outcome itself, ie we transform the percentage scores into logits and use them as outcome for the linear regression. Indeed the plot of the GLM with a logit link function does indeed not differ much from the linear models seen in chapter _Checking assumptions of linear regression model_.
+<!--
+<p>
+    <img src="../img/glm_paras_logit_regression.png" alt="glm_paras_logit_regression.png" width="700px"/>
+</p>
+**Figure 2.8:** The generalized linear model with logit link function on the 21 sample data set  
+<br>
+</br>
+--->
 
 This approach has a couple of advantages
 * Unlike a simple linear model it does not predict scores outside of the boundary which would make interpretation difficult, since logits boundaries are -infinite and +infinite.
@@ -16,7 +24,7 @@ This approach has a couple of advantages
 <p>
     <img src="../img/glm_paras_logit_regression.png" alt="glm_paras_logit_regression" width="600px"/>
 </p>
-**Figure 1:** GLM with a logit link function on our sample data set
+**Figure 2.8:** GLM with a logit link function on our sample data set
 
 ---
 **Note:**
@@ -29,5 +37,5 @@ A strategy for handling proportions data in which zeros and ones may appear as w
 <!--- Beta-Regression might be the model you are looking for. The following vignette shows how to apply beta regression in R using Cribari-Neto's and Zeileis's "betareg"-Package: ftp://cran.r-project.org/pub/R/web/packages/betareg/vignettes/betareg.pdf 
 --->
 
-Additionally, we used statistical methods from [3] to empirically identify an appropriate transformation, including a family of transformations that are indexed by a parameter proposed by Box and Cox (1964) [5].
+Additionally, we one can use statistical methods from [3] to empirically identify an appropriate transformation, including a family of transformations that are indexed by a parameter proposed by Box and Cox (1964) [5].
 </big>

@@ -53,12 +53,13 @@ outcome_prop.nc.nona <- cbind(dat.nc.nona$pf_count, dat.nc.nona$hg_count) # 40x2
 #===============================================================================
 # PLOT PROPORTION OF PATHOGEN READS, BOTH AS NORMAL AND A LOG SCALE -- FOR WEBSITE
 par(mfrow = c(1, 2))
-#png("img/total_reads_outcome_level.png")
+#png("img/total_reads_outcome.png")
 sp <- ggplot(dat, aes(total_reads, outcome)) + 
   geom_point() +
   geom_text(label=rownames(dat)) 
 # Scatter plot with the 2d density estimation
-sp + geom_density_2d() +
+sp + 
+  # geom_density_2d() +
      labs(x = "Total number of reads", y = "Percentage of reads that map to pathogen")
 #sp + stat_ellipse()
 #sp + geom_bin2d()
@@ -67,7 +68,7 @@ sp + geom_density_2d() +
 #png("img/total_reads_outcome_logit.png")
 sl <- ggplot(dat, aes(total_reads, outcome.logit)) + 
   geom_point() +
-  geom_text(label=rownames(dat))
+  geom_text(label=rownames(dat)) 
 sl + geom_density_2d() +
      labs(x = "Total number of reads", y = "logit(Percentage of reads that map to pathogen)")
 sl + stat_ellipse()
@@ -1377,6 +1378,7 @@ lines(log(dat.nona$outcome),glm.paras$fitted.values)
 # # summarise results
 # print(model)
 
+library(bootstrap)
 # bootstrapping with 1000 replications
 results <- boot(data=dat.nc.nona, statistic)
 
@@ -1756,6 +1758,14 @@ abline(h=0.6)
 # # 
 # # #---COMPARING MODELS---------------
 # # #---CROSSVALIDATION---------------
+
+# CROSSVALIDATION FROM CARET PACKAGE
+# libraries needed
+library(caret)
+library(psych)
+
+
+
 # # 
 # # # 1. Validation set approach -- NOT SUITABLE HERE
 # # # # Split the data into training and test set
@@ -2053,7 +2063,7 @@ abline(h=0.6)
 # # 2 missing values in mean cell and parasite clones..)
 # 
 # library(visdat)
-# png("shinyapp2/img/missingData.png")
+# png("img/missingData_2.png", width = 3000, height = 1500)
 # vis_miss(dat[,-c(23,24,25,27)])
 # dev.off()
 # 

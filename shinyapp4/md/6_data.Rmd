@@ -4,7 +4,7 @@
 ### 1. Main data set: 46 samples from malaria patients and 23 variables
 
 The data that was used was a RNA-seq data set (library prep, sequencing methods); a detailed description can be found in [1].
-It consisted of 46 samples from malaria patients and 23 variables. Various values were missing (see figure 2 and figure 3 below); the data could be either structurally missing, or it was not determined which is the most probable case in the given data set. Moreover, it did not contain zero-values as in the other data sets (see below). Therefore, we only took the samples that were complete. However, only 21 samples were complete on all 23 variables. Therefore, we only discarded the non-complete samples after variable selection (see chapter _Methods_), ie the ones that were not complete on the variables that we identified as most explaining. This complete data set containing 40 samples and for 6 important variables (Parasitemia percentage, parasitemia density, total white blood cell count, as well as lymphocytes, monocytes and neutrophils counts) and the repsonse variable (percentage of reads that map to the pathogen, referred to as the _outcome_ here). It is important to note, that for computing the latter we assumed a unique map of every read to either the pathogen or the host. This was an important assumption and a constraint of our model(s).
+It consisted of 46 samples from malaria patients and 23 variables. Various values were missing (see figure 2 and figure 3 below); the data could be either structurally missing, or it was not determined which is the most probable case in the given data set. Moreover, it did not contain zero-values as in the other data sets (see below). Therefore, we only took the samples that were complete. However, only 21 samples were complete on all 23 variables. Therefore, we only discarded the non-complete samples after variable selection (see chapter _Methods_), ie the ones that were not complete on the variables that we identified as most explaining. This complete data set containing 40 samples and for 6 important variables (Parasitemia percentage, parasitemia density, total white blood cell count, as well as lymphocytes, monocytes and neutrophils counts) and the response variable (percentage of reads that map to the pathogen, referred to as the _outcome_ here). It is important to note, that for computing the latter we assumed a unique map of every read to either the pathogen or the host. This was an important assumption and a constraint of our model(s).
 For a detailed protocol on how the data was obtained we refer to [1].
 
 <p>
@@ -18,6 +18,27 @@ For a detailed protocol on how the data was obtained we refer to [1].
     <img src="../img/missingData2.png" alt="missingData2" width="600px"/>
 </p>
 **Figure 2**: Rank of variables with missing values
+
+<br>
+</br>
+
+Initial exploratory data analysis supports our statement made in the abstract (see chapter _Abstract_).
+
+<br>
+</br>
+<p>
+    <img src="../img/total_reads_outcome.png" alt="total_reads_outcome" width="600px"/>
+</p>
+**Figure 1:** Scatterplot of the data set: Number of total reads in the sample against the percentage that map to the pathogen. The numbers indicate the sample IDs. We can see that the pathogen percentage varies a lot (between almost 0% in sample 26 — most probably a still healthy person to 80%). We cannot identify any pattern that would indicate that the number of total reads in a sample is any correlated to the percentage of pathogen reads. It seems intuitive to assume that the number of reads we find in a sample is independent of the percentage of reads that map to the pathogen.
+
+<br>
+</br>
+Now we forget about the x-axis (total number of reads in the sample) by projecting it down onto the y-axis to look at the distribution of the samples that map to the pathogen. This can be seen in the density plot in figure 2.
+<p>
+    <img src="../img/pathogen_read_density.png" alt="pathogen_read_density" width="600px"/>
+</p>
+**Figure 2:** Density plot of reads that map to the pathogen: The x-axis shows the percentage of reads that map to the pathogen, the y-axis reflects the amount of samples in our data set. The pathogen percentage varies a lot (eg we do not see a vertical line or a very high peak) but it is still not uniformly distributed (which would result in a horizontal line over the whole x-axis). In the given data set most samples mapped with around 18% of the total reads to the pathogen. Note: The area under the curve itegrates to 1. The area below the curve in the negative x-region is due to the chosen bandwith.
+
 
 <!---
 ![missingData](../img/missingData.png)

@@ -12,20 +12,6 @@
 For physicians and biologists in the malaria community it is of substantial use to know how many of the dual RNA-seq reads will map to the host, and how many will map to the pathogen in order to compute the read depth. This way, they will know how many reads are necessary in the first place for the study of interest. 
 The purpose of this project was to develop a __simple prediction tool__ that will enable a user to __estimate the likely proportion of reads__ that will map to parasite and host, given basic information on the sample. This will be of substantial use to the __malaria__ research community as no such tool exists yet to our knowledge.
 For the web tool (see chapter _Results_) we implemented a logistic regression model, ie a generalized linear model with a logit transformation, based on the sample data set (see chapter _Data_). We cross-validated the performance of our model on the the samples that were non-complete, ie containing missing values, and therefore not used in the training data set after imputing the missing values. However, further validation of our model should be made after more data has become available. 
-<br>
-</br>
-<p>
-    <img src="../img/total_reads_outcome.png" alt="total_reads_outcome" width="600px"/>
-</p>
-**Figure 1:** Scatterplot of the data set: Number of total reads in the sample against the percentage that map to the pathogen. The numbers indicate the sample IDs. We can see that the pathogen percentage varies a lot (between almost 0% in sample 26 — most probably a still healthy person to 80%). We cannot identify any pattern that would indicate that the number of total reads in a sample is any correlated to the percentage of pathogen reads. It seems intuitive to assume that the number of reads we find in a sample is independent of the percentage of reads that map to the pathogen.
-
-<br>
-</br>
-Now we forget about the x-axis (total number of reads in the sample) by projecting it down onto the y-axis to look at the distribution of the samples that map to the pathogen. This can be seen in the density plot in figure 2.
-<p>
-    <img src="../img/pathogen_read_density.png" alt="total_reads_outcome" width="600px"/>
-</p>
-**Figure 2:** Density plot of reads that map to the pathogen: The x-axis shows the percentage of reads that map to the pathogen, the y-axis reflects the amount of samples in our data set. The pathogen percentage varies a lot (eg we do not see a vertical line or a very high peak) but it is still not uniformly distributed (which would result in a horizontal line over the whole x-axis). In the given data set most samples mapped with around 18% of the total reads to the pathogen. Note: The area under the curve itegrates to 1. The area below the curve in the negative x-region is due to the chosen bandwith.
 
 <!---
 ![total_reads_outcome](../img/total_reads_outcome.png)

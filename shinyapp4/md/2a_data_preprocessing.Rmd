@@ -1,6 +1,9 @@
 <big>
 ## Data pre-processing
 
+**First and foremeost, we had to pre-process the raw data. 
+This includes centering, scaling, skewness transformation and possibly imputing missing values.**
+
 ### Centering and scaling
 Often, individual predictors are transformed in the pre-processing of the data when they differ a lot in their magnitude of order. This includes **centering**, ie the average predictor value is substracted from all the values and thus the predictor has a zero mean, and **scaling** to make the values have a common standard deviation of one.
 

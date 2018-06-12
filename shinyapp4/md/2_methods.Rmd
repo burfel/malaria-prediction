@@ -1,5 +1,13 @@
 # Methods
 <big>
+
+This sections highlights different steps we took in the modeling process.
+<p>
+    <img src="../img/flowchart.png" alt="flowchart" width="900px"/>
+</p>
+**Figure 1:** A directed graph visualising the different steps in the model building process
+
+<!--
 ### 1. Data pre-processing 
 First and foremeost, we had to pre-process the raw data. 
 This includes centering, scaling, skewness transformation 
@@ -28,6 +36,8 @@ excellent at dealing with them.
 As we only had one data set available to train and test our 
 model, we were restricted to cross-validation on the original 
 data set. 
+
+--->
 </big>
 
 <!--

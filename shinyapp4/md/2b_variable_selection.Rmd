@@ -1,5 +1,26 @@
 ## Variable Selection
 <big>
+
+**Having a tiny sample with lots of variables, we needed to choose the most explaining variable(s) for a simple model. Also, we need to choose the variable(s) based on the utility for the user.**
+
+### 3. Model selection
+We needed to choose an appropriate model that explains the 
+data well but is simple enough to not overfit the data.
+
+### 4. Checking assumptions of linear regression model 
+For a linear regression model, we needed to check the model 
+assumptions.
+
+### 5. The generalized linear model (GLM) 
+In cases where for certain response variables the just tested 
+assumptions do not hold, generalized linear models (GLM) are 
+excellent at dealing with them. 
+
+### 6. Cross-validation / estimating performance of model(s) 
+As we only had one data set available to train and test our 
+model, we were restricted to cross-validation on the original 
+data set. 
+
 The goal was to keep the model as small as possible but as best performing as possible. Certainly there is a trade-off (see chapter _Discussion_) between these two goals.
 
 For variable selection we looked at the correlation matrix and included domain knowledge, eg which type of data a user is most likely to have. The categorical variables (including gender and ethnicity) were encoded as "dummy" variables.

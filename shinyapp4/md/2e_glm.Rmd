@@ -1,7 +1,8 @@
 ## The generalized linear model (GLM)
 <big>
-In cases where for certain response variables the just tested assumptions do not hold, generalized linear models (GLM) are excellent at dealing with them. They are an extension of the linear regression model.
-GLMs are recommended when
+
+**In cases where for certain response variables the just tested assumptions do not hold, generalized linear models (GLM) are very good at dealing with them.** They are an extension of the linear regression model.
+In general, GLMs are recommended when
 * the variance is not constant (heteroscedasticity) and/or
 * the errors are not normally distributed.
 

@@ -131,12 +131,12 @@ corrplot(M, order = "hclust", addrect = 2) # !!!!!!!!!
 #                      SCALE, CENTER VARIABLES                                 #
 #===============================================================================
 
-dat$Parasite.density...µl. <- dat$Parasite.density...µl./10000
-dat.nona$Parasite.density...µl. <-dat.nona$Parasite.density...µl./10000
-dat.nc$Parasite.density...µl. <- dat.nc$Parasite.density...µl./10000
-dat.nc.nona$Parasite.density...µl. <- dat.nc.nona$Parasite.density...µl./10000
-dat.nc.logit$Parasite.density...µl. <- dat.nc$Parasite.density...µl./10000
-dat.nc.nona.logit$Parasite.density...µl. <- dat.nc.nona.logit$Parasite.density...µl./10000
+dat$Parasite.density...µl. <- dat$Parasite.density...µl./1000000
+dat.nona$Parasite.density...µl. <-dat.nona$Parasite.density...µl./1000000
+dat.nc$Parasite.density...µl. <- dat.nc$Parasite.density...µl./1000000
+dat.nc.nona$Parasite.density...µl. <- dat.nc.nona$Parasite.density...µl./1000000
+dat.nc.logit$Parasite.density...µl. <- dat.nc$Parasite.density...µl./1000000
+dat.nc.nona.logit$Parasite.density...µl. <- dat.nc.nona.logit$Parasite.density...µl./1000000
 # maybe scale by /100,000?
 
 #===============================================================================
@@ -188,39 +188,39 @@ plot(fit.nc.nona.paras)
 #===============================================================================
 #                      SAVE MODELS                                             #
 #===============================================================================
-# save references R object
-save(references, file = "../shinyapp4/Rdata/references.rda")
-
-# data files
-save(dat, file = "../shinyapp4/Rdata/dat.rda")
-save(dat.nc, file = "../shinyapp4/Rdata/dat_nc.rda")
-save(dat.nc.logit, file = "../shinyapp4/Rdata/dat_nc_logit.rda")
-
-save(dat.nona, file = "../shinyapp4/Rdata/dat_nona.rda")
-# dat.nona.logit ?
-save(dat.nc.nona, file = "../shinyapp4/Rdata/dat_nc_nona.rda")
-save(dat.nc.nona.log, file = "../shinyapp4/Rdata/dat_nc_nona_log.rda")
-
-# linear models: simple models
-save(fit.nona.paras, file = "../shinyapp4/Rdata/fit_nona_paras.rda")
-save(fit.nona.paras.dens, file = "../shinyapp4/Rdata/fit_nona_paras_dens.rda")
-save(fit.nona.paras.log, file = "../shinyapp4/Rdata/fit_nona_paras_log.rda")
-save(fit.nona.paras.dens.log, file = "../shinyapp4/Rdata/fit_nona_paras_dens_log.rda")
-
-save(fit.nc.nona.paras, file = "../shinyapp4/Rdata/fit_nc_nona_paras.rda")
-save(fit.nc.nona.paras.dens, file = "../shinyapp4/Rdata/fit_nc_nona_paras_dens.rda")
-save(fit.nc.nona.paras.log, file = "../shinyapp4/Rdata/fit_nc_nona_paras_log.rda")
-save(fit.nc.nona.paras.dens.log, file = "../shinyapp4/Rdata/fit_nc_nona_paras_dens_log.rda")
-
-# generalized linear models: simple models, complex models
-save(glm.paras.logit, file = "../shinyapp4/Rdata/glm_paras_logit.rda")
-save(glm.paras.dens.logit, file = "../shinyapp4/Rdata/glm_paras_dens_logit.rda")
-save(glm.total.logit, file = "../shinyapp4/Rdata/glm_total_logit.rda")
-save(glm.total.dens.logit, file = "../shinyapp4/Rdata/glm_total_dens_logit.rda")
-
-save(outcome_prop, file = "../shinyapp4/Rdata/outcome_prop.rda")
-save(outcome_prop.nc.nona, file = "../shinyapp4/Rdata/outcome_prop_nc_nona.rda")
-save(outcome_prop.nona, file = "../shinyapp4/Rdata/outcome_prop_nona.rda")
+# # save references R object
+# save(references, file = "../shinyapp4/Rdata/references.rda")
+#
+# # data files
+# save(dat, file = "../shinyapp4/Rdata/dat.rda")
+# save(dat.nc, file = "../shinyapp4/Rdata/dat_nc.rda")
+# save(dat.nc.logit, file = "../shinyapp4/Rdata/dat_nc_logit.rda")
+#
+# save(dat.nona, file = "../shinyapp4/Rdata/dat_nona.rda")
+# # dat.nona.logit ?
+# save(dat.nc.nona, file = "../shinyapp4/Rdata/dat_nc_nona.rda")
+# save(dat.nc.nona.log, file = "../shinyapp4/Rdata/dat_nc_nona_log.rda")
+#
+# # linear models: simple models
+# save(fit.nona.paras, file = "../shinyapp4/Rdata/fit_nona_paras.rda")
+# save(fit.nona.paras.dens, file = "../shinyapp4/Rdata/fit_nona_paras_dens.rda")
+# save(fit.nona.paras.log, file = "../shinyapp4/Rdata/fit_nona_paras_log.rda")
+# save(fit.nona.paras.dens.log, file = "../shinyapp4/Rdata/fit_nona_paras_dens_log.rda")
+#
+# save(fit.nc.nona.paras, file = "../shinyapp4/Rdata/fit_nc_nona_paras.rda")
+# save(fit.nc.nona.paras.dens, file = "../shinyapp4/Rdata/fit_nc_nona_paras_dens.rda")
+# save(fit.nc.nona.paras.log, file = "../shinyapp4/Rdata/fit_nc_nona_paras_log.rda")
+# save(fit.nc.nona.paras.dens.log, file = "../shinyapp4/Rdata/fit_nc_nona_paras_dens_log.rda")
+#
+# # generalized linear models: simple models, complex models
+# save(glm.paras.logit, file = "../shinyapp4/Rdata/glm_paras_logit.rda")
+# save(glm.paras.dens.logit, file = "../shinyapp4/Rdata/glm_paras_dens_logit.rda")
+# save(glm.total.logit, file = "../shinyapp4/Rdata/glm_total_logit.rda")
+# save(glm.total.dens.logit, file = "../shinyapp4/Rdata/glm_total_dens_logit.rda")
+#
+# save(outcome_prop, file = "../shinyapp4/Rdata/outcome_prop.rda")
+# save(outcome_prop.nc.nona, file = "../shinyapp4/Rdata/outcome_prop_nc_nona.rda")
+# save(outcome_prop.nona, file = "../shinyapp4/Rdata/outcome_prop_nona.rda")
 
 # save(dummy, file = "../shinyapp4/Rdata/dummy.rda")
 # save(summary_simple, file = "../shinyapp4/Rdata/summary_simple.rda")

@@ -106,8 +106,8 @@ ggplotRegression <- function (fit, constant, limit, ptype) {
     scale_x_continuous(name=xname, limits=c(0,limit)) +  ## -- with it pdenstiy does not show up
     scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) +
     # scale_size_identity() +
-    geom_point() +
-    stat_smooth(method = "lm", fullrange=TRUE) +
+    geom_point(shape=1) +
+    stat_smooth(method = "lm", fullrange=TRUE, se=TRUE) +
     labs(title = paste("Adjusted R^2 = ",signif(summary(fit)$adj.r.squared, 5),
                        "; Intercept =",signif(fit$coef[[1]],5 ),
                        "; \n Slope =",signif(fit$coef[[2]], 5),

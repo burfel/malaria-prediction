@@ -35,9 +35,10 @@ However, if we make the test to exclude some potential outlier samples, we do ge
 **Figure 2.6:** Summary plots of the linear model (percentage of parsitemia) with logit transformation. 
 <br>
 </br>
-
+<br>
+</br>
 <p>
-    <img src="../img/both_paras_regr_better_outlier_4.png" alt="both_paras_regr_better_outlier_4" width="1200px"/>
+    <img src="../img/all_regr.png" alt="all_regr" width="1000px"/>
 </p>
 **Figure 2.7:** Regression lines when considering different subsets of our data set. 
 <br>

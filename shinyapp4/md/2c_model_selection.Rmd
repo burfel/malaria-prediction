@@ -18,5 +18,5 @@ We also tried multiple combinations of different equally suitable and non-collin
 <p>
     <img src="../img/paras_outcome.png" alt="paras_outcome" width="600px"/>
 </p>
-**Figure 2.2:** Scatterplot of percentage of parsitemia against outcome variable (percentage of pathogen reads). We can identify a roughly linear relationship between the two variables. This supports the results that we got from the correlation matrix. 
+**Figure 2.3:** Scatterplot of percentage of parsitemia against outcome variable (percentage of pathogen reads). We can identify a roughly linear relationship between the two variables. This supports the results that we got from the correlation matrix. 
 </big>

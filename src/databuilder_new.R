@@ -5,7 +5,7 @@ library(tidyverse)
 registerDoParallel(detectCores() - 1)
 
 #setwd("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/src")
-
+#setwd("~/Documents/IMPERIAL/PROJECTS/project2/GITHUB/shinyapp4")
 
 #===============================================================================
 #                               READ IN DATA                                   #
@@ -1199,7 +1199,7 @@ ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome), color=cyl) +
 
 
 ###################----PLOTS--------!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#png("../shinyapp4/img/both_paras_regr_better_outlier_4.png", width = 1000, height = 600)
+png("img/all_regr.png", width = 1000, height = 600)
 ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome)) + 
   scale_x_continuous(name="Percentage of parasitemia", limits=c(0,50)) +  ## -- with it pdenstiy does not show up
   scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) + 
@@ -1219,7 +1219,7 @@ ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome)) +
   theme(plot.title = element_text(size = 12, face = "bold"),
         legend.title=element_text(size=15), 
         legend.text=element_text(size=13))
-#dev.off()
+dev.off()
 
 
 # ##########-----3D plot----------------------------------------------------------------------------

@@ -11,4 +11,12 @@ As the response variable we chose the percentage of reads that map to the pathog
 Moreover, we tested combinations of non-linear relationships, eg percentage of parsitemia and total number of white blood cells, that were not significant (p-value of F-test < 0.05) but increased the R-squared value slightly (< 0.05). We chose the generalized linear model with a logit link function (equal to a logistic regression, see subchapter _The generalized linear model_ for more) including the variables parasitemia (percentage or density) and white blood cell counts (or the different types of them) based on its low p-values in the F-test (< 0.02), not for its R-squared values (< 0.4).
 
 We also tried multiple combinations of different equally suitable and non-collinear variables (including lymphocyte, monocyte and neutrophil percentage), the best yet simple general linearized models are implemented in chapter _Results_.
+
+<br>
+<br/>
+
+<p>
+    <img src="../img/paras_outcome.png" alt="paras_outcome" width="600px"/>
+</p>
+**Figure 2.2:** Scatterplot of percentage of parsitemia against outcome variable (percentage of pathogen reads). We can identify a roughly linear relationship between the two variables. This supports the results that we got from the correlation matrix. 
 </big>

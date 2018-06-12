@@ -261,6 +261,14 @@ plot(fit.nc.nona.paras)
 #===============================================================================
 #                      REGRESSION PLOTS                                        #
 #===============================================================================
+png("img/paras_outcome_logit.png")
+ggplot(dat.nc.nona.logit, aes(Percentage.parasitemia, y=outcome.logit)) +
+  geom_point() + 
+  geom_text(label=rownames(dat.nc.nona)) + 
+  scale_x_continuous(name="Percentage of parasitemia", limits=c(0,50)) +  ## -- with it pdenstiy does not show up
+  scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1))
+dev.off()
+
 # DEFINE NICE REGRESSION PLOT FUNCTION FOR SIMPLE MODEL
 ggplotRegression <- function (fit) {  
   require(ggplot2)  

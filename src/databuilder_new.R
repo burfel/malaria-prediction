@@ -53,15 +53,15 @@ outcome_prop.nc.nona <- cbind(dat.nc.nona$pf_count, dat.nc.nona$hg_count) # 40x2
 #===============================================================================
 # PLOT PROPORTION OF PATHOGEN READS, BOTH AS NORMAL AND A LOG SCALE -- FOR WEBSITE
 par(mfrow = c(1, 2))
-#png("img/total_reads_outcome.png")
+#png("img/total_reads_outcome_level.png")
 sp <- ggplot(dat, aes(total_reads, outcome)) + 
   geom_point() +
   geom_text(label=rownames(dat)) 
 # Scatter plot with the 2d density estimation
 sp + geom_density_2d() +
-     labs(x = "Total number of reads", y = "Number of pathogen reads")
-sp + stat_ellipse()
-sp + geom_bin2d()
+     labs(x = "Total number of reads", y = "Percentage of reads that map to pathogen")
+#sp + stat_ellipse()
+#sp + geom_bin2d()
 #dev.off()
 
 #png("img/total_reads_outcome_logit.png")
@@ -69,7 +69,7 @@ sl <- ggplot(dat, aes(total_reads, outcome.logit)) +
   geom_point() +
   geom_text(label=rownames(dat))
 sl + geom_density_2d() +
-     labs(x = "Total number of reads", y = "logit(Number of pathogen reads)")
+     labs(x = "Total number of reads", y = "logit(Percentage of reads that map to pathogen)")
 sl + stat_ellipse()
 sl + geom_bin2d()
 #dev.off()
@@ -95,8 +95,10 @@ ggdensity(dat$outcome,
 # PLOT --- FOR WEBSITE
 library(e1071)
 #png("img/pathogen_read_density.png")
-plot(density(dat$outcome), main="Percentage of reads that map to pathogen", ylab="Density" #, sub=paste("Skewness:", round(e1071::skewness(dat$outcome), 2))
-)  # density plot for 'speed'
+# plot(density(dat$outcome), main="Percentage of reads that map to pathogen", ylab="Density" #, sub=paste("Skewness:", round(e1071::skewness(dat$outcome), 2))
+# )  # density plot for 'speed'
+plot(density(dat$outcome), main="Distribution of samples whose reads map \n to the host with a certain percentage", ylab="Density of samples", xlab = "Percentage of reads that map to pathogen" #, sub=paste("Skewness:", round(e1071::skewness(dat$outcome), 2))
+) 
 polygon(density(dat$outcome), col="orange")
 #dev.off()
 
@@ -1159,7 +1161,7 @@ ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome), color=cyl) +
 
 
 ###################----PLOTS--------!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-png("../shinyapp4/img/both_paras_regr_better_outlier_4.png")
+#png("../shinyapp4/img/both_paras_regr_better_outlier_4.png", width = 1000, height = 600)
 ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome)) + 
   scale_x_continuous(name="Percentage of parasitemia", limits=c(0,50)) +  ## -- with it pdenstiy does not show up
   scale_y_continuous(name="Percentage of reads mapping to pathogen", limits=c(0,1)) + 
@@ -1179,7 +1181,7 @@ ggplot(dat.nc.nona, aes(Percentage.parasitemia, outcome)) +
   theme(plot.title = element_text(size = 12, face = "bold"),
         legend.title=element_text(size=15), 
         legend.text=element_text(size=13))
-dev.off()
+#dev.off()
 
 
 # ##########-----3D plot----------------------------------------------------------------------------

@@ -95,7 +95,7 @@ enableBookmarking(store = "url")
 #     geom_abline(intercept = constant, slope = 0)
 # }
 
-ggplotRegression <- function (fit, constant, limit, ptype) {  
+ggplotRegression <- function (fit, constant, value, limit, ptype) {  
   require(ggplot2)  
   if(ptype == "ppercentage" || ptype == "ppercentage2"){
     xname = "Percentage of parasitemia"
@@ -115,7 +115,8 @@ ggplotRegression <- function (fit, constant, limit, ptype) {
     # annotate("text", x=0.1, y=-0.05, label = "R^2 == 0.78", parse=T) +
     # annotate("text", x=0.1, y=-0.06, label = "alpha == 0.00", parse=T) +
     # annotate("text", x=0.1, y=-0.07, label = "beta == 0.67", parse=T) +
-    geom_abline(intercept = constant, slope = 0) 
+    geom_abline(intercept = constant, slope = 0) +
+    geom_vline(aes(xintercept = value))
 }
 
 # # DEFINE NICE REGRESSION PLOT FUNCTION FOR COMPLEX MODEL, ie second variable

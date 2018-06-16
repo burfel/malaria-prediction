@@ -383,7 +383,24 @@ server = function(input, output, session) {
     plot_data <- if(ptype == "ppercentage" || ptype == "ppercentage2") fit.nona.paras else fit.nona.paras.dens
     # limit <- if(input$ptype == "ppercentage"){limit=100} else if(input$ptype == "pdensity"){limit=3000000}
     limit <- if(ptype == "ppercentage" || ptype == "ppercentage2"){limit=100} else {limit=5}
-    ggplotRegression(plot_data, glm_both_simple(ptype), limit, ptype)
+    value <- if(input$tabset == "simple"){
+      if(input$ptype == "ppercentage"){
+        input$parasitemia_percentage
+      }
+      else if(input$ptype == "pdensity"){
+        input$parasitemia_density/1000000
+      }
+    }
+    else {
+      if(input$ptype2 == "ppercentage2"){
+        input$parasitemia_percentage2
+      }
+      else if(input$ptype == "pdensity2"){
+        input$parasitemia_density2/1000000
+      }
+    }
+      
+    ggplotRegression(plot_data, glm_both_simple(ptype), value, limit, ptype)
     # }
     # else{
     #   renderUI({
@@ -636,8 +653,8 @@ server = function(input, output, session) {
   observeEvent(input$confidenceInterval_help, {
     shinyalert("What do the different colours and lines in the plot mean?",
                "The regression line for the linear model is in darkgreen and the extrapolated 95% interval boundaries in lightgreen,
-                ie the area in between represents these boundaries and the regression line represent the 95% confidence interval.
-                \n The dots in the shaded area are still a reasonably well fitted by the model, especially as we extrapolate
+                ie the area in between represents these boundaries and the regression line represents the 95% confidence interval.
+                \n The dots in the shaded area are still reasonably well fitted by the model, especially as we extrapolate
                  to higher percentages of parasitemia. As there are no data points available above
                  37% parasitemia, we get more uncertainty which adds another interval.")
   })
@@ -767,17 +784,52 @@ server = function(input, output, session) {
   # glm.paras.dens.logit
   # glm.total.logit
   # glm.total.dens.logit
-    
-  # output$anova_summary <- function(){
-  #   if(input$model1_select == "no_null"){
-  #     anova(input$model2_select, input$model3_select)
-  #     }
-  #     else {
-  #       anova(input$model1_select, input$model2_select, input$model3_select)
-  #     }
-  # }
   
-  # output$anova_summary <- tanslator(input$model1_select, input$model2_select, input$model3_select)
+  anovaComp <- function(model){
+    if (model == "simple_paras1" || model == "simple_paras2"){
+      glm.paras.logit
+    }
+    else if (model == "simple_paras1_dens" || model == "simple_paras2_dens"){
+      glm.paras.dens.logit
+    }
+    else if (model == "complex_paras1" || model == "complex_paras2"){
+      glm.total.logit
+    }
+    else if (model == "complex_paras1_dens" || model == "complex_paras2_dens"){
+      glm.total.dens.logit
+    }
+  }
+  
+  whichtest <- function(test_type){
+    if (test_type == "chisq"){
+      "Chisq"
+    }
+    else if (test_type == "f"){
+      "F"
+    }
+    else if (test_type == "rao"){
+      "Rao"
+    }
+  }
+
+  output$anova_summary <- renderPrint({
+    anova(anovaComp(input$model2_select), anovaComp(input$model3_select), test = whichtest(input$test_select))
+  })
+  
+  # output$anova_summary <- renderPrint({
+  #   anova(anovaComp(input$model2_select), anovaComp(input$model3_select))
+  # })
+    
+  # # output$anova_summary <- function(){
+  # #   if(input$model1_select == "no_null"){
+  # #     anova(input$model2_select, input$model3_select)
+  # #     }
+  # #     else {
+  # #       anova(input$model1_select, input$model2_select, input$model3_select)
+  # #     }
+  # # }
+  # 
+  # # output$anova_summary <- tanslator(input$model1_select, input$model2_select, input$model3_select)
   
 
   #===============================================================================

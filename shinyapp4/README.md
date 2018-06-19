@@ -21,7 +21,7 @@ To run this application locally, simple paste the following code on a `R` consol
  ### run the application:
  shiny::runGitHub("malaria-prediction", "burfel", subdir="shinyapp4")
  ```
- The code inluding all markdown files shown on this website can be found on github (Link [here](https://github.com/burfel/malaria-prediction/tree/master/shinyapp4)). 
+ The code inluding all markdown files and figures shown on this website can be found on github (Link [here](https://github.com/burfel/malaria-prediction/tree/master/shinyapp4)). 
  
 ## Author
 Felicia Burtscher | [felicia.burtscher17@imperial.ac.uk](mailto:felicia.burtscher17@imperial.ac.uk).

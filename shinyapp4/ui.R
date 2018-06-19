@@ -288,8 +288,11 @@ ui = tagList(
                             h3("Linear regression model (ie GLM with identity as link function and normally distributed response variable):"),
                           
                             p("The horizontal line represents the percentage of pathogen reads (dependent variable). 
-                              As the input (independent variable(s)) change(s), the horizontal line changes."),
-                            p("The results of the linear model differ only slightly from the results above."),
+                              The vertical line represents the input from the user (independent variable).
+                              As the input (independent variable(s)) change(s), these two line change and intersect
+                              on the GLM regression line."),
+                            p("The results of the linear model in the static plot differ slightly from the results in the GLM (shown above and by the horizontal and vertical line)."),
+                            p("The plot is interactive, eg you can zoom in and out and download the plot as a png."),
                             # plotOutput("residuals", width=600, height=500)
                             textOutput("link_text"),
                             uiOutput("tab"),
@@ -338,7 +341,7 @@ ui = tagList(
                    # ),
                    tabPanel("ANOVA",
                             br(),
-                            p("For the generalized linear models that are implemented behind this web tool you can calculate the p-value for yourself!"),
+                            p("For the generalized linear models that are implemented behind this web tool you can calculate the p-value yourself!"),
 
                             # p("You can choose between comparing the fitted models with the anova function or with the likelihood ratio test."),
                             h3("Comparing different fitted models with ANOVA"),

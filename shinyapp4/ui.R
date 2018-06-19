@@ -290,7 +290,7 @@ ui = tagList(
                             p("The horizontal line represents the percentage of pathogen reads (dependent variable). 
                               The vertical line represents the input from the user (independent variable).
                               As the input (independent variable(s)) change(s), these two line change and intersect
-                              on the GLM regression line."),
+                              on the GLM regression line (not visible)."),
                             p("The results of the linear model in the static plot differ slightly from the results in the GLM (shown above and by the horizontal and vertical line)."),
                             p("The plot is interactive, eg you can zoom in and out and download the plot as a png."),
                             # plotOutput("residuals", width=600, height=500)
